@@ -33,7 +33,7 @@ const projects: Project[] = [
     title: 'Weather App',
     description: 'Aplikasi ramalan cuaca modern dengan data real-time',
     longDescription: 'Aplikasi ramalan cuaca modern yang dibangun dengan React, Vite, dan Tailwind CSS. Menggunakan OpenWeatherMap API untuk mendapatkan data cuaca real-time dan prakiraan cuaca 5 hari. Dilengkapi dengan fitur pencarian kota dan UI yang responsif dengan gradient menarik.',
-    tags: ['React', 'Vite', 'Tailwind CSS', 'Axios', 'OpenWeatherMap API'],
+    tags: ['React', 'Vite', 'Tailwind CSS', 'JavaScript', 'API'],
     color: 'cyan',
     gradient: 'from-cyan-600 via-blue-600 to-purple-600',
     icon: FaChartLine,
@@ -56,127 +56,29 @@ const projects: Project[] = [
   },
   {
     id: 2,
-    title: 'E-Commerce Platform',
-    description: 'Full-stack solution with seamless payment integration',
-    longDescription: 'A comprehensive e-commerce platform featuring real-time inventory management, secure payment processing with Stripe, and an intuitive admin dashboard for managing products and orders. Built with modern technologies to ensure scalability and performance.',
-    tags: ['Next.js', 'TypeScript', 'Stripe', 'MongoDB', 'Tailwind CSS'],
-    color: 'purple',
-    gradient: 'from-purple-600 via-blue-600 to-purple-600',
+    title: 'InvTracker - Inventory Management',
+    description: 'Sistem manajemen inventori berbasis web dengan tracking transaksi real-time',
+    longDescription: 'Sistem manajemen inventori komprehensif yang dibangun dengan PHP dan MySQL. Fitur lengkap untuk tracking barang, transaksi masuk/keluar, manajemen supplier, dan monitoring stok real-time. Dilengkapi dengan dashboard analytics, filter advanced, dan sistem autentikasi yang aman.',
+    tags: ['PHP', 'MySQL', 'Bootstrap', 'PDO', 'Object-Oriented'],
+    color: 'green',
+    gradient: 'from-green-600 via-emerald-600 to-teal-600',
     icon: FaShoppingCart,
     demoUrl: '#',
-    githubUrl: '#',
+    githubUrl: 'https://github.com/mrizalbasri/inventory',
     features: [
-      'Real-time inventory management',
-      'Secure payment processing with Stripe',
-      'Admin dashboard with analytics',
-      'Product search and filtering',
-      'Order tracking system',
-      'Responsive design for all devices'
+      'CRUD lengkap untuk items, suppliers, dan transactions',
+      'Dashboard dengan total inventory dan value calculation',
+      'Low stock alerts dan monitoring real-time',
+      'Advanced filtering (kategori, harga, tanggal, status)',
+      'Transaction tracking dengan audit trail lengkap',
+      'User authentication dengan password hashing',
+      'Auto-reverse stock saat delete transaction',
+      'Responsive design dengan Bootstrap 5'
     ],
     githubStats: {
-      stars: 245,
-      forks: 67,
-      issues: 12
-    }
-  },
-  {
-    id: 3,
-    title: 'Social Media App',
-    description: 'Real-time social platform with instant messaging',
-    longDescription: 'A modern social media application with real-time chat functionality, post sharing, likes, comments, and push notifications. Built with scalability in mind using microservices architecture.',
-    tags: ['React', 'Node.js', 'Socket.io', 'PostgreSQL', 'Redis'],
-    color: 'cyan',
-    gradient: 'from-cyan-600 via-blue-600 to-cyan-600',
-    icon: FaMobile,
-    demoUrl: '#',
-    githubUrl: '#',
-    features: [
-      'Real-time messaging with Socket.io',
-      'Post sharing with media upload',
-      'Like, comment, and share functionality',
-      'Push notifications',
-      'User authentication and profiles',
-      'News feed algorithm'
-    ],
-    githubStats: {
-      stars: 189,
-      forks: 45,
-      issues: 8
-    }
-  },
-  {
-    id: 4,
-    title: 'AI Analytics Dashboard',
-    description: 'Analytics powered by machine learning insights',
-    longDescription: 'An intelligent analytics dashboard that leverages AI to provide predictive insights, data visualization, and automated reporting for business intelligence. Features advanced charting and real-time data processing.',
-    tags: ['Next.js', 'Python', 'TensorFlow', 'D3.js', 'FastAPI'],
-    color: 'blue',
-    gradient: 'from-blue-600 via-purple-600 to-blue-600',
-    icon: FaChartLine,
-    demoUrl: '#',
-    githubUrl: '#',
-    features: [
-      'Predictive analytics with ML models',
-      'Interactive data visualizations',
-      'Automated report generation',
-      'Real-time data processing',
-      'Custom dashboard builder',
-      'Export to multiple formats'
-    ],
-    githubStats: {
-      stars: 312,
-      forks: 89,
-      issues: 15
-    }
-  },
-  {
-    id: 5,
-    title: 'Portfolio Builder',
-    description: 'Drag-and-drop portfolio creation tool',
-    longDescription: 'Create stunning portfolios without code using our intuitive drag-and-drop builder. Choose from customizable templates and deploy instantly to your custom domain with one-click deployment.',
-    tags: ['React', 'Tailwind CSS', 'Framer Motion', 'Firebase'],
-    color: 'pink',
-    gradient: 'from-pink-600 via-purple-600 to-pink-600',
-    icon: FaCode,
-    demoUrl: '#',
-    githubUrl: '#',
-    features: [
-      'Drag-and-drop interface',
-      'Pre-built templates',
-      'Custom domain support',
-      'One-click deployment',
-      'SEO optimization',
-      'Analytics integration'
-    ],
-    githubStats: {
-      stars: 156,
-      forks: 34,
-      issues: 6
-    }
-  },
-  {
-    id: 6,
-    title: 'Task Management System',
-    description: 'Collaborative workspace for teams',
-    longDescription: 'A powerful task management system with kanban boards, team collaboration features, time tracking, and project analytics. Perfect for agile teams and project managers.',
-    tags: ['Next.js', 'TypeScript', 'Prisma', 'tRPC', 'PostgreSQL'],
-    color: 'green',
-    gradient: 'from-green-600 via-cyan-600 to-green-600',
-    icon: FaRocket,
-    demoUrl: '#',
-    githubUrl: '#',
-    features: [
-      'Kanban board interface',
-      'Team collaboration tools',
-      'Time tracking',
-      'Project analytics',
-      'Sprint planning',
-      'Integration with GitHub/Jira'
-    ],
-    githubStats: {
-      stars: 278,
-      forks: 72,
-      issues: 10
+      stars: 0,
+      forks: 0,
+      issues: 0
     }
   },
 ];
@@ -255,52 +157,77 @@ export default function Projects() {
             </p>
           </div>
 
-          {/* Filters - Centered */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-            {/* Tech Filter */}
-            <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
-              {allTechnologies.slice(0, 8).map((tech) => (
-                <motion.button
-                  key={tech}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedTech(tech)}
-                  suppressHydrationWarning
-                  className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
-                    selectedTech === tech
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
-                  }`}
-                >
-                  {tech}
-                </motion.button>
-              ))}
+          {/* Filters Section - Modern & Clean */}
+          <div className="flex flex-col gap-6">
+            {/* Filter by Technology */}
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400 text-sm font-medium">Technology Stack</span>
+                <div className="h-px w-8 bg-gradient-to-r from-purple-500/50 to-transparent"></div>
+              </div>
+              <div className="flex gap-2 flex-wrap justify-center max-w-4xl">
+                {allTechnologies.slice(0, 8).map((tech) => (
+                  <motion.button
+                    key={tech}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedTech(tech)}
+                    suppressHydrationWarning
+                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
+                      selectedTech === tech
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30 border border-purple-400/30'
+                        : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    {tech}
+                  </motion.button>
+                ))}
+              </div>
             </div>
 
             {/* View Mode Toggle */}
-            <div className="flex gap-2 bg-white/5 backdrop-blur-sm rounded-full p-1 border border-white/10">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setViewMode('grid')}
-                suppressHydrationWarning
-                className={`p-3 rounded-full transition-all duration-300 ${
-                  viewMode === 'grid' ? 'bg-purple-600 text-white' : 'text-gray-400'
-                }`}
-              >
-                <FaTh />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setViewMode('list')}
-                suppressHydrationWarning
-                className={`p-3 rounded-full transition-all duration-300 ${
-                  viewMode === 'list' ? 'bg-purple-600 text-white' : 'text-gray-400'
-                }`}
-              >
-                <FaList />
-              </motion.button>
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-gray-400 text-sm font-medium">View</span>
+              <div className="flex gap-1 bg-white/5 backdrop-blur-sm rounded-xl p-1 border border-white/10">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('grid')}
+                  suppressHydrationWarning
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                    viewMode === 'grid' 
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <FaTh className="text-sm" />
+                  <span className="text-sm font-medium hidden sm:inline">Grid</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setViewMode('list')}
+                  suppressHydrationWarning
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                    viewMode === 'list' 
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <FaList className="text-sm" />
+                  <span className="text-sm font-medium hidden sm:inline">List</span>
+                </motion.button>
+              </div>
+            </div>
+
+            {/* Results Count */}
+            <div className="text-center">
+              <p className="text-gray-500 text-sm">
+                Showing <span className="text-white font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'project' : 'projects'}
+                {selectedTech !== 'All' && (
+                  <span className="text-purple-400"> with {selectedTech}</span>
+                )}
+              </p>
             </div>
           </div>
         </motion.div>
@@ -531,8 +458,8 @@ function ProjectCard({ project, index, onClick, liveStats }: ProjectCardProps) {
             )}
           </div>
 
-          {/* GitHub Stats - Only show if has stars */}
-          {((liveStats?.stars ?? project.githubStats?.stars ?? 0) > 0) && (
+          {/* GitHub Stats - Show if has GitHub URL */}
+          {project.githubUrl && project.githubUrl !== '#' && (
             <div className="flex items-center gap-4 pt-3 border-t border-white/5">
               <motion.div 
                 className="flex items-center gap-2 text-sm"
