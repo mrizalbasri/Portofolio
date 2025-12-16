@@ -14,8 +14,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Metadata Base URL (update saat deploy)
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
 // Comprehensive SEO Metadata
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
+  
   // Basic Metadata
   title: {
     default: "M. Rizal Basri - Full Stack Developer Portfolio",
