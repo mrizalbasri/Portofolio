@@ -187,14 +187,10 @@ export default function Projects() {
             </p>
           </div>
 
-          {/* Filters Section - Modern & Clean */}
-          <div className="flex flex-col gap-6">
+          {/* Filters Section - Clean & Minimal */}
+          <div className="flex flex-col gap-4">
             {/* Filter by Technology */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm font-medium">Technology Stack</span>
-                <div className="h-px w-8 bg-gradient-to-r from-purple-500/50 to-transparent"></div>
-              </div>
+            <div className="flex flex-col items-center gap-2">
               <div className="flex gap-2 flex-wrap justify-center max-w-4xl">
                 {allTechnologies.slice(0, 8).map((tech) => (
                   <motion.button
@@ -203,9 +199,9 @@ export default function Projects() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedTech(tech)}
                     suppressHydrationWarning
-                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-300 ${
                       selectedTech === tech
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30 border border-purple-400/30'
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/20 border border-purple-400/30'
                         : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20'
                     }`}
                   >
@@ -215,47 +211,45 @@ export default function Projects() {
               </div>
             </div>
 
-            {/* View Mode Toggle */}
-            <div className="flex items-center justify-center gap-3">
-              <span className="text-gray-400 text-sm font-medium">View</span>
-              <div className="flex gap-1 bg-white/5 backdrop-blur-sm rounded-xl p-1 border border-white/10">
+            {/* View Mode Toggle & Results Count */}
+            <div className="flex items-center justify-center gap-6">
+              {/* View Mode Toggle */}
+              <div className="flex gap-1 bg-white/5 backdrop-blur-sm rounded-lg p-1 border border-white/10">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode('grid')}
                   suppressHydrationWarning
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                  className={`px-3 py-1.5 rounded-md transition-all duration-300 flex items-center gap-2 ${
                     viewMode === 'grid' 
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md' 
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
-                  <FaTh className="text-sm" />
-                  <span className="text-sm font-medium hidden sm:inline">Grid</span>
+                  <FaTh className="text-xs" />
+                  <span className="text-xs font-medium hidden sm:inline">Grid</span>
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode('list')}
                   suppressHydrationWarning
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 ${
+                  className={`px-3 py-1.5 rounded-md transition-all duration-300 flex items-center gap-2 ${
                     viewMode === 'list' 
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md' 
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
-                  <FaList className="text-sm" />
-                  <span className="text-sm font-medium hidden sm:inline">List</span>
+                  <FaList className="text-xs" />
+                  <span className="text-xs font-medium hidden sm:inline">List</span>
                 </motion.button>
               </div>
-            </div>
 
-            {/* Results Count */}
-            <div className="text-center">
-              <p className="text-gray-500 text-sm">
-                Showing <span className="text-white font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'project' : 'projects'}
+              {/* Results Count */}
+              <p className="text-gray-500 text-xs">
+                <span className="text-white font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'project' : 'projects'}
                 {selectedTech !== 'All' && (
-                  <span className="text-purple-400"> with {selectedTech}</span>
+                  <span className="text-purple-400"> · {selectedTech}</span>
                 )}
               </p>
             </div>

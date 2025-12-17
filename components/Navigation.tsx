@@ -28,7 +28,7 @@ export default function Navigation() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-transparent"
+        className="fixed top-0 left-0 right-0 z-[100] bg-transparent"
       >
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between relative">
@@ -75,10 +75,10 @@ export default function Navigation() {
               ))}
             </div>
 
-            {/* Orbital Rings Hamburger Button */}
+            {/* Orbital Rings Hamburger Button - Fixed Position */}
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`hidden md:flex relative w-16 h-16 items-center justify-center group -mr-40 mt-8 transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              className={`hidden md:flex fixed top-6 right-6 w-16 h-16 items-center justify-center group transition-opacity duration-300 ${isScrolled ? 'opacity-100 z-[100]' : 'opacity-0 pointer-events-none'}`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -285,7 +285,7 @@ export default function Navigation() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/50 z-[110] backdrop-blur-sm"
             />
 
             {/* Side Panel */}
@@ -299,7 +299,7 @@ export default function Navigation() {
                 stiffness: 300,
                 duration: 0.3
               }}
-              className="fixed top-0 right-0 h-full w-96 bg-gradient-to-br from-gray-900 via-gray-900 to-purple-900/30 shadow-2xl z-50 border-l border-purple-500/30 overflow-hidden"
+              className="fixed top-0 right-0 h-full w-96 bg-gradient-to-br from-gray-900 via-gray-900 to-purple-900/30 shadow-2xl z-[120] border-l border-purple-500/30 overflow-hidden"
             >
               {/* Animated Background Elements */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
