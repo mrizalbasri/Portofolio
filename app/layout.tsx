@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 // Metadata Base URL & Verification (update saat deploy)
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.com';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.vercel.app';
 const gscVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google-site-verification-placeholder';
 
 // Comprehensive SEO Metadata

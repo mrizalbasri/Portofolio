@@ -1,5 +1,5 @@
 export default function StructuredData() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.vercel.app';
   
   const structuredData = {
     "@context": "https://schema.org",
