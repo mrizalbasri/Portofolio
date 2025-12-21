@@ -133,7 +133,7 @@ export default function LoadingScreen() {
                 }}
               >
                 <Image
-                  src="/Logo.png"
+                  src="/logo.png"
                   alt="Logo"
                   width={150}
                   height={150}
