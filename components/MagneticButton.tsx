@@ -8,6 +8,7 @@ interface MagneticButtonProps {
   className?: string;
   strength?: number;
   as?: 'button' | 'div';
+  'aria-label'?: string;
 }
 
 export default function MagneticButton({
@@ -15,6 +16,7 @@ export default function MagneticButton({
   className = '',
   strength = 0.3,
   as = 'button',
+  'aria-label': ariaLabel,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLElement>(null);
   const x = useMotionValue(0);
@@ -52,6 +54,7 @@ export default function MagneticButton({
       onMouseLeave={handleMouseLeave}
       style={{ x: xSpring, y: ySpring }}
       className={`relative ${className}`}
+      aria-label={ariaLabel}
     >
       {children}
     </Component>

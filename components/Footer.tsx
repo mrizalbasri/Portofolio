@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaEnvelope, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { HiLocationMarker } from 'react-icons/hi';
 import { MdWork } from 'react-icons/md';
 
@@ -16,7 +16,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { name: 'Home', id: 'hero' },
+    { name: 'Home', id: 'home' },
     { name: 'About', id: 'about' },
     { name: 'Skills', id: 'skills' },
     { name: 'Projects', id: 'projects' },
@@ -26,9 +26,8 @@ export default function Footer() {
   const socialLinks = [
     { name: 'GitHub', icon: FaGithub, url: 'https://github.com/mrizalbasri', color: 'hover:text-gray-400' },
     { name: 'LinkedIn', icon: FaLinkedin, url: 'https://www.linkedin.com/in/m-rizal-basri/', color: 'hover:text-blue-400' },
-    { name: 'Email', icon: FaEnvelope, url: 'mailto:rizalbasri800@gmail.com', color: 'hover:text-purple-400' },
-    { name: 'Twitter', icon: FaTwitter, url: '#', color: 'hover:text-sky-400' },
-    { name: 'Instagram', icon: FaInstagram, url: '#', color: 'hover:text-pink-400' },
+    { name: 'WhatsApp', icon: FaWhatsapp, url: 'https://wa.me/6284668265398', color: 'hover:text-green-400' },
+    { name: 'Instagram', icon: FaInstagram, url: 'https://instagram.com/rizlbsri_', color: 'hover:text-pink-400' },
   ];
 
   return (

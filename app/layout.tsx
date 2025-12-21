@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import StructuredData from "@/components/StructuredData";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Metadata Base URL (update saat deploy)
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+// Metadata Base URL & Verification (update saat deploy)
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.com';
+const gscVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google-site-verification-placeholder';
 
 // Comprehensive SEO Metadata
 export const metadata: Metadata = {
@@ -23,10 +25,10 @@ export const metadata: Metadata = {
   
   // Basic Metadata
   title: {
-    default: "M. Rizal Basri - Full Stack Developer Portfolio",
+    default: "M. Rizal Basri | Full Stack Developer",
     template: "%s | M. Rizal Basri"
   },
-  description: "Portfolio of M. Rizal Basri - Experienced Full Stack Developer from Pekanbaru, Indonesia. Specializing in React, Next.js, Node.js, TypeScript, and modern web technologies. Available for freelance projects and full-time opportunities.",
+  description: "Portfolio of M. Rizal Basri - Full Stack Developer from Pekanbaru, Indonesia. Expert in React, Next.js, Laravel, and modern web solutions. Explore my projects and skills.",
   keywords: [
     "Full Stack Developer",
     "Web Developer",
@@ -53,13 +55,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://yourportfolio.com", // Update dengan URL Anda nanti
+    url: baseUrl,
     siteName: "M. Rizal Basri Portfolio",
     title: "M. Rizal Basri - Full Stack Developer",
     description: "Experienced Full Stack Developer specializing in React, Next.js, and modern web technologies. Based in Pekanbaru, Indonesia.",
     images: [
       {
-        url: "/og-image.jpg", // Kita akan buat ini nanti
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "M. Rizal Basri - Full Stack Developer Portfolio",
@@ -80,14 +82,21 @@ export const metadata: Metadata = {
     },
   },
   
-  // Verification (untuk Google Search Console nanti)
+  // Verification (untuk Google Search Console)
   verification: {
-    google: "your-google-verification-code", // Update nanti saat deploy
+    google: gscVerification,
   },
 
   // App Metadata
   applicationName: "M. Rizal Basri Portfolio",
   category: "Portfolio",
+
+  // Setup Favicon using available Logo
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -106,6 +115,7 @@ export default function RootLayout({
       >
         <CustomCursor />
         {children}
+        <Analytics />
       </body>
     </html>
   );

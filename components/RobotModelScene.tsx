@@ -1,17 +1,19 @@
 'use client';
 
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, PerspectiveCamera, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface RobotProps {
   mousePosition: { x: number; y: number };
+  isMobile: boolean;
 }
 
 // Geometric Robot Fallback
-function GeometricRobot({ mousePosition }: RobotProps) {
+function GeometricRobot({ mousePosition, isMobile }: RobotProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const baseScale = isMobile ? 0.6 : 1;
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
@@ -29,7 +31,7 @@ function GeometricRobot({ mousePosition }: RobotProps) {
       );
       
       groupRef.current.position.y = Math.sin(time * 0.8) * 0.3;
-      const breathScale = 1 + Math.sin(time * 1.5) * 0.05;
+      const breathScale = baseScale * (1 + Math.sin(time * 1.5) * 0.05);
       groupRef.current.scale.set(breathScale, breathScale, breathScale);
       groupRef.current.rotation.z = Math.sin(time * 0.5) * 0.1;
     }
@@ -70,10 +72,11 @@ function GeometricRobot({ mousePosition }: RobotProps) {
 }
 
 // GLTF Model Loader with Mouse-Driven Movement
-function GLTFRobot({ mousePosition }: RobotProps) {
+function GLTFRobot({ mousePosition, isMobile }: RobotProps) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/models/Robot.glb');
   const prevMousePos = useRef({ x: 0, y: 0 });
+  const baseScale = isMobile ? 0.7 : 0.8;
 
   // Only enhance eyes, keep everything else original
   scene.traverse((child) => {
@@ -106,8 +109,8 @@ function GLTFRobot({ mousePosition }: RobotProps) {
 
     if (groupRef.current) {
       // Robot mengikuti mouse dengan range yang lebih terkontrol
-      const targetX = mousePosition.x * 2.5; // -2.5 to +2.5 (controlled horizontal)
-      const targetZ = -mousePosition.y * 3; // -3 to +3 (controlled depth)
+      const targetX = mousePosition.x * (isMobile ? 1.5 : 2.5); // Smaller movement on mobile
+      const targetZ = -mousePosition.y * (isMobile ? 2 : 3);
       
       groupRef.current.position.x = THREE.MathUtils.lerp(
         groupRef.current.position.x,
@@ -149,7 +152,7 @@ function GLTFRobot({ mousePosition }: RobotProps) {
       
       // Breathing effect
       const breathScale = 1 + Math.sin(time * 2) * 0.08;
-      groupRef.current.scale.set(breathScale * 0.8, breathScale * 0.8, breathScale * 0.8);
+      groupRef.current.scale.set(breathScale * baseScale, breathScale * baseScale, breathScale * baseScale);
       
       // Update previous mouse position
       prevMousePos.current = { ...mousePosition };
@@ -158,18 +161,18 @@ function GLTFRobot({ mousePosition }: RobotProps) {
 
   return (
     <group ref={groupRef}>
-      <primitive object={scene} scale={0.8} />
+      <primitive object={scene} scale={baseScale} />
     </group>
   );
 }
 
 // Error Boundary Component
-function RobotWithFallback({ mousePosition }: RobotProps) {
+function RobotWithFallback({ mousePosition, isMobile }: RobotProps) {
   try {
-    return <GLTFRobot mousePosition={mousePosition} />;
+    return <GLTFRobot mousePosition={mousePosition} isMobile={isMobile} />;
   } catch (error) {
     console.log('GLTF failed, using geometric robot');
-    return <GeometricRobot mousePosition={mousePosition} />;
+    return <GeometricRobot mousePosition={mousePosition} isMobile={isMobile} />;
   }
 }
 
@@ -184,6 +187,17 @@ function Loader() {
 
 export default function RobotModelScene() {
   const mousePosition = useRef({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -193,12 +207,15 @@ export default function RobotModelScene() {
 
   return (
     <div 
-      className="absolute inset-0 w-full h-full"
+      className="w-full h-full"
       onMouseMove={handleMouseMove}
-      style={{ pointerEvents: 'auto' }}
     >
       <Canvas>
-        <PerspectiveCamera makeDefault position={[-0.5, 1.5, 10]} fov={50} />
+        <PerspectiveCamera 
+          makeDefault 
+          position={isMobile ? [0, 0.5, 10] : [-0.5, 1.5, 10]} 
+          fov={isMobile ? 55 : 50} 
+        />
         
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
@@ -206,7 +223,7 @@ export default function RobotModelScene() {
         <pointLight position={[10, 10, 10]} color="#06b6d4" intensity={0.3} />
         
         <Suspense fallback={<Loader />}>
-          <RobotWithFallback mousePosition={mousePosition.current} />
+          <RobotWithFallback mousePosition={mousePosition.current} isMobile={isMobile} />
         </Suspense>
 
         {/* Enable mouse drag to rotate */}

@@ -105,7 +105,8 @@ yarn install
 3. **Set up environment variables**
 Create a `.env.local` file in the root directory:
 ```env
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_key_here
+WEB3FORMS_ACCESS_KEY=your_web3forms_key_here
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your_google_verification_code
 ```
 
 4. **Run the development server**

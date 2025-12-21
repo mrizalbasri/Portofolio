@@ -64,7 +64,7 @@ export default function SocialSidebar() {
                 color: social.color,
               }}
               className="text-gray-400 hover:text-white transition-all duration-300 text-2xl"
-              aria-label={social.name}
+              aria-label={`Follow me on ${social.name}`}
             >
               <Icon />
             </motion.a>

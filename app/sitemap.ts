@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://yourportfolio.com' // Update dengan URL Anda nanti
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.com'
   
   return [
     {

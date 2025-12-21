@@ -47,6 +47,7 @@ export default function ScrollToTop() {
       whileTap={{ scale: 0.9 }}
       className="fixed bottom-8 right-8 z-50 group"
       style={{ pointerEvents: isVisible ? 'auto' : 'none' }}
+      aria-label="Back to top"
     >
       {/* Progress Circle */}
       <svg className="absolute inset-0 w-14 h-14 -rotate-90" viewBox="0 0 100 100">

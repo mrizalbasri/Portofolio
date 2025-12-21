@@ -1,4 +1,6 @@
 export default function StructuredData() {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.com';
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -6,8 +8,8 @@ export default function StructuredData() {
     "alternateName": "Rizal Basri",
     "jobTitle": "Full Stack Developer",
     "description": "Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies",
-    "url": "https://yourportfolio.com",
-    "image": "https://yourportfolio.com/logo.png",
+    "url": baseUrl,
+    "image": `${baseUrl}/logo.png`,
     "sameAs": [
       "https://github.com/mrizalbasri",
       "https://www.linkedin.com/in/m-rizal-basri/",

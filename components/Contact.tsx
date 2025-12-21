@@ -13,30 +13,48 @@ export default function Contact() {
     name: '',
     email: '',
     message: '',
+    honeypot: '', // Anti-spam field
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check
+    if (formData.honeypot) {
+      console.log('Spam detected');
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
     setIsSending(true);
     setError('');
     
     try {
-      // Web3Forms API endpoint
-      const response = await fetch('https://api.web3forms.com/submit', {
+      // Use our internal API route
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '21ed0a63-caa9-4f9d-9304-cdbcd1f71780', // Ganti dengan access key Anda atau set di .env.local
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          subject: `Portfolio Contact from ${formData.name}`,
-          from_name: 'Portfolio Contact Form',
         }),
       });
 
@@ -49,7 +67,7 @@ export default function Contact() {
         // Reset form after 3 seconds
         setTimeout(() => {
           setIsSubmitted(false);
-          setFormData({ name: '', email: '', message: '' });
+          setFormData({ name: '', email: '', message: '', honeypot: '' });
         }, 3000);
       } else {
         throw new Error('Failed to send message');
@@ -97,6 +115,9 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative min-h-screen py-20 px-4">
+      {/* Scroll to top anchor */}
+      <div id="contact-top" className="absolute top-0 left-0 w-full h-1" />
+      
       <div className="max-w-4xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
@@ -125,6 +146,18 @@ export default function Contact() {
             className="relative"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot field - hidden from users */}
+              <div className="hidden" aria-hidden="true">
+                <input
+                  type="text"
+                  name="honeypot"
+                  value={formData.honeypot}
+                  onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+              
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-gray-300 mb-2">
                   Name
@@ -175,6 +208,7 @@ export default function Contact() {
                 disabled={isSending}
                 className={`w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-white font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2 ${isSending ? 'opacity-75 cursor-wait' : ''}`}
                 suppressHydrationWarning
+                aria-label={isSending ? "Sending message" : isSubmitted ? "Message sent" : "Send Message"}
               >
                 {isSending ? (
                   <>
@@ -253,6 +287,7 @@ export default function Contact() {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.05, x: 10 }}
                   className={`group flex items-center gap-4 p-5 bg-gradient-to-r ${social.color} ${social.hoverColor} rounded-xl hover:shadow-2xl hover:shadow-${social.name.toLowerCase()}/30 transition-all duration-300 cursor-pointer relative overflow-hidden`}
+                  aria-label={`Visit my ${social.name} profile - ${social.description}`}
                 >
                   {/* Animated background effect */}
                   <motion.div

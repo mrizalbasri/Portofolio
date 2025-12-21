@@ -7,7 +7,31 @@ import Image from 'next/image';
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+      const scrollPosition = window.scrollY + 200;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const height = element.offsetHeight;
+
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     return scrollY.on('change', (latest) => {
@@ -16,11 +40,11 @@ export default function Navigation() {
   }, [scrollY]);
 
   const navItems = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '#', id: 'home' },
+    { name: 'About', href: '#about', id: 'about' },
+    { name: 'Skills', href: '#skills', id: 'skills' },
+    { name: 'Projects', href: '#projects', id: 'projects' },
+    { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
   return (
@@ -30,13 +54,14 @@ export default function Navigation() {
         animate={{ y: 0 }}
         className="fixed top-0 left-0 right-0 z-[100] bg-transparent"
       >
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-6 md:px-4 md:py-4">
           <div className="flex items-center justify-between relative">
             {/* Logo - Hidden saat scroll */}
             <motion.a
               href="#"
               whileHover={{ scale: 1.05 }}
               className={`flex items-center gap-2 transition-opacity duration-300 ${!isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              aria-label="Home"
             >
               <Image 
                 src="/logo.png" 
@@ -60,17 +85,17 @@ export default function Navigation() {
                   className="relative group overflow-hidden h-6 block"
                 >
                   {/* Teks Normal */}
-                  <span className="text-gray-300 group-hover:translate-y-full transition-transform duration-300 ease-out block">
+                  <span className={`group-hover:translate-y-full transition-transform duration-300 ease-out block ${activeSection === item.id ? 'opacity-0' : 'text-gray-300'}`}>
                     {item.name}
                   </span>
                   
                   {/* Teks yang datang dari atas */}
-                  <span className="absolute top-0 left-0 text-white -translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
+                  <span className={`absolute top-0 left-0 -translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent font-semibold ${activeSection === item.id ? 'translate-y-0 text-white' : ''}`}>
                     {item.name}
                   </span>
                   
                   {/* Underline gradient */}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:w-full transition-all duration-300" />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-cyan-500 transition-all duration-300 ${activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'}`} />
                 </motion.a>
               ))}
             </div>
@@ -81,6 +106,7 @@ export default function Navigation() {
               className={`hidden md:flex fixed top-6 right-6 w-16 h-16 items-center justify-center group transition-opacity duration-300 ${isScrolled ? 'opacity-100 z-[100]' : 'opacity-0 pointer-events-none'}`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
             >
               {/* Outer Ring */}
               <motion.div
@@ -184,6 +210,7 @@ export default function Navigation() {
               className="md:hidden relative w-14 h-14 flex items-center justify-center group"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
             >
               {/* Outer Glow */}
               <motion.div
@@ -337,6 +364,7 @@ export default function Navigation() {
                   transition={{ delay: 0.2 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition-all group"
+                  aria-label="Close Menu"
                 >
                   <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -375,9 +403,10 @@ export default function Navigation() {
                         {/* Hover Background */}
                         <motion.div
                           initial={{ x: '-100%' }}
+                          animate={{ x: activeSection === item.id ? 0 : '-100%' }}
                           whileHover={{ x: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-purple-500/20"
+                          className={`absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border-l-2 border-purple-500 transition-opacity ${activeSection === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                         />
                         
                         {/* Animated Border */}
@@ -396,10 +425,10 @@ export default function Navigation() {
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
                               transition={{ delay: 0.2 + index * 0.08 }}
-                              className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 opacity-50 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300"
+                              className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300 ${activeSection === item.id ? 'opacity-100 scale-125 shadow-[0_0_10px_rgba(168,85,247,0.5)]' : 'opacity-50'}`}
                             />
                             
-                            <span className="text-2xl font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">
+                            <span className={`text-2xl font-semibold transition-colors duration-300 ${activeSection === item.id ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>
                               {item.name}
                             </span>
                           </div>

@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaExclamationCircle } from 'react-icons/fa';
 import { useEffect } from 'react';
 import Image from 'next/image';
+import { Project } from '@/types/project';
 
 interface ProjectModalProps {
-  project: any;
+  project: Project | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -33,6 +34,8 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
+  if (!project) return null;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -48,16 +51,27 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl border border-white/10 shadow-2xl pointer-events-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl border border-white/10 shadow-2xl pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label={project.title}
+              >
               {/* Header with Gradient */}
               <div className={`relative h-64 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
+                {/* Close Button */}
+                <button
+                  onClick={onClose}
+                  className="absolute top-6 right-6 z-50 p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white transition-all duration-300 group"
+                  aria-label="Close modal"
+                >
+                  <FaTimes className="text-xl group-hover:rotate-90 transition-transform duration-300" />
+                </button>
                 {/* Animated Background Pattern */}
                 <div className="absolute inset-0 opacity-20">
                   <div className="absolute inset-0" style={{
@@ -119,10 +133,10 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   className="flex flex-wrap items-center gap-4"
                 >
                   {/* Stars - Only show if > 0 */}
-                  {project.githubStats?.stars > 0 && (
+                  {(project.githubStats?.stars ?? 0) > 0 && (
                     <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-full border border-yellow-500/30">
                       <FaStar className="text-yellow-400" />
-                      <span className="text-white font-semibold">{project.githubStats.stars}</span>
+                      <span className="text-white font-semibold">{project.githubStats?.stars}</span>
                       <span className="text-gray-300 text-sm">stars</span>
                     </div>
                   )}
@@ -221,6 +235,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       className={`group flex items-center gap-2 px-8 py-4 bg-gradient-to-r ${project.gradient} rounded-full text-white font-semibold hover:shadow-2xl transition-all duration-300`}
+                      aria-label={`View ${project.title} live demo`}
                     >
                       <FaExternalLinkAlt className="group-hover:rotate-12 transition-transform duration-300" />
                       View Live Demo
@@ -235,6 +250,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       className="group flex items-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-white font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                      aria-label={`View ${project.title} on GitHub`}
                     >
                       <FaGithub className="group-hover:rotate-12 transition-transform duration-300" />
                       View Source Code
