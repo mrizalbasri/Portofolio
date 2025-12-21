@@ -64,7 +64,7 @@ export default function Navigation() {
               aria-label="Home"
             >
               <Image 
-                src="/Logo.png" 
+                src="/logo.png" 
                 alt="Logo" 
                 width={60} 
                 height={60}
