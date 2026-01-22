@@ -1,5 +1,6 @@
 "use client";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform, MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const FloatingDock = ({
@@ -37,12 +38,12 @@ function DockIcon({
   icon,
   href,
 }: {
-  mouseX: ReturnType<typeof useMotionValue>;
+  mouseX: MotionValue<number>;
   title: string;
   icon: React.ReactNode;
   href: string;
 }) {
-  const ref = useMotionValue<HTMLAnchorElement | null>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   const distance = useTransform(mouseX, (val: number) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -65,7 +66,7 @@ function DockIcon({
 
   return (
     <motion.a
-      ref={(el) => ref.set(el)}
+      ref={ref}
       href={href}
       style={{ width, height }}
       className="relative flex aspect-square items-center justify-center rounded-full bg-white/10 hover:bg-primary/20 transition-colors"

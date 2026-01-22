@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useMotionValue, useTransform, animate } from "framer-motion";
 
 export const MovingBorder = ({
   children,
@@ -22,10 +23,13 @@ export const MovingBorder = ({
   containerClassName?: string;
   borderClassName?: string;
   as?: React.ElementType;
-  [key: string]: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ComponentAny = Component as any;
   return (
-    <Component
+    <ComponentAny
       className={cn(
         "relative h-16 w-40 overflow-hidden bg-transparent p-[1px] text-xl",
         containerClassName
@@ -57,7 +61,7 @@ export const MovingBorder = ({
       >
         {children}
       </div>
-    </Component>
+    </ComponentAny>
   );
 };
 
@@ -135,6 +139,5 @@ const MovingBorderGradient = ({
   );
 };
 
-import { useMotionValue, useTransform, animate } from "framer-motion";
 
 export default MovingBorder;
