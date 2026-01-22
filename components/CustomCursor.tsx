@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 export default function CustomCursor() {
@@ -13,14 +13,9 @@ export default function CustomCursor() {
   // Dynamic text state based on hover target
   const [cursorText, setCursorText] = useState<string>("");
 
-  // Mouse positions
+  // Instant mouse positions without spring lag
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-
-  // Smooth springs for the pointer movement
-  const springConfig = { damping: 25, stiffness: 700, mass: 0.5 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.matchMedia("(pointer: coarse)").matches);
@@ -28,31 +23,30 @@ export default function CustomCursor() {
     window.addEventListener('resize', checkMobile);
 
     const moveCursor = (e: MouseEvent) => {
-      // Offset to match the SVG pointer tip
+      // Direct 1:1 movement for snappy feel
       cursorX.set(e.clientX - 6); 
       cursorY.set(e.clientY - 6);
       
-      setIsVisible(true);
+      if (!isVisible) setIsVisible(true);
       
-      // Dynamic hover detection for text
+      // Throttle interactive checks if needed, but for now simple check is okay
       const target = e.target as HTMLElement;
-      const isInteractive = 
-        target.tagName === 'A' || 
-        target.tagName === 'BUTTON' || 
-        target.closest('a') !== null || 
-        target.closest('button') !== null ||
-        target.closest('[role="button"]') !== null ||
-        target.style.cursor === 'pointer';
+      // Simple tag check first for performance
+      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
+         setIsHovering(true);
+         setCursorText(target.tagName === 'A' && target.getAttribute('href')?.startsWith('mailto') ? "Email" : "Click");
+         return;
+      }
       
-      setIsHovering(!!isInteractive);
+      // Deeper check only if necessary
+      const closestLink = target.closest('a');
+      const closestBtn = target.closest('button');
       
-      // Determine cursor text
-      if (isInteractive) {
-        setCursorText("Click");
-        // Special cases
-        if (target.closest('a')?.getAttribute('href')?.startsWith('mailto')) setCursorText("Email");
-        if (target.closest('[data-project-card]')) setCursorText("View");
+      if (closestLink || closestBtn || target.closest('[role="button"]') || target.style.cursor === 'pointer') {
+        setIsHovering(true);
+        setCursorText(closestLink?.getAttribute('href')?.startsWith('mailto') ? "Email" : "Click");
       } else {
+        setIsHovering(false);
         setCursorText("");
       }
     };
@@ -62,7 +56,7 @@ export default function CustomCursor() {
     const handleMouseLeaveWindow = () => setIsVisible(false);
     const handleMouseEnterWindow = () => setIsVisible(true);
 
-    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('mousemove', moveCursor, { passive: true });
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseLeaveWindow);
@@ -76,7 +70,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeaveWindow);
       document.removeEventListener('mouseenter', handleMouseEnterWindow);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isVisible]); // Added isVisible dependency
 
   if (isMobile) return null;
 
@@ -90,8 +84,8 @@ export default function CustomCursor() {
           <motion.div
             className="pointer-events-none fixed top-0 left-0 z-[10000]"
             style={{
-              x: cursorXSpring,
-              y: cursorYSpring,
+              x: cursorX,
+              y: cursorY,
             }}
           >
             {/* Aceternity SVG Pointer */}
