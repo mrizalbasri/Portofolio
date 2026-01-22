@@ -1,143 +1,129 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import MagneticButton from './MagneticButton';
-import CurvedTransition from './CurvedTransition';
-import { FaDownload, FaCode } from 'react-icons/fa';
-
-// Dynamically import Three.js component to avoid SSR issues
-const RobotModelScene = dynamic(() => import('./RobotModelScene'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 gradient-animation opacity-20" />
-});
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { FaDownload, FaCode } from "react-icons/fa";
+import { HoverBorderGradient } from "./ui/hover-border-gradient";
+import { EncryptedText } from "./ui/encrypted-text";
+import { GridBeam } from "./ui/grid-beam";
+import { Cover } from "./ui/cover";
 
 export default function Hero() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    // GSAP animation: glow effect on title
+    if (titleRef.current) {
+      gsap.to(titleRef.current, {
+        textShadow:
+          "0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(99, 102, 241, 0.3)",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    }
+  }, []);
+
   const scrollToProjects = () => {
-    const projectsSection = document.getElementById('projects');
+    const projectsSection = document.getElementById("projects");
     if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: 'smooth' });
+      projectsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 gradient-animation opacity-20" />
-      
-      {/* Container for split layout */}
-      <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-4 lg:px-8 flex items-center">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
-          
-          {/* Right Side - 3D Robot */}
+    <section id="home" className="relative h-screen w-full overflow-hidden">
+      <GridBeam className="h-screen flex items-center justify-center">
+        {/* Background Orbs Removed as requested */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" />
+
+        {/* Text Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-            className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[700px] xl:h-[800px] lg:order-last order-first mt-20 lg:mt-0 z-10"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <RobotModelScene />
+            <h1
+              ref={titleRef}
+              className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight relative z-20"
+            >
+              <span className="hero-gradient-text">M. </span>
+              <Cover className="text-white">Rizal</Cover>
+              <span className="hero-gradient-text"> Basri</span>
+            </h1>
           </motion.div>
 
-            {/* Left Side - Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-center lg:text-left space-y-4 md:space-y-6 relative z-30"
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-3xl font-light tracking-wide mb-4"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 hero-gradient-text leading-tight hero-text-reveal">
-                M. Rizal Basri
-              </h1>
-            </motion.div>
+            <EncryptedText
+              text="Full Stack Developer"
+              encryptedClassName="text-neutral-500"
+              revealedClassName="text-gray-300"
+              revealDelayMs={80}
+            />
+          </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg md:text-2xl text-gray-400 font-light tracking-wide"
-            >
-              Full Stack Developer
-            </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-8"
+          >
+            <EncryptedText
+              text="Crafting beautiful and functional web experiences with modern technologies."
+              encryptedClassName="text-neutral-600"
+              revealedClassName="text-gray-400"
+              revealDelayMs={30}
+            />
+          </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-sm md:text-lg text-gray-500 max-w-xl mx-auto lg:mx-0 leading-relaxed px-4 md:px-0"
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-col sm:flex-row justify-center gap-4"
+          >
+            {/* Download CV Button */}
+            <a
+              href="/CV_M.RizalBasri_IT.pdf"
+              download="M_Rizal_Basri_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Download CV"
             >
-              Crafting beautiful and functional web experiences with modern technologies.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4 px-8 sm:px-0"
-            >
-              {/* Download CV Button */}
-              <a
-                href="/CV_M.RizalBasri_IT.pdf"
-                download="M_Rizal_Basri_CV.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Download CV"
-                className="w-full sm:w-auto"
+              <HoverBorderGradient
+                containerClassName="rounded-full"
+                as="div"
+                className="bg-black/80 backdrop-blur-sm text-white flex items-center space-x-2 px-6 py-3 md:py-4 font-semibold text-base md:text-lg cursor-pointer"
+                duration={1.5}
               >
-                <MagneticButton
-                  as="div"
-                  className="w-full px-8 py-3 md:py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-white font-semibold text-base md:text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-shadow duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                  strength={0.4}
-                  aria-label="Download CV"
-                >
-                  <FaDownload />
-                  Download CV
-                </MagneticButton>
-              </a>
-              
-              <div onClick={scrollToProjects} aria-label="View Projects" className="w-full sm:w-auto">
-                <MagneticButton
-                  as="div"
-                  className="w-full px-8 py-3 md:py-4 border-2 border-purple-600 rounded-full text-purple-400 font-semibold text-base md:text-lg hover:bg-purple-600/10 transition-colors duration-300 flex items-center justify-center gap-2 cursor-pointer"
-                  strength={0.3}
-                  aria-label="View Projects"
-                >
-                  <FaCode />
-                  View Projects
-                </MagneticButton>
-              </div>
-            </motion.div>
+                <FaDownload className="text-purple-400" />
+                <span>Download CV</span>
+              </HoverBorderGradient>
+            </a>
+
+            {/* View Projects Button */}
+            <HoverBorderGradient
+              containerClassName="rounded-full"
+              as="button"
+              className="bg-black/80 backdrop-blur-sm text-white flex items-center space-x-2 px-6 py-3 md:py-4 font-semibold text-base md:text-lg cursor-pointer"
+              duration={1.5}
+              clockwise={false}
+              onClick={scrollToProjects}
+            >
+              <FaCode className="text-cyan-400" />
+              <span>View Projects</span>
+            </HoverBorderGradient>
           </motion.div>
-
         </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-purple-400 rounded-full flex items-start justify-center p-2"
-        >
-          <div className="w-1 h-3 bg-purple-400 rounded-full" />
-        </motion.div>
-      </motion.div>
-
-      {/* Curved Wave Transition - Covers from bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-0">
-        <CurvedTransition />
-      </div>
+      </GridBeam>
     </section>
   );
 }
-

@@ -43,7 +43,6 @@ export const projects: Project[] = [
     icon: FaChartLine,
     demoUrl: '#',
     githubUrl: 'https://github.com/mrizalbasri/WeatherApp',
-    image: '/projects/weather-app.png',
     features: [
       'Cuaca real-time dengan data akurat',
       'Prakiraan cuaca 5 hari ke depan',

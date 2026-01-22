@@ -1,22 +1,65 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { motion } from "framer-motion";
+import { ReactNode, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollRevealProps {
   children: ReactNode;
   delay?: number;
-  direction?: 'up' | 'down' | 'left' | 'right';
+  direction?: "up" | "down" | "left" | "right";
   className?: string;
+  useGsap?: boolean;
 }
 
-export default function ScrollReveal({ 
-  children, 
-  delay = 0, 
-  direction = 'up',
-  className = '' 
+export default function ScrollReveal({
+  children,
+  delay = 0,
+  direction = "up",
+  className = "",
+  useGsap = false,
 }: ScrollRevealProps) {
-  
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!useGsap || !elementRef.current) return;
+
+    const directionOffset = {
+      up: { y: 50, x: 0 },
+      down: { y: -50, x: 0 },
+      left: { y: 0, x: 50 },
+      right: { y: 0, x: -50 },
+    };
+
+    gsap.from(elementRef.current, {
+      scrollTrigger: {
+        trigger: elementRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      opacity: 0,
+      ...directionOffset[direction],
+      duration: 0.8,
+      delay,
+      ease: "power2.out",
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [useGsap, direction, delay]);
+
+  if (useGsap) {
+    return (
+      <div ref={elementRef} className={className}>
+        {children}
+      </div>
+    );
+  }
+
   const directionOffset = {
     up: { y: 50, x: 0 },
     down: { y: -50, x: 0 },
@@ -26,20 +69,20 @@ export default function ScrollReveal({
 
   return (
     <motion.div
-      initial={{ 
-        opacity: 0, 
-        ...directionOffset[direction]
+      initial={{
+        opacity: 0,
+        ...directionOffset[direction],
       }}
-      whileInView={{ 
-        opacity: 1, 
-        y: 0, 
-        x: 0 
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        x: 0,
       }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ 
-        duration: 0.6, 
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{
+        duration: 0.6,
         delay,
-        ease: [0.25, 0.4, 0.25, 1]
+        ease: [0.25, 0.4, 0.25, 1],
       }}
       className={className}
     >
@@ -55,8 +98,12 @@ interface TextRevealProps {
   className?: string;
 }
 
-export function TextReveal({ text, delay = 0, className = '' }: TextRevealProps) {
-  const words = text.split(' ');
+export function TextReveal({
+  text,
+  delay = 0,
+  className = "",
+}: TextRevealProps) {
+  const words = text.split(" ");
 
   return (
     <motion.div
@@ -70,14 +117,14 @@ export function TextReveal({ text, delay = 0, className = '' }: TextRevealProps)
           key={i}
           variants={{
             hidden: { opacity: 0, y: 20 },
-            visible: { 
-              opacity: 1, 
+            visible: {
+              opacity: 1,
               y: 0,
               transition: {
                 delay: delay + i * 0.05,
                 duration: 0.5,
-              }
-            }
+              },
+            },
           }}
           className="inline-block mr-2"
         >
@@ -89,8 +136,12 @@ export function TextReveal({ text, delay = 0, className = '' }: TextRevealProps)
 }
 
 // Character by character reveal
-export function CharReveal({ text, delay = 0, className = '' }: TextRevealProps) {
-  const chars = text.split('');
+export function CharReveal({
+  text,
+  delay = 0,
+  className = "",
+}: TextRevealProps) {
+  const chars = text.split("");
 
   return (
     <motion.div
@@ -104,18 +155,18 @@ export function CharReveal({ text, delay = 0, className = '' }: TextRevealProps)
           key={i}
           variants={{
             hidden: { opacity: 0, y: 20 },
-            visible: { 
-              opacity: 1, 
+            visible: {
+              opacity: 1,
               y: 0,
               transition: {
                 delay: delay + i * 0.03,
                 duration: 0.3,
-              }
-            }
+              },
+            },
           }}
           className="inline-block"
         >
-          {char === ' ' ? '\u00A0' : char}
+          {char === " " ? "\u00A0" : char}
         </motion.span>
       ))}
     </motion.div>

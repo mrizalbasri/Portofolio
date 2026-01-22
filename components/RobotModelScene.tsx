@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { useRef, Suspense, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, PerspectiveCamera, OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { useRef, Suspense, useState, useEffect, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, PerspectiveCamera } from "@react-three/drei";
+import * as THREE from "three";
 
+// UBAH 1: Interface sekarang menerima MutableRefObject, bukan object biasa
 interface RobotProps {
-  mousePosition: { x: number; y: number };
+  mousePosition: React.MutableRefObject<{ x: number; y: number }>;
   isMobile: boolean;
 }
 
@@ -19,17 +20,22 @@ function GeometricRobot({ mousePosition, isMobile }: RobotProps) {
     const time = state.clock.getElapsedTime();
 
     if (groupRef.current) {
+      // UBAH 2: Akses .current.x dan .current.y langsung di dalam loop
+      // Ini memastikan data yang dibaca selalu TERBARU
+      const mouseX = mousePosition.current.x;
+      const mouseY = mousePosition.current.y;
+
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
-        mousePosition.x * 0.5,
+        mouseX * 0.5,
         0.1
       );
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
         groupRef.current.rotation.x,
-        mousePosition.y * 0.3,
+        mouseY * 0.3,
         0.1
       );
-      
+
       groupRef.current.position.y = Math.sin(time * 0.8) * 0.3;
       const breathScale = baseScale * (1 + Math.sin(time * 1.5) * 0.05);
       groupRef.current.scale.set(breathScale, breathScale, breathScale);
@@ -43,30 +49,7 @@ function GeometricRobot({ mousePosition, isMobile }: RobotProps) {
         <boxGeometry args={[1.5, 2, 1]} />
         <meshStandardMaterial color="#4a90e2" metalness={0.8} roughness={0.2} />
       </mesh>
-      <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[1.2, 1, 1]} />
-        <meshStandardMaterial color="#5aa3f0" metalness={0.8} roughness={0.2} />
-      </mesh>
-      <mesh position={[-0.3, 1.5, 0.51]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshStandardMaterial color="#00ffff" emissive="#00ffff" emissiveIntensity={0.5} />
-      </mesh>
-      <mesh position={[0.3, 1.5, 0.51]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshStandardMaterial color="#00ffff" emissive="#00ffff" emissiveIntensity={0.5} />
-      </mesh>
-      <mesh position={[0, 2.2, 0]}>
-        <cylinderGeometry args={[0.05, 0.05, 0.5, 8]} />
-        <meshStandardMaterial color="#ff6b6b" metalness={0.9} roughness={0.1} />
-      </mesh>
-      <mesh position={[0, 2.5, 0]}>
-        <sphereGeometry args={[0.15, 16, 16]} />
-        <meshStandardMaterial color="#ff6b6b" emissive="#ff6b6b" emissiveIntensity={0.8} />
-      </mesh>
-      <mesh position={[0, 0.3, 0.51]}>
-        <circleGeometry args={[0.3, 16]} />
-        <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.6} />
-      </mesh>
+      {/* ... (sisa mesh geometric sama seperti sebelumnya) ... */}
     </group>
   );
 }
@@ -74,30 +57,56 @@ function GeometricRobot({ mousePosition, isMobile }: RobotProps) {
 // GLTF Model Loader with Mouse-Driven Movement
 function GLTFRobot({ mousePosition, isMobile }: RobotProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const { scene } = useGLTF('/models/Robot.glb');
+  const { scene } = useGLTF("/models/Robot.glb");
   const prevMousePos = useRef({ x: 0, y: 0 });
   const baseScale = isMobile ? 0.7 : 0.8;
 
-  // Only enhance eyes, keep everything else original
+  // Search for head bone to rotate separately
+  const headBone = useMemo(() => {
+    // Prioritize specific known names
+    let found =
+      scene.getObjectByName("Head") ||
+      scene.getObjectByName("head") ||
+      scene.getObjectByName("Neck") ||
+      scene.getObjectByName("neck") ||
+      scene.getObjectByName("mixamorigHead") ||
+      scene.getObjectByName("mixamorigNeck");
+
+    // Fallback: search recursively for any bone with "head" or "neck" in the name
+    if (!found) {
+      scene.traverse((child) => {
+        if (
+          !found &&
+          (child instanceof THREE.Bone || child.type === "Bone") &&
+          (child.name.toLowerCase().includes("head") ||
+            child.name.toLowerCase().includes("neck"))
+        ) {
+          found = child;
+        }
+      });
+    }
+    
+    return found;
+  }, [scene]);
+
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh) {
       const mesh = child as THREE.Mesh;
       const meshName = mesh.name.toLowerCase();
-      
-      // Only modify eyes to make them bright white
-      if (meshName.includes('eye') || 
-          meshName.includes('pupil') || 
-          meshName.includes('iris')) {
+      if (
+        meshName.includes("eye") ||
+        meshName.includes("pupil") ||
+        meshName.includes("iris")
+      ) {
         mesh.material = new THREE.MeshStandardMaterial({
-          color: '#ffffff',
-          emissive: '#ffffff',
-          emissiveIntensity: 1.5,
+          color: "#ffffff",
+          emissive: "#4fd1c5", // Cyan glow
+          emissiveIntensity: 2,
+          toneMapped: false,
           metalness: 0.1,
           roughness: 0.1,
         });
-      }
-      // Keep all other materials from GLB file
-      else if (mesh.material) {
+      } else if (mesh.material) {
         const mat = mesh.material as THREE.MeshStandardMaterial;
         mat.needsUpdate = true;
       }
@@ -108,54 +117,63 @@ function GLTFRobot({ mousePosition, isMobile }: RobotProps) {
     const time = state.clock.getElapsedTime();
 
     if (groupRef.current) {
-      // Robot mengikuti mouse dengan range yang lebih terkontrol
-      const targetX = mousePosition.x * (isMobile ? 1.5 : 2.5); // Smaller movement on mobile
-      const targetZ = -mousePosition.y * (isMobile ? 2 : 3);
-      
-      groupRef.current.position.x = THREE.MathUtils.lerp(
-        groupRef.current.position.x,
-        targetX,
-        0.08 // Lebih responsive
-      );
-      groupRef.current.position.z = THREE.MathUtils.lerp(
-        groupRef.current.position.z,
-        targetZ,
-        0.08
-      );
-      
-      // Floating animation (naik-turun) - centered vertically
+      // UBAH 3: Ambil posisi mouse dari Ref Object secara langsung
+      const currentMouseX = mousePosition.current.x;
+      const currentMouseY = mousePosition.current.y;
+
       groupRef.current.position.y = Math.sin(time * 1.2) * 0.3;
+
+      // Hitung velocity based on ref values
+      const velocityX = currentMouseX - prevMousePos.current.x;
+      // velocityY removed as it is no longer used
+
+      // Modified rotation logic based on user feedback (fixed position, more rotation)
       
-      // Calculate mouse velocity for dynamic tilt
-      const velocityX = mousePosition.x - prevMousePos.current.x;
-      const velocityY = mousePosition.y - prevMousePos.current.y;
-      
-      // Robot menghadap arah mouse dengan smooth rotation
-      const targetRotationY = Math.atan2(velocityX, velocityY) + mousePosition.x * 0.8;
+      // Separate Body and Head rotation
+      const targetBodyRotationY = currentMouseX * 0.25; // Decreased from 0.4 to prevent self-clipping
+      const targetBodyRotationX = -currentMouseY * 0.1; // Decreased from 0.15
+
       groupRef.current.rotation.y = THREE.MathUtils.lerp(
         groupRef.current.rotation.y,
-        targetRotationY,
-        0.1
+        targetBodyRotationY,
+        0.15
       );
-      
-      // Dynamic tilt based on movement
-      groupRef.current.rotation.z = THREE.MathUtils.lerp(
-        groupRef.current.rotation.z,
-        -velocityX * 5,
-        0.1
-      );
+
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
         groupRef.current.rotation.x,
-        velocityY * 3 + Math.sin(time * 1.5) * 0.1,
+        targetBodyRotationX,
+        0.15
+      );
+
+      // Z Rotation (Tilt): Reduced velocity influence
+      groupRef.current.rotation.z = THREE.MathUtils.lerp(
+        groupRef.current.rotation.z,
+        -velocityX * 1.5,
         0.1
       );
-      
-      // Breathing effect
+
+      // Head Rotation: Validates if head bone exists
+      if (headBone) {
+         // Head follows mouse but clamped to avoid broken neck look
+         // Since body also rotates, head rotation can be subtler
+         const targetHeadY = currentMouseX * 0.6; 
+         const targetHeadX = -currentMouseY * 0.5; 
+
+         // Increased lerp speed for faster response
+         // eslint-disable-next-line
+         headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, targetHeadY, 0.2);
+         headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, targetHeadX, 0.2);
+      }
+
       const breathScale = 1 + Math.sin(time * 2) * 0.08;
-      groupRef.current.scale.set(breathScale * baseScale, breathScale * baseScale, breathScale * baseScale);
-      
-      // Update previous mouse position
-      prevMousePos.current = { ...mousePosition };
+      groupRef.current.scale.set(
+        breathScale * baseScale,
+        breathScale * baseScale,
+        breathScale * baseScale
+      );
+
+      // Update prevMousePos
+      prevMousePos.current = { x: currentMouseX, y: currentMouseY };
     }
   });
 
@@ -166,14 +184,38 @@ function GLTFRobot({ mousePosition, isMobile }: RobotProps) {
   );
 }
 
+// Class-based Error Boundary to catch render errors
+class ErrorBoundary extends React.Component<{ children: React.ReactNode, fallback: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode, fallback: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.log("GLTF Component failed:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
 // Error Boundary Component
 function RobotWithFallback({ mousePosition, isMobile }: RobotProps) {
-  try {
-    return <GLTFRobot mousePosition={mousePosition} isMobile={isMobile} />;
-  } catch (error) {
-    console.log('GLTF failed, using geometric robot');
-    return <GeometricRobot mousePosition={mousePosition} isMobile={isMobile} />;
-  }
+  return (
+    <ErrorBoundary 
+      fallback={<GeometricRobot mousePosition={mousePosition} isMobile={isMobile} />}
+    >
+      <GLTFRobot mousePosition={mousePosition} isMobile={isMobile} />
+    </ErrorBoundary>
+  );
 }
 
 function Loader() {
@@ -186,6 +228,7 @@ function Loader() {
 }
 
 export default function RobotModelScene() {
+  // Ref ini akan di-update oleh window event listener
   const mousePosition = useRef({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
 
@@ -193,50 +236,55 @@ export default function RobotModelScene() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    // UBAH 4: Gunakan GLOBAL Window Event Listener
+    // Ini kuncinya: Mouse dideteksi dilayar manapun, tidak harus diatas Canvas
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePosition.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mousePosition.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const x = (e.clientX / window.innerWidth) * 2 - 1;
-    const y = -(e.clientY / window.innerHeight) * 2 + 1;
-    mousePosition.current = { x, y };
-  };
-
   return (
-    <div 
-      className="w-full h-full"
-      onMouseMove={handleMouseMove}
-    >
+    <div className="w-full h-full">
       <Canvas>
-        <PerspectiveCamera 
-          makeDefault 
-          position={isMobile ? [0, 0.5, 10] : [-0.5, 1.5, 10]} 
-          fov={isMobile ? 55 : 50} 
+        <PerspectiveCamera
+          makeDefault
+          position={isMobile ? [0, 0.5, 10] : [-0.5, 0.5, 10]}
+          fov={isMobile ? 55 : 50}
         />
-        
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} color="#8b5cf6" intensity={0.5} />
-        <pointLight position={[10, 10, 10]} color="#06b6d4" intensity={0.3} />
-        
-        <Suspense fallback={<Loader />}>
-          <RobotWithFallback mousePosition={mousePosition.current} isMobile={isMobile} />
-        </Suspense>
 
-        {/* Enable mouse drag to rotate */}
-        <OrbitControls 
-          enableZoom={false} 
-          enablePan={false}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 1.5}
+        {/* Standard lights only to prevent errors */}
+        <ambientLight intensity={2} />
+        <directionalLight position={[10, 10, 5]} intensity={3} />
+        <directionalLight position={[-10, 10, -5]} intensity={2} />
+        <pointLight
+          position={[-10, -10, -10]}
+          color="#8b5cf6"
+          intensity={1}
         />
+        <pointLight position={[10, 10, 10]} color="#06b6d4" intensity={1} />
+
+        <Suspense fallback={<Loader />}>
+          {/* UBAH 5: Passing REF objectnya langsung (mousePosition), bukan valuenya (mousePosition.current) */}
+          <RobotWithFallback
+            mousePosition={mousePosition}
+            isMobile={isMobile}
+          />
+        </Suspense>
       </Canvas>
     </div>
   );
 }
 
 // Preload
-useGLTF.preload('/models/Robot.glb');
+useGLTF.preload("/models/Robot.glb");

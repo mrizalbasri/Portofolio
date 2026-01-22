@@ -1,155 +1,211 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaEnvelope, FaInstagram, FaWhatsapp } from 'react-icons/fa';
-import { HiLocationMarker } from 'react-icons/hi';
-import { MdWork } from 'react-icons/md';
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaEnvelope,
+  FaInstagram,
+  FaWhatsapp,
+  FaArrowUp,
+} from "react-icons/fa";
+import dynamic from "next/dynamic";
+import { ShootingStars } from "./ui/shooting-stars";
+import { StarsBackground } from "./ui/stars-background";
+
+// Dynamically import Three.js component
+const RobotModelScene = dynamic(() => import("./RobotModelScene"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20" />
+  ),
+});
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  // Parallax scroll effect - smooth 3D
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const springConfig = { stiffness: 50, damping: 20 };
+
+  // Smooth 3D Parallax transforms
+  const rotateX = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, 0]),
+    springConfig
+  );
+  const y = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, 0]),
+    springConfig
+  );
+  const opacity = useSpring(
+    useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1]),
+    springConfig
+  );
+  const scale = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1]),
+    springConfig
+  );
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { name: 'Home', id: 'home' },
-    { name: 'About', id: 'about' },
-    { name: 'Skills', id: 'skills' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Contact', id: 'contact' },
+  const navLinks = [
+    { name: "Home", id: "home" },
+    { name: "About", id: "about" },
+    { name: "Skills", id: "skills" },
+    { name: "Projects", id: "projects" },
+    { name: "Contact", id: "contact" },
   ];
 
   const socialLinks = [
-    { name: 'GitHub', icon: FaGithub, url: 'https://github.com/mrizalbasri', color: 'hover:text-gray-400' },
-    { name: 'LinkedIn', icon: FaLinkedin, url: 'https://www.linkedin.com/in/m-rizal-basri/', color: 'hover:text-blue-400' },
-    { name: 'WhatsApp', icon: FaWhatsapp, url: 'https://wa.me/6284668265398', color: 'hover:text-green-400' },
-    { name: 'Instagram', icon: FaInstagram, url: 'https://instagram.com/rizlbsri_', color: 'hover:text-pink-400' },
+    { name: "GitHub", icon: FaGithub, url: "https://github.com/mrizalbasri" },
+    {
+      name: "LinkedIn",
+      icon: FaLinkedin,
+      url: "https://www.linkedin.com/in/m-rizal-basri/",
+    },
+    { name: "WhatsApp", icon: FaWhatsapp, url: "https://wa.me/6284668265398" },
+    {
+      name: "Instagram",
+      icon: FaInstagram,
+      url: "https://instagram.com/rizlbsri_",
+    },
   ];
 
   return (
-    <footer className="relative bg-gradient-to-b from-black via-gray-900 to-black border-t border-white/10">
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+    <footer
+      ref={footerRef}
+      className="relative min-h-screen bg-neutral-950 overflow-hidden flex flex-col"
+      style={{ perspective: 1200 }}
+    >
+      <motion.div
+        style={{
+          y,
+          opacity,
+          scale,
+          rotateX,
+        }}
+        className="flex-1 flex flex-col"
+      >
+        {/* Stars Background */}
+        <StarsBackground
+          starDensity={0.0003}
+          allStarsTwinkle={true}
+          twinkleProbability={0.8}
+          minTwinkleSpeed={0.3}
+          maxTwinkleSpeed={1}
+          className="z-[1]"
+        />
 
-      {/* Main Footer Content */}
-      <div className="relative max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          
-          {/* About Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="space-y-4"
-          >
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              M. Rizal Basri
-            </h3>
-            <p className="text-gray-400 leading-relaxed">
-              Full Stack Developer passionate about creating beautiful, functional, and user-centered digital experiences.
-            </p>
-            
-            {/* Location & Availability */}
-            <div className="space-y-3 pt-4">
-              <div className="flex items-center gap-2 text-gray-400">
-                <HiLocationMarker className="text-purple-400" />
-                <span className="text-sm">Pekanbaru, Indonesia</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <MdWork className="text-green-400" />
-                <span className="text-sm flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  Available for work
+        {/* Shooting Stars */}
+        <ShootingStars
+          minSpeed={15}
+          maxSpeed={35}
+          minDelay={1000}
+          maxDelay={3000}
+          starColor="#9E00FF"
+          trailColor="#2EB9DF"
+          starWidth={15}
+          starHeight={2}
+          className="z-[2]"
+        />
+
+        {/* Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-purple-950/20 to-black z-[3]" />
+
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-10 z-[4]">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)",
+              backgroundSize: "50px 50px",
+            }}
+          />
+        </div>
+
+        {/* Main Content */}
+        <div className="relative flex-1 flex flex-col lg:flex-row items-center justify-center px-6 lg:px-20 py-20 z-[10]">
+          {/* Left Side - Text Content */}
+          <div className="flex-1 max-w-2xl z-[20] relative">
+            {/* Big Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight">
+                LET&apos;S
+                <br />
+                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                  WORK
                 </span>
-              </div>
-            </div>
-          </motion.div>
+                <br />
+                TOGETHER
+              </h2>
+            </motion.div>
 
-          {/* Quick Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="space-y-4"
-          >
-            <h4 className="text-lg font-bold text-white">Quick Links</h4>
-            <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
-                <motion.li
-                  key={link.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.05 }}
-                >
-                  <button
-                    onClick={() => scrollToSection(link.id)}
-                    className="text-gray-400 hover:text-purple-400 transition-colors duration-300 flex items-center gap-2 group"
-                  >
-                    <span className="w-0 h-0.5 bg-purple-400 group-hover:w-4 transition-all duration-300"></span>
-                    {link.name}
-                  </button>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mt-8 text-gray-400 text-lg md:text-xl max-w-lg"
+            >
+              Have a project in mind? Let&apos;s create something amazing
+              together. I&apos;m always open to discussing new opportunities.
+            </motion.p>
 
-          {/* Services/Skills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="space-y-4"
-          >
-            <h4 className="text-lg font-bold text-white">Services</h4>
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
-                Web Development
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
-                Mobile Development
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>
-                UI/UX Design
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
-                API Development
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
-                Consulting
-              </li>
-            </ul>
-          </motion.div>
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mt-10"
+            >
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="group relative px-8 py-4 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-all hover:scale-105"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <FaEnvelope />
+                  Get in Touch
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity font-bold">
+                  <FaEnvelope className="mr-2" />
+                  Get in Touch
+                </span>
+              </button>
+            </motion.div>
 
-          {/* Contact & Social */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="space-y-4"
-          >
-            <h4 className="text-lg font-bold text-white">Connect</h4>
-            
             {/* Social Links */}
-            <div className="flex flex-wrap gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-12 flex gap-4"
+            >
               {socialLinks.map((social, index) => {
                 const IconComponent = social.icon;
                 return (
@@ -158,80 +214,92 @@ export default function Footer() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + index * 0.05 }}
-                    whileHover={{ scale: 1.2, y: -3 }}
+                    whileHover={{ scale: 1.2, y: -5 }}
                     whileTap={{ scale: 0.9 }}
-                    className={`p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-gray-400 ${social.color} transition-all duration-300 hover:border-white/30`}
+                    className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-gray-400 hover:text-white hover:border-purple-500/50 transition-all duration-300"
                     aria-label={social.name}
                   >
                     <IconComponent className="text-xl" />
                   </motion.a>
                 );
               })}
-            </div>
+            </motion.div>
+          </div>
 
-            {/* Contact Email */}
-            <div className="pt-4">
-              <a
-                href="mailto:rizalbasri800@gmail.com"
-                className="text-sm text-gray-400 hover:text-purple-400 transition-colors duration-300 flex items-center gap-2"
-              >
-                <FaEnvelope />
-                rizalbasri800@gmail.com
-              </a>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Divider */}
-        <div className="border-t border-white/10 my-8"></div>
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-gray-400 text-sm flex items-center gap-2"
-          >
-            © {currentYear} M. Rizal Basri — Optimized for performance.
-          
-          </motion.p>
-
+          {/* Right Side - 3D Robot */}
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-4 text-sm text-gray-400"
+            transition={{ duration: 1, delay: 0.3 }}
+            className="flex-1 w-full h-[400px] md:h-[500px] lg:h-[600px] mt-10 lg:mt-0 z-[15] relative"
           >
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="hover:text-purple-400 transition-colors duration-300"
-            >
-              Privacy Policy
-            </button>
-            <span className="text-gray-600">•</span>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="hover:text-purple-400 transition-colors duration-300"
-            >
-              Terms of Service
-            </button>
+            <RobotModelScene />
           </motion.div>
         </div>
-      </div>
 
-      {/* Animated Gradient Line */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600"
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
-      />
+        {/* Bottom Section */}
+        <div className="relative border-t border-white/10 z-[20]">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              {/* Navigation Links */}
+              <motion.nav
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="flex flex-wrap justify-center gap-6"
+              >
+                {navLinks.map((link) => (
+                  <button
+                    key={link.id}
+                    onClick={() => scrollToSection(link.id)}
+                    className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider"
+                  >
+                    {link.name}
+                  </button>
+                ))}
+              </motion.nav>
+
+              {/* Back to Top Button */}
+              <motion.button
+                onClick={scrollToTop}
+                whileHover={{ scale: 1.1, y: -3 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-3 bg-white/5 border border-white/10 rounded-full text-gray-400 hover:text-white hover:border-purple-500/50 transition-all"
+                aria-label="Back to top"
+              >
+                <FaArrowUp />
+              </motion.button>
+            </div>
+
+            {/* Copyright */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="mt-8 pt-8 border-t border-white/5 text-center"
+            >
+              <p className="text-gray-500 text-sm">
+                © {currentYear}{" "}
+                <span className="text-purple-400">M. Rizal Basri</span> — All
+                rights reserved.
+              </p>
+              <p className="text-gray-600 text-xs mt-2">
+                Built with Next.js, Three.js & Framer Motion
+              </p>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Animated Gradient Line at Bottom */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 z-[25]"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
+      </motion.div>
     </footer>
   );
 }

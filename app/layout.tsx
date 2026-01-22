@@ -4,6 +4,7 @@ import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
+import FloatingRobot from "@/components/FloatingRobot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -114,6 +115,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <CustomCursor />
+        <FloatingRobot />
         {children}
         <Analytics />
       </body>
