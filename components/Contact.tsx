@@ -146,39 +146,8 @@ export default function Contact() {
     }
   };
 
-  const socialLinks: Array<{
-    name: string;
-    icon: IconType;
-    url: string;
-    color: string;
-    hoverColor: string;
-    description: string;
-  }> = [
-    {
-      name: "GitHub",
-      icon: FaGithub,
-      url: "https://github.com/mrizalbasri", // Ganti dengan username GitHub Anda
-      color: "from-gray-700 to-gray-900",
-      hoverColor: "hover:from-gray-600 hover:to-gray-800",
-      description: "Check out my repositories",
-    },
-    {
-      name: "LinkedIn",
-      icon: FaLinkedin,
-      url: "https://www.linkedin.com/in/m-rizal-basri/", // Ganti dengan username LinkedIn Anda
-      color: "from-blue-600 to-blue-800",
-      hoverColor: "hover:from-blue-500 hover:to-blue-700",
-      description: "Let's connect professionally",
-    },
-    {
-      name: "Email",
-      icon: FaEnvelope,
-      url: "mailto:rizalbasri800@gmail.com", // Ganti dengan email Anda
-      color: "from-purple-600 to-pink-600",
-      hoverColor: "hover:from-purple-500 hover:to-pink-500",
-      description: "Send me a direct email",
-    },
-  ];
+
+
 
   return (
     <section
@@ -187,9 +156,6 @@ export default function Contact() {
       className="relative min-h-screen py-20 px-4"
       style={{ perspective: 1200 }}
     >
-      {/* Scroll to top anchor */}
-      <div id="contact-top" className="absolute top-0 left-0 w-full h-1" />
-
       <motion.div
         style={{
           y,
@@ -197,285 +163,154 @@ export default function Contact() {
           scale,
           rotateX,
         }}
-        className="max-w-4xl mx-auto"
+        className="max-w-6xl mx-auto"
       >
-        {/* Clean Modern Header - Minimal */}
-        <div className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-3 mb-8"
-          >
-            <div className="w-1 h-6 bg-gradient-to-b from-pink-500 to-purple-500 rounded-full"></div>
-            <span className="text-sm uppercase tracking-wider text-gray-500 font-medium">
-              Contact
-            </span>
-          </motion.div>
-          
-          {/* Simple description */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="max-w-2xl"
-          >
-            <p className="text-gray-300 text-lg leading-relaxed mb-2">
-              Have a project in mind? Let's work together to create something amazing.
-            </p>
-            <p className="text-gray-500">
-              I'm always excited to discuss new opportunities and creative challenges.
-            </p>
-          </motion.div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Honeypot field - hidden from users */}
-              <div className="hidden" aria-hidden="true">
-                <input
-                  type="text"
-                  name="honeypot"
-                  value={formData.honeypot}
-                  onChange={(e) =>
-                    setFormData({ ...formData, honeypot: e.target.value })
-                  }
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
+           
+           {/* Left Column: Info & Text */}
+           <motion.div
+             initial={{ opacity: 0, x: -50 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true }}
+           >
+              {/* Header */}
+              <div className="mb-12">
+                 <div className="flex items-center gap-3 mb-6">
+                    <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
+                    <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium font-mono">
+                      Contact
+                    </span>
+                 </div>
+                 
+                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                    Let&apos;s build something <span className="text-cyan-500">extraordinary</span> together.
+                 </h2>
+                 
+                 <p className="text-zinc-400 text-lg leading-relaxed">
+                    Whether you have a specific project in mind or just want to explore possibilities, I&apos;m here to help translate your vision into digital reality.
+                 </p>
               </div>
 
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-semibold text-gray-300 mb-2"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
-                  required
-                  suppressHydrationWarning
-                />
+              {/* Contact Links */}
+              <div className="space-y-6">
+                 <a href="mailto:mrizalbasri@email.com" className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-500 group-hover:scale-110 transition-transform">
+                       <FaEnvelope />
+                    </div>
+                    <div>
+                        <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">Email</span>
+                        <span className="text-white font-medium group-hover:text-cyan-400 transition-colors">mrizalbasri@email.com</span>
+                    </div>
+                 </a>
+                 
+                 <a href="https://linkedin.com/in/m-rizal-basri/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all group">
+                    <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                       <FaLinkedin />
+                    </div>
+                    <div>
+                        <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">LinkedIn</span>
+                        <span className="text-white font-medium group-hover:text-blue-400 transition-colors">Let&apos;s connect</span>
+                    </div>
+                 </a>
+
+                 <div className="flex items-center gap-4 p-4 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                    <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+                       <MdWork />
+                    </div>
+                    <div>
+                        <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">Availability</span>
+                        <span className="text-white font-medium flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            Open to Opportunities
+                        </span>
+                    </div>
+                 </div>
               </div>
+           </motion.div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold text-gray-300 mb-2"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
-                  required
-                  suppressHydrationWarning
-                />
-              </div>
+           {/* Right Column: Form */}
+           <motion.div
+             initial={{ opacity: 0, x: 50 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true }}
+             className="relative"
+           >
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-blue-600/20 blur-[100px] -z-10 rounded-full opacity-50 pointer-events-none" />
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-semibold text-gray-300 mb-2"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  rows={5}
-                  className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300 resize-none"
-                  required
-                  suppressHydrationWarning
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSending}
-                className={`w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-white font-semibold hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2 ${
-                  isSending ? "opacity-75 cursor-wait" : ""
-                }`}
-                suppressHydrationWarning
-                aria-label={
-                  isSending
-                    ? "Sending message"
-                    : isSubmitted
-                    ? "Message sent"
-                    : "Send Message"
-                }
-              >
-                {isSending ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    >
-                      <FaPaperPlane className="text-xl" />
-                    </motion.div>
-                    Sending...
-                  </>
-                ) : isSubmitted ? (
-                  <>
-                    <FaCheckCircle className="text-xl" />
-                    Message Sent!
-                  </>
-                ) : (
-                  <>
-                    <FaPaperPlane className="text-xl" />
-                    Send Message
-                  </>
-                )}
-              </button>
-
-              {/* Error Message */}
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm"
-                >
-                  {error}
-                </motion.div>
-              )}
-            </form>
-
-            {/* Success Animation */}
-            {isSubmitted && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute inset-0 flex items-center justify-center bg-gray-900/90 rounded-lg backdrop-blur-sm"
-              >
-                <motion.div
-                  initial={{ scale: 0, rotate: 0 }}
-                  animate={{ scale: [0, 1.2, 1], rotate: [0, 360] }}
-                  transition={{ duration: 0.6 }}
-                  className="text-6xl"
-                >
-                  <FaCheckCircle className="text-green-500" />
-                </motion.div>
-              </motion.div>
-            )}
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <h3 className="text-2xl font-bold text-white mb-6">
-              Connect With Me
-            </h3>
-
-            {socialLinks.map((social, index) => {
-              const IconComponent = social.icon;
-              return (
-                <motion.a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  className={`group flex items-center gap-4 p-5 bg-gradient-to-r ${
-                    social.color
-                  } ${
-                    social.hoverColor
-                  } rounded-xl hover:shadow-2xl hover:shadow-${social.name.toLowerCase()}/30 transition-all duration-300 cursor-pointer relative overflow-hidden`}
-                  aria-label={`Visit my ${social.name} profile - ${social.description}`}
-                >
-                  {/* Animated background effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"
-                    initial={false}
-                  />
-
-                  <motion.div
-                    whileHover={{ rotate: 360, scale: 1.2 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-4xl text-white z-10 relative"
-                  >
-                    <IconComponent />
-                  </motion.div>
-
-                  <div className="z-10 relative">
-                    <h4 className="text-lg font-semibold text-white">
-                      {social.name}
-                    </h4>
-                    <p className="text-sm text-gray-200 opacity-90">
-                      {social.description}
-                    </p>
+              <form onSubmit={handleSubmit} className="bg-zinc-900/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+                  {/* Honeypot field */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="honeypot"
+                      value={formData.honeypot}
+                      onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
                   </div>
 
-                  {/* Arrow indicator */}
-                  <motion.div
-                    className="ml-auto text-white text-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    initial={{ x: -10 }}
-                    whileHover={{ x: 0 }}
+                  <div className="space-y-2">
+                     <label htmlFor="name" className="text-xs font-mono text-zinc-500 uppercase tracking-wider ml-1">Name</label>
+                     <input
+                       type="text"
+                       id="name"
+                       value={formData.name}
+                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                       className="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                       placeholder="How should I call you?"
+                       required
+                     />
+                  </div>
+
+                  <div className="space-y-2">
+                     <label htmlFor="email" className="text-xs font-mono text-zinc-500 uppercase tracking-wider ml-1">Email</label>
+                     <input
+                       type="email"
+                       id="email"
+                       value={formData.email}
+                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                       className="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                       placeholder="you@example.com"
+                       required
+                     />
+                  </div>
+
+                  <div className="space-y-2">
+                     <label htmlFor="message" className="text-xs font-mono text-zinc-500 uppercase tracking-wider ml-1">Message</label>
+                     <textarea
+                       id="message"
+                       value={formData.message}
+                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                       rows={5}
+                       className="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all resize-none"
+                       placeholder="Tell me about your project details..."
+                       required
+                     />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSending}
+                    className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    →
-                  </motion.div>
-                </motion.a>
-              );
-            })}
-
-            {/* Additional Info */}
-            <div className="mt-8 p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl border border-gray-700 hover:border-purple-500/50 transition-all duration-300">
-              <div className="flex items-center gap-3 mb-4">
-                <HiLocationMarker className="text-2xl text-purple-400" />
-                <div>
-                  <h4 className="text-lg font-semibold text-white">Location</h4>
-                  <p className="text-gray-400">Pekanbaru, Indonesia</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <MdWork className="text-2xl text-green-400" />
-                <div>
-                  <h4 className="text-lg font-semibold text-white">
-                    Availability
-                  </h4>
-                  <p className="text-gray-400 flex items-center gap-2">
-                    <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    Open to new opportunities
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+                    {isSending ? (
+                        <span>Sending...</span>
+                    ) : isSubmitted ? (
+                        <span className="flex items-center gap-2"><FaCheckCircle /> Sent!</span>
+                    ) : (
+                        <>
+                            <span>Send Message</span>
+                            <FaPaperPlane className="text-sm group-hover:translate-x-1 transition-transform" />
+                        </>
+                    )}
+                  </button>
+                  
+                  {error && (
+                    <p className="text-red-400 text-sm text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20">{error}</p>
+                  )}
+              </form>
+           </motion.div>
         </div>
       </motion.div>
     </section>

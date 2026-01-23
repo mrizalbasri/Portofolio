@@ -18,7 +18,7 @@ import { StarsBackground } from "./ui/stars-background";
 const RobotModelScene = dynamic(() => import("./RobotModelScene"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20" />
+    <div className="w-full h-full bg-gradient-to-br from-cyan-900/20 via-black to-blue-900/20" />
   ),
 });
 
@@ -90,7 +90,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative min-h-screen bg-neutral-950 overflow-hidden flex flex-col"
+      className="relative min-h-screen bg-black overflow-hidden flex flex-col pt-20"
       style={{ perspective: 1200 }}
     >
       <motion.div
@@ -104,12 +104,12 @@ export default function Footer() {
       >
         {/* Stars Background */}
         <StarsBackground
-          starDensity={0.0003}
+          starDensity={0.0002}
           allStarsTwinkle={true}
           twinkleProbability={0.8}
           minTwinkleSpeed={0.3}
           maxTwinkleSpeed={1}
-          className="z-[1]"
+          className="z-[1] opacity-50"
         />
 
         {/* Shooting Stars */}
@@ -118,30 +118,30 @@ export default function Footer() {
           maxSpeed={35}
           minDelay={1000}
           maxDelay={3000}
-          starColor="#9E00FF"
-          trailColor="#2EB9DF"
+          starColor="#06b6d4" // Cyan
+          trailColor="#3b82f6" // Blue
           starWidth={15}
           starHeight={2}
           className="z-[2]"
         />
 
         {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-purple-950/20 to-black z-[3]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-cyan-950/10 to-black z-[3]" />
 
         {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-10 z-[4]">
+        <div className="absolute inset-0 opacity-5 z-[4]">
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)",
-              backgroundSize: "50px 50px",
+                "linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
 
         {/* Main Content */}
-        <div className="relative flex-1 flex flex-col lg:flex-row items-center justify-center px-6 lg:px-20 py-20 z-[10]">
+        <div className="relative flex-1 flex flex-col lg:flex-row items-center justify-center px-6 lg:px-20 py-12 z-[10]">
           {/* Left Side - Text Content */}
           <div className="flex-1 max-w-2xl z-[20] relative">
             {/* Big Heading */}
@@ -154,7 +154,7 @@ export default function Footer() {
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight">
                 LET&apos;S
                 <br />
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
                   WORK
                 </span>
                 <br />
@@ -168,7 +168,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-8 text-gray-400 text-lg md:text-xl max-w-lg"
+              className="mt-8 text-zinc-400 text-lg md:text-xl max-w-lg"
             >
               Have a project in mind? Let&apos;s create something amazing
               together. I&apos;m always open to discussing new opportunities.
@@ -190,7 +190,7 @@ export default function Footer() {
                   <FaEnvelope />
                   Get in Touch
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity font-bold">
                   <FaEnvelope className="mr-2" />
                   Get in Touch
@@ -216,7 +216,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.2, y: -5 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-gray-400 hover:text-white hover:border-purple-500/50 transition-all duration-300"
+                    className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-cyan-500/50 transition-all duration-300"
                     aria-label={social.name}
                   >
                     <IconComponent className="text-xl" />
@@ -239,7 +239,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="relative border-t border-white/10 z-[20]">
+        <div className="relative border-t border-white/10 z-[20] bg-black">
           <div className="max-w-7xl mx-auto px-6 py-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Navigation Links */}
@@ -253,7 +253,7 @@ export default function Footer() {
                   <button
                     key={link.id}
                     onClick={() => scrollToSection(link.id)}
-                    className="text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-wider"
+                    className="text-zinc-500 hover:text-cyan-400 transition-colors text-sm uppercase tracking-wider font-mono"
                   >
                     {link.name}
                   </button>
@@ -265,7 +265,7 @@ export default function Footer() {
                 onClick={scrollToTop}
                 whileHover={{ scale: 1.1, y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-3 bg-white/5 border border-white/10 rounded-full text-gray-400 hover:text-white hover:border-purple-500/50 transition-all"
+                className="p-3 bg-white/5 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-cyan-500/50 transition-all"
                 aria-label="Back to top"
               >
                 <FaArrowUp />
@@ -279,12 +279,12 @@ export default function Footer() {
               viewport={{ once: true }}
               className="mt-8 pt-8 border-t border-white/5 text-center"
             >
-              <p className="text-gray-500 text-sm">
+              <p className="text-zinc-600 text-sm">
                 © {currentYear}{" "}
-                <span className="text-purple-400">M. Rizal Basri</span> — All
+                <span className="text-cyan-500 font-medium">M. Rizal Basri</span> — All
                 rights reserved.
               </p>
-              <p className="text-gray-600 text-xs mt-2">
+              <p className="text-zinc-700 text-xs mt-2 font-mono">
                 Built with Next.js, Three.js & Framer Motion
               </p>
             </motion.div>
@@ -293,7 +293,7 @@ export default function Footer() {
 
         {/* Animated Gradient Line at Bottom */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 z-[25]"
+          className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 z-[25]"
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}

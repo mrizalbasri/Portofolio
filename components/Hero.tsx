@@ -1,129 +1,146 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
-import { FaDownload, FaCode } from "react-icons/fa";
-import { HoverBorderGradient } from "./ui/hover-border-gradient";
-import { EncryptedText } from "./ui/encrypted-text";
+import { FaDownload } from "react-icons/fa";
 import { GridBeam } from "./ui/grid-beam";
-import { Cover } from "./ui/cover";
-
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+
+  // Parallax Scroll Hooks
+  const { scrollY } = useScroll();
+  const yText = useTransform(scrollY, [0, 500], [0, 200]); // Text moves down slower (0.4x speed)
+  const yGraphic = useTransform(scrollY, [0, 500], [0, -100]); // Graphic moves up (reverse parallax)
+  const opacityText = useTransform(scrollY, [0, 300], [1, 0]); // Fade out text on scroll
 
   useEffect(() => {
-    // GSAP animation: glow effect on title
+    // Subtle GSAP animation on title
     if (titleRef.current) {
-      gsap.to(titleRef.current, {
-        textShadow:
-          "0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(99, 102, 241, 0.3)",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      gsap.fromTo(titleRef.current, 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.5, ease: "power3.out", delay: 0.2 }
+      );
     }
   }, []);
 
-  const scrollToProjects = () => {
-    const projectsSection = document.getElementById("projects");
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden">
-      <GridBeam className="h-screen flex items-center justify-center">
-        {/* Background Orbs Removed as requested */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" />
+    <section ref={containerRef} id="home" className="relative min-h-screen w-full overflow-hidden bg-background flex items-center pt-20 md:pt-0">
+      {/* Background Texture - Parallax Fixed */}
+      <div className="absolute inset-0 z-0">
+         <GridBeam className="opacity-30" />
+      </div>
 
-        {/* Text Content */}
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h1
-              ref={titleRef}
-              className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight relative z-20"
+      <div className="container mx-auto px-6 md:px-12 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Content - Parallax Text */}
+            <motion.div style={{ y: yText, opacity: opacityText }} className="relative z-20">
+                {/* Top Tagline */}
+                <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="mb-6 flex items-center gap-3"
+                >
+                <div className="w-12 h-[2px] bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
+                <span className="text-cyan-400 font-mono tracking-widest text-sm uppercase font-bold text-shadow-sm">Full Stack Developer</span>
+                </motion.div>
+
+                {/* Main Title */}
+                <div className="mb-8 relative">
+                    <h1 ref={titleRef} className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-[0.9]">
+                        DIGITAL <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 via-zinc-200 to-zinc-500">CRAFTSMAN</span>
+                    </h1>
+                </div>
+
+                {/* Name & Bio */}
+                <div className="space-y-8">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="max-w-lg"
+                    >
+                        <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed">
+                        I am <strong className="text-white font-semibold">M. Rizal Basri</strong>. 
+                        <br />
+                        Building <span className="text-cyan-400">accessible</span>, <span className="text-cyan-400">pixel-perfect</span>, and <span className="text-cyan-400">performant</span> web experiences.
+                        </p>
+                    </motion.div>
+
+                    {/* Actions */}
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.7 }}
+                        className="flex items-center gap-8"
+                    >
+                        <a 
+                            href="/CV_M.RizalBasri_IT.pdf"
+                            download="M_Rizal_Basri_CV.pdf"
+                            className="group flex items-center gap-3 text-white hover:text-cyan-400 transition-colors cursor-pointer"
+                        >
+                            <span className="font-mono text-sm uppercase tracking-widest border-b border-transparent group-hover:border-cyan-400 pb-1">Download CV</span>
+                            <FaDownload className="text-sm group-hover:-translate-y-1 transition-transform" />
+                        </a>
+                    </motion.div>
+                </div>
+            </motion.div>
+
+            {/* Right Content - Visual / Media Area */}
+            <motion.div 
+                style={{ y: yGraphic }}
+                className="hidden lg:flex justify-center items-center relative h-[600px]"
             >
-              <span className="hero-gradient-text">M. </span>
-              <Cover className="text-white">Rizal</Cover>
-              <span className="hero-gradient-text"> Basri</span>
-            </h1>
-          </motion.div>
+                 {/* 
+                    REPLACE THIS DIV WITH YOUR 3D IMAGE or PROFILE PHOTO
+                    Example: <Image src="/my-3d-photo.png" alt="Hero" width={500} height={600} />
+                 */}
+                 <div className="relative w-full h-full flex items-center justify-center">
+                      {/* Geometric Decorative Circle 1 */}
+                      <div className="absolute w-[400px] h-[400px] rounded-full border border-zinc-800 animate-[spin_20s_linear_infinite]" />
+                      
+                      {/* Geometric Decorative Circle 2 - Reverse */}
+                      <div className="absolute w-[300px] h-[300px] rounded-full border border-dashed border-zinc-700 animate-[spin_15s_linear_infinite_reverse]" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-3xl font-light tracking-wide mb-4"
-          >
-            <EncryptedText
-              text="Full Stack Developer"
-              encryptedClassName="text-neutral-500"
-              revealedClassName="text-gray-300"
-              revealDelayMs={80}
-            />
-          </motion.p>
+                      {/* Main Visual Placeholder - Glowing Orb/Gradient for now */}
+                      <div className="w-[250px] h-[250px] relative">
+                          <div className="absolute inset-0 bg-cyan-500/20 blur-[100px] rounded-full animate-pulse" />
+                          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full opacity-20 animate-[bounce_5s_infinite]" />
+                          
+                          {/* Placeholder Text for User */}
+                          <div className="absolute inset-0 flex items-center justify-center text-center">
+                              <p className="text-xs text-zinc-500 font-mono">
+                                  [ INSERT YOUR <br/> 3D / PROFILE IMAGE <br/> HERE ]
+                              </p>
+                          </div>
+                      </div>
+                 </div>
+            </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-8"
-          >
-            <EncryptedText
-              text="Crafting beautiful and functional web experiences with modern technologies."
-              encryptedClassName="text-neutral-600"
-              revealedClassName="text-gray-400"
-              revealDelayMs={30}
-            />
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            {/* Download CV Button */}
-            <a
-              href="/CV_M.RizalBasri_IT.pdf"
-              download="M_Rizal_Basri_CV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download CV"
-            >
-              <HoverBorderGradient
-                containerClassName="rounded-full"
-                as="div"
-                className="bg-black/80 backdrop-blur-sm text-white flex items-center space-x-2 px-6 py-3 md:py-4 font-semibold text-base md:text-lg cursor-pointer"
-                duration={1.5}
-              >
-                <FaDownload className="text-purple-400" />
-                <span>Download CV</span>
-              </HoverBorderGradient>
-            </a>
-
-            {/* View Projects Button */}
-            <HoverBorderGradient
-              containerClassName="rounded-full"
-              as="button"
-              className="bg-black/80 backdrop-blur-sm text-white flex items-center space-x-2 px-6 py-3 md:py-4 font-semibold text-base md:text-lg cursor-pointer"
-              duration={1.5}
-              clockwise={false}
-              onClick={scrollToProjects}
-            >
-              <FaCode className="text-cyan-400" />
-              <span>View Projects</span>
-            </HoverBorderGradient>
-          </motion.div>
         </div>
-      </GridBeam>
+      </div>
+
+      {/* Scroll Indicator - Bottom Right */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-4 z-30"
+      >
+         <span className="writing-mode-vertical text-zinc-600 font-mono text-xs tracking-widest uppercase rotate-180">Scroll</span>
+         <div className="w-[1px] h-12 bg-zinc-800 overflow-hidden relative">
+            <motion.div 
+              animate={{ y: [0, 48, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-1/2 bg-cyan-500" 
+            />
+         </div>
+      </motion.div>
+
     </section>
   );
 }

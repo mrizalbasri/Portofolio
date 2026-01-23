@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Image from "next/image";
+
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -112,118 +113,91 @@ export default function About() {
             viewport={{ once: true }}
             className="flex items-center gap-3 mb-8"
           >
-            <div className="w-1 h-6 bg-gradient-to-b from-purple-500 to-cyan-500 rounded-full"></div>
-            <span className="text-sm uppercase tracking-wider text-gray-500 font-medium">
-              About
+            <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
+            <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium font-mono">
+              About Me
             </span>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
           {/* Left Column: Sticky Profile Image */}
           <div className="col-span-1 md:col-span-5 lg:col-span-4 md:sticky md:top-24">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="relative aspect-square rounded-3xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl group"
+              transition={{ duration: 0.8 }}
+              className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800"
             >
-              <Image
-                src="/rizal.jpg"
-                alt="M. Rizal Basri"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+               {/* 
+                 Note: Replace with actual image later. 
+                 For now, a placeholder div effectively communicates the layout.
+               */}
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black" />
+              <div className="absolute inset-0 flex items-center justify-center text-zinc-700 font-mono text-xs text-center p-4">
+                 [ YOUR PORTRAIT PHOTO HERE ]
+              </div>
               
-              <div className="absolute bottom-4 left-4 right-4 p-4 bg-black/40 backdrop-blur-md rounded-xl border border-white/10">
-                <h3 className="text-white font-bold text-lg">M. Rizal Basri</h3>
-                <p className="text-gray-300 text-xs">Full Stack Developer</p>
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+                <h3 className="text-white font-bold text-xl">M. Rizal Basri</h3>
+                <p className="text-cyan-500 font-mono text-xs uppercase tracking-wider mt-1">Full Stack Developer</p>
               </div>
             </motion.div>
-
-            {/* Quick Stats or Socials could go here */}
           </div>
 
           {/* Right Column: Content */}
-          <div className="col-span-1 md:col-span-7 lg:col-span-8 space-y-8">
+          <div className="col-span-1 md:col-span-7 lg:col-span-8 space-y-12">
             {/* Bio Card */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
-              className="p-8 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-sm"
+              className="space-y-6"
             >
-               <motion.h2 variants={itemVariants} className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 mb-6">
-                Crafting Digital Experiences
-              </motion.h2>
-              <motion.div variants={itemVariants} className="space-y-4 text-gray-300 leading-relaxed text-lg">
+               <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-bold text-white leading-tight">
+                Crafting digital experiences with <span className="text-cyan-500">precision</span> and content.
+               </motion.h2>
+              <motion.div variants={itemVariants} className="space-y-6 text-zinc-400 leading-relaxed text-lg font-light">
                 <p>
-                   Hi! I&apos;m a passionate developer who loves creating beautiful and
-                  functional web experiences. With expertise in modern web
-                  technologies, I bring ideas to life through clean code and
-                  stunning design.
+                   I am a developer who believes that code is not just about functionality, but about creating an experience. 
+                   With a deep focus on <strong className="text-white font-normal">performance</strong>, <strong className="text-white font-normal">accessibility</strong>, and <strong className="text-white font-normal">design</strong>, I build applications that solve real-world problems.
                 </p>
                 <p>
-                  I specialize in building responsive, user-friendly applications
-                  that not only look great but also provide exceptional user
-                  experiences.
+                  My journey started with a curiosity for how things work on the internet, which quickly turned into a passion for building them. Today, I work with modern technologies like Next.js, React, and TypeScript to build scalable solutions.
                 </p>
               </motion.div>
             </motion.div>
 
-            {/* Education Card */}
+            {/* Timeline / Education */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="p-8 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-sm"
+              className="border-t border-zinc-800 pt-12"
             >
-              <h3 className="text-2xl font-bold text-white flex items-center gap-2 mb-8">
-                <span className="w-1 h-8 bg-gradient-to-b from-purple-500 to-cyan-500 rounded-full inline-block"></span>
-                Education & Growth
+              <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
+                 Education & Roadmap
               </h3>
 
-              <div className="space-y-8">
-                <motion.div variants={timelineVariants} custom={0} className="group flex gap-4">
-                  <div className="flex-none pt-1">
-                     <div className="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
-                        <div className="w-3 h-3 rounded-full bg-purple-500" />
-                     </div>
-                  </div>
+              <div className="space-y-12 px-4 border-l border-zinc-800 ml-3">
+                <motion.div variants={timelineVariants} custom={0} className="relative pl-8">
+                  <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-cyan-500 ring-4 ring-black" />
                   <div>
-                    <span className="text-xs font-semibold text-purple-400 tracking-wider uppercase mb-1 block">Oct 2024 - Present</span>
-                    <h4 className="text-xl font-bold text-white mb-1">President University</h4>
-                    <p className="text-gray-400">Pekanbaru - Bachelor&apos;s Degree in Informatics</p>
+                    <span className="text-xs font-mono text-cyan-500 tracking-wider uppercase mb-2 block">Jun 2024 - Present</span>
+                    <h4 className="text-xl font-bold text-white mb-1">Bachelor of Informatics</h4>
+                    <p className="text-zinc-500">President University</p>
                   </div>
                 </motion.div>
 
-                <motion.div variants={timelineVariants} custom={1} className="group flex gap-4">
-                   <div className="flex-none pt-1">
-                     <div className="w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
-                        <div className="w-3 h-3 rounded-full bg-cyan-500" />
-                     </div>
-                  </div>
-                  <div>
-                    <span className="text-xs font-semibold text-cyan-400 tracking-wider uppercase mb-1 block">Sep 2021 - Jul 2024</span>
-                    <h4 className="text-xl font-bold text-white mb-1">SMK Negeri 2 Tembilahan</h4>
-                    <p className="text-gray-400">Vocational High School - Computer and Network Engineering</p>
-                  </div>
-                </motion.div>
-
-                 <motion.div variants={timelineVariants} custom={2} className="group flex gap-4">
-                   <div className="flex-none pt-1">
-                     <div className="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                        <div className="w-3 h-3 rounded-full bg-blue-500" />
-                     </div>
-                  </div>
-                  <div>
-                    <span className="text-xs font-semibold text-blue-400 tracking-wider uppercase mb-1 block">Continuous Learning</span>
-                    <h4 className="text-xl font-bold text-white mb-1">Self-Taught Developer</h4>
-                    <p className="text-gray-400">Online courses, bootcamps, and personal projects</p>
+                <motion.div variants={timelineVariants} custom={1} className="relative pl-8">
+                  <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-600 ring-4 ring-black" />
+                   <div>
+                    <span className="text-xs font-mono text-zinc-500 tracking-wider uppercase mb-2 block">2021 - 2024</span>
+                    <h4 className="text-xl font-bold text-white mb-1">Vocational High School</h4>
+                    <p className="text-zinc-500">SMK Negeri 2 Tembilahan — Computer Network Engineering</p>
                   </div>
                 </motion.div>
               </div>

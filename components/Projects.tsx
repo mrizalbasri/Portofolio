@@ -149,8 +149,8 @@ export default function Projects() {
                 viewport={{ once: true }}
                 className="flex items-center gap-3 mb-8"
               >
-                <div className="w-1 h-6 bg-gradient-to-b from-pink-500 via-purple-500 to-indigo-500 rounded-full"></div>
-                <span className="text-sm uppercase tracking-wider text-gray-500 font-medium">
+                <div className="w-1 h-6 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></div>
+                <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">
                   Selected Work
                 </span>
               </motion.div>
@@ -181,7 +181,7 @@ export default function Projects() {
                   className="mb-8"
                 >
                     <div className="relative group">
-                    <div className="grid lg:grid-cols-2 gap-8 items-center bg-black/40 rounded-3xl p-8 border border-white/10 backdrop-blur-xl hover:border-purple-500/30 transition-colors duration-500">
+                    <div className="grid lg:grid-cols-2 gap-8 items-center bg-zinc-900/40 rounded-3xl p-8 border border-white/10 backdrop-blur-xl hover:border-cyan-500/30 transition-colors duration-500">
                       {/* Left: Project Info */}
                       <div className="space-y-6">
                         <div className="flex items-center gap-3">
@@ -210,7 +210,7 @@ export default function Projects() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => setSelectedProject(displayProjects[0])}
-                          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all"
+                          className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
                         >
                           View Details →
                         </motion.button>
@@ -271,7 +271,7 @@ export default function Projects() {
                     className="relative px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 rounded-2xl text-white font-medium text-lg transition-all duration-300 flex items-center gap-3 backdrop-blur-sm group overflow-hidden"
                   >
                     {/* Simple hover background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
                     <span className="relative z-10">View All Projects</span>
                     
@@ -285,7 +285,7 @@ export default function Projects() {
                   </motion.button>
                   
                   {/* Subtle glow on hover */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600/20 to-blue-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
                 </motion.div>
               </Link>
             </div>

@@ -4,35 +4,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+import { useRouter, usePathname } from "next/navigation";
+
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["home", "about", "skills", "projects", "contact"];
-      const scrollPosition = window.scrollY + 200;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const height = element.offsetHeight;
-
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + height
-          ) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // Set active section based on pathname
+    if (pathname === "/") setActiveSection("home");
+    else if (pathname.startsWith("/about")) setActiveSection("about");
+    else if (pathname.startsWith("/skills")) setActiveSection("skills");
+    else if (pathname.startsWith("/projects")) setActiveSection("projects");
+    else if (pathname.startsWith("/contact")) setActiveSection("contact");
+    else if (pathname.startsWith("/blog")) setActiveSection("blog");
+  }, [pathname]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -47,22 +35,19 @@ export default function Navigation() {
   }, [isMenuOpen]);
 
   const navItems = [
-    { name: "HOME", href: "#", id: "home" },
-    { name: "ABOUT ME", href: "#about", id: "about" },
-    { name: "SKILLS", href: "#skills", id: "skills" },
-    { name: "PROJECTS", href: "#projects", id: "projects" },
-    { name: "CONTACT", href: "#contact", id: "contact" },
+    { name: "HOME", href: "/", id: "home" },
+    { name: "ABOUT ME", href: "/about", id: "about" },
+    { name: "SKILLS", href: "/skills", id: "skills" },
+    { name: "PROJECTS", href: "/projects", id: "projects" },
+    { name: "BLOG", href: "/blog", id: "blog" },
+    //{ name: "CONTACT", href: "/contact", id: "contact" }, // Contact is usually a section or page, let's make it a page
   ];
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false);
-    // Small delay to allow menu to close before scrolling
     setTimeout(() => {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 300);
+        router.push(href);
+    }, 300); // Wait for transition
   };
 
   return (
@@ -140,7 +125,7 @@ export default function Navigation() {
             animate={{ clipPath: "circle(150% at calc(100% - 60px) 60px)" }}
             exit={{ clipPath: "circle(0% at calc(100% - 60px) 60px)" }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed inset-0 z-[150] bg-[#f5f5f0]"
+            className="fixed inset-0 z-[150] bg-[#0a0a0a]"
           >
             {/* Menu Content */}
             <div className="h-full flex flex-col md:flex-row">
@@ -150,7 +135,7 @@ export default function Navigation() {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="text-[8rem] lg:text-[10rem] font-black text-black/10 leading-none"
+                  className="text-[8rem] lg:text-[10rem] font-black text-white/5 leading-none"
                 >
                   RIZAL
                 </motion.h1>
@@ -173,8 +158,8 @@ export default function Navigation() {
                         <span
                           className={`text-4xl md:text-6xl lg:text-7xl font-bold transition-colors duration-300 ${
                             activeSection === item.id
-                              ? "text-purple-600"
-                              : "text-black hover:text-purple-600"
+                              ? "text-cyan-500"
+                              : "text-white hover:text-cyan-500"
                           }`}
                         >
                           {item.name}
@@ -182,7 +167,7 @@ export default function Navigation() {
 
                         {/* Underline Animation */}
                         <motion.div
-                          className="h-1 bg-purple-600 origin-left mt-2"
+                          className="h-1 bg-cyan-500 origin-left mt-2"
                           initial={{
                             scaleX: activeSection === item.id ? 1 : 0,
                           }}
@@ -202,10 +187,10 @@ export default function Navigation() {
                   transition={{ delay: 0.7, duration: 0.4 }}
                   className="mt-16 space-y-2"
                 >
-                  <p className="text-gray-600 text-sm md:text-base">
+                  <p className="text-gray-400 text-sm md:text-base">
                     mrizalbasri@email.com
                   </p>
-                  <p className="text-gray-600 text-sm md:text-base">
+                  <p className="text-gray-400 text-sm md:text-base">
                     Full Stack Developer
                   </p>
                 </motion.div>
@@ -219,7 +204,7 @@ export default function Navigation() {
                     window.dispatchEvent(new Event("toggle-chat-widget"));
                     setIsMenuOpen(false);
                   }}
-                  className="mt-8 px-6 py-3 bg-black text-white rounded-full inline-flex items-center gap-2 hover:bg-purple-600 transition-colors w-fit"
+                  className="mt-8 px-6 py-3 bg-white text-black rounded-full inline-flex items-center gap-2 hover:bg-cyan-500 hover:text-white transition-colors w-fit"
                 >
                   <svg
                     className="w-5 h-5"

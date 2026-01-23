@@ -151,8 +151,8 @@ export default function Skills() {
             viewport={{ once: true }}
             className="flex items-center gap-3 mb-8"
           >
-            <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-            <span className="text-sm uppercase tracking-wider text-gray-500 font-medium">
+            <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
+            <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">
               Technologies
             </span>
           </motion.div>

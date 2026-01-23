@@ -1,15 +1,13 @@
-import Projects from "@/components/Projects";
-import ProjectsMarquee from "@/components/ProjectsMarquee";
+import About from "@/components/About";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
-export default function ProjectsPage() {
+export default function AboutPage() {
   return (
     <>
       <Navigation />
       <main className="relative min-h-screen pt-20">
-        <Projects />
-        <ProjectsMarquee />
+        <About />
       </main>
       <Footer />
     </>
