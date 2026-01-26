@@ -19,7 +19,7 @@ export const GridBeam = ({
   return (
     <div
       className={cn(
-        "relative w-full h-full min-h-screen overflow-hidden bg-neutral-950 flex flex-col items-center justify-center",
+        "relative w-full h-full min-h-screen overflow-hidden bg-transparent flex flex-col items-center justify-center",
         className
       )}
     >
@@ -87,7 +87,8 @@ export const GridBeam = ({
       <div className="relative z-10 w-full">{children}</div>
       
       {/* Bottom Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-950 to-transparent z-0 pointer-events-none" />
+      {/* Bottom Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent z-0 pointer-events-none" />
     </div>
   );
 };

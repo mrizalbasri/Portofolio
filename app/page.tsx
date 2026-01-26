@@ -1,3 +1,5 @@
+"use client";
+
 import Navigation from "@/components/Navigation";
 import GlobalParticles from "@/components/GlobalParticles";
 import Hero from "@/components/Hero";
@@ -22,8 +24,8 @@ export default function Home() {
 
       {/* Main Content with Page Transition */}
       <div className="relative min-h-screen bg-black text-white">
+        
         {/* Magic UI Particles Background - Overlay Mode */}
-        {/* Global Particles (Hidden in Hero) */}
         <GlobalParticles />
 
         {/* Navigation */}
@@ -48,3 +50,4 @@ export default function Home() {
     </>
   );
 }
+

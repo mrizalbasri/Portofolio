@@ -1,146 +1,109 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import gsap from "gsap";
-import { FaDownload } from "react-icons/fa";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { FaDownload, FaShieldAlt } from "react-icons/fa";
+import { SiNextdotjs, SiReact, SiKalilinux } from "react-icons/si";
 import { GridBeam } from "./ui/grid-beam";
+import { Spotlight } from "./ui/spotlight";
+import MagneticButton from "./MagneticButton";
+
+
 export default function Hero() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef(null);
 
-  // Parallax Scroll Hooks
-  const { scrollY } = useScroll();
-  const yText = useTransform(scrollY, [0, 500], [0, 200]); // Text moves down slower (0.4x speed)
-  const yGraphic = useTransform(scrollY, [0, 500], [0, -100]); // Graphic moves up (reverse parallax)
-  const opacityText = useTransform(scrollY, [0, 300], [1, 0]); // Fade out text on scroll
-
-  useEffect(() => {
-    // Subtle GSAP animation on title
-    if (titleRef.current) {
-      gsap.fromTo(titleRef.current, 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.5, ease: "power3.out", delay: 0.2 }
-      );
-    }
-  }, []);
+  // Floating animation for icons
+  const floatingVariants = {
+    initial: { y: 0 },
+    animate: (custom: number) => ({
+      y: [0, -20, 0],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        delay: custom * 0.5,
+      },
+    }),
+  };
 
   return (
-    <section ref={containerRef} id="home" className="relative min-h-screen w-full overflow-hidden bg-background flex items-center pt-20 md:pt-0">
-      {/* Background Texture - Parallax Fixed */}
-      <div className="absolute inset-0 z-0">
-         <GridBeam className="opacity-30" />
-      </div>
+    <section ref={containerRef} id="home" className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12">
+       {/* Backgrounds */}
+       <div className="absolute inset-0 z-0 pointer-events-none">
+          <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+          <GridBeam className="opacity-20 translate-y-20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
+       </div>
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Content - Parallax Text */}
-            <motion.div style={{ y: yText, opacity: opacityText }} className="relative z-20">
-                {/* Top Tagline */}
-                <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="mb-6 flex items-center gap-3"
-                >
-                <div className="w-12 h-[2px] bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
-                <span className="text-cyan-400 font-mono tracking-widest text-sm uppercase font-bold text-shadow-sm">Full Stack Developer</span>
-                </motion.div>
+       {/* Floating Tech Icons - Cyber/Tech Theme */}
+       <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
+          {/* Left Side Icons */}
+          <motion.div variants={floatingVariants} custom={1} initial="initial" animate="animate" className="absolute top-1/3 left-[10%] md:left-[20%] opacity-60">
+             <SiKalilinux className="text-4xl md:text-6xl text-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+          </motion.div>
+          <motion.div variants={floatingVariants} custom={2} initial="initial" animate="animate" className="absolute bottom-1/4 left-[15%] md:left-[25%] opacity-50">
+             <SiNextdotjs className="text-3xl md:text-5xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+          </motion.div>
+          
+          {/* Right Side Icons */}
+          <motion.div variants={floatingVariants} custom={3} initial="initial" animate="animate" className="absolute top-1/4 right-[10%] md:right-[20%] opacity-60">
+             <FaShieldAlt className="text-4xl md:text-6xl text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+          </motion.div>
+          <motion.div variants={floatingVariants} custom={4} initial="initial" animate="animate" className="absolute bottom-1/3 right-[15%] md:right-[25%] opacity-50">
+             <SiReact className="text-3xl md:text-5xl text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+          </motion.div>
+       </div>
 
-                {/* Main Title */}
-                <div className="mb-8 relative">
-                    <h1 ref={titleRef} className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-[0.9]">
-                        DIGITAL <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 via-zinc-200 to-zinc-500">CRAFTSMAN</span>
-                    </h1>
-                </div>
+       {/* Main Content Container */}
+       {/* Text is placed BEHIND the Robot (z-0 to z-10 relation) */}
+       {/* We will make the text HUGE and filling the screen */}
+       <div className="container mx-auto px-4 relative z-0 w-full flex flex-col items-center justify-center text-center gap-8 h-full">
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center justify-center relative"
+          >
+              {/* Massive Background Text */}
+              <h1 className="text-[12vw] md:text-[14vw] font-black text-white/5 leading-none tracking-tighter absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap select-none pointer-events-none blur-sm">
+                CYBER DEV
+              </h1>
 
-                {/* Name & Bio */}
-                <div className="space-y-8">
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="max-w-lg"
-                    >
-                        <p className="text-xl md:text-2xl text-zinc-400 font-light leading-relaxed">
-                        I am <strong className="text-white font-semibold">M. Rizal Basri</strong>. 
-                        <br />
-                        Building <span className="text-cyan-400">accessible</span>, <span className="text-cyan-400">pixel-perfect</span>, and <span className="text-cyan-400">performant</span> web experiences.
-                        </p>
-                    </motion.div>
+              {/* Foreground Text - Sharp & Clean */}
+              <div className="relative z-10 space-y-4">
 
-                    {/* Actions */}
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.7 }}
-                        className="flex items-center gap-8"
-                    >
-                        <a 
-                            href="/CV_M.RizalBasri_IT.pdf"
-                            download="M_Rizal_Basri_CV.pdf"
-                            className="group flex items-center gap-3 text-white hover:text-cyan-400 transition-colors cursor-pointer"
-                        >
-                            <span className="font-mono text-sm uppercase tracking-widest border-b border-transparent group-hover:border-cyan-400 pb-1">Download CV</span>
-                            <FaDownload className="text-sm group-hover:-translate-y-1 transition-transform" />
-                        </a>
-                    </motion.div>
-                </div>
-            </motion.div>
+                  <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
+                    FULL STACK & <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">SECURE SYSTEMS</span>
+                  </h2>
+              </div>
+          </motion.div>
+ 
+          {/* Spacer for Robot - The Robot is Fixed in Layout but we give visual space */}
+          <div className="h-[40vh] w-full" />
 
-            {/* Right Content - Visual / Media Area */}
-            <motion.div 
-                style={{ y: yGraphic }}
-                className="hidden lg:flex justify-center items-center relative h-[600px]"
-            >
-                 {/* 
-                    REPLACE THIS DIV WITH YOUR 3D IMAGE or PROFILE PHOTO
-                    Example: <Image src="/my-3d-photo.png" alt="Hero" width={500} height={600} />
-                 */}
-                 <div className="relative w-full h-full flex items-center justify-center">
-                      {/* Geometric Decorative Circle 1 */}
-                      <div className="absolute w-[400px] h-[400px] rounded-full border border-zinc-800 animate-[spin_20s_linear_infinite]" />
-                      
-                      {/* Geometric Decorative Circle 2 - Reverse */}
-                      <div className="absolute w-[300px] h-[300px] rounded-full border border-dashed border-zinc-700 animate-[spin_15s_linear_infinite_reverse]" />
+          {/* Bottom Section: Bio & Buttons */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col items-center max-w-2xl relative z-30"
+          >
+              <p className="text-lg md:text-xl text-zinc-400 mb-8 leading-relaxed font-light">
+                 I build <span className="text-white font-semibold">Resilient</span> and <span className="text-white font-semibold">Scalable</span> digital infrastructures.
+                 Focusing on <span className="text-cyan-400">Security</span>, <span className="text-cyan-400">Performance</span>, and <span className="text-cyan-400">Experience</span>.
+              </p>
 
-                      {/* Main Visual Placeholder - Glowing Orb/Gradient for now */}
-                      <div className="w-[250px] h-[250px] relative">
-                          <div className="absolute inset-0 bg-cyan-500/20 blur-[100px] rounded-full animate-pulse" />
-                          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full opacity-20 animate-[bounce_5s_infinite]" />
-                          
-                          {/* Placeholder Text for User */}
-                          <div className="absolute inset-0 flex items-center justify-center text-center">
-                              <p className="text-xs text-zinc-500 font-mono">
-                                  [ INSERT YOUR <br/> 3D / PROFILE IMAGE <br/> HERE ]
-                              </p>
-                          </div>
-                      </div>
-                 </div>
-            </motion.div>
-
-        </div>
-      </div>
-
-      {/* Scroll Indicator - Bottom Right */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-4 z-30"
-      >
-         <span className="writing-mode-vertical text-zinc-600 font-mono text-xs tracking-widest uppercase rotate-180">Scroll</span>
-         <div className="w-[1px] h-12 bg-zinc-800 overflow-hidden relative">
-            <motion.div 
-              animate={{ y: [0, 48, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-1/2 bg-cyan-500" 
-            />
-         </div>
-      </motion.div>
-
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                  <MagneticButton>
+                    <a href="/CV_M.RizalBasri_IT.pdf" download="M_Rizal_Basri_CV.pdf" className="w-full sm:w-auto px-8 py-4 border border-white/10 bg-white/5 text-white rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2 group backdrop-blur-sm hover:border-cyan-500/50">
+                        <span>Download CV</span>
+                        <FaDownload className="text-sm group-hover:translate-y-0.5 transition-transform" />
+                    </a>
+                  </MagneticButton>
+              </div>
+          </motion.div>
+       </div>
     </section>
   );
 }

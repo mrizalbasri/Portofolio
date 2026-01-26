@@ -39,15 +39,9 @@ export default function FloatingRobot() {
   // 500-1000 - Transition to AboutMe
   
   // Desktop Position
-  // Hero: Aligned right (approx 25% from right edge which is 75% left)
-  // About: Center (50% left)
-  // We use `left` or `x` transform. Using `x` is more performant.
-  // Assuming container is full width centered.
-  
-  // Using percentage values for X to support responsiveness
-  // Hero X: 20% (moves to right, but slightly less extreme)
-  // About X: 0% (center)
-  const xDesktop = useTransform(scrollY, [0, 800], ["20%", "0%"]);
+  // Hero X: 0% (Center)
+  // About X: 0% (Center)
+  const xDesktop = useTransform(scrollY, [0, 800], ["0%", "0%"]);
   
   // Mobile Position
   // Hero: Center top (usually just 0)
@@ -62,7 +56,8 @@ export default function FloatingRobot() {
   const scale = useTransform(scrollY, [0, 800], [1, 1.1]);
   
   // Opacity - Fade out more significantly to be a subtle background
-  const opacityScroll = useTransform(scrollY, [0, 800], [1, 0.15]);
+  // User requested to move to footer / hide from hero
+  const opacityScroll = useTransform(scrollY, [0, 800], [0, 0]);
   
   // Combine opacity with route visibility
   // If not home page, opacity is 0. But we keep it mounted.
@@ -70,7 +65,7 @@ export default function FloatingRobot() {
   const pointerEvents = isHomePage ? "auto" : "none";
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" style={{ pointerEvents }}>
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden" style={{ pointerEvents }}>
         <motion.div 
             style={{ x, scale, opacity }}
             className={`w-full h-full flex items-center justify-center transition-opacity duration-500`}

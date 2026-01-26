@@ -8,19 +8,21 @@ import { useRouter, usePathname } from "next/navigation";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    // Set active section based on pathname
-    if (pathname === "/") setActiveSection("home");
-    else if (pathname.startsWith("/about")) setActiveSection("about");
-    else if (pathname.startsWith("/skills")) setActiveSection("skills");
-    else if (pathname.startsWith("/projects")) setActiveSection("projects");
-    else if (pathname.startsWith("/contact")) setActiveSection("contact");
-    else if (pathname.startsWith("/blog")) setActiveSection("blog");
-  }, [pathname]);
+  const activeSection = (() => {
+    const path = pathname || "";
+    if (path === "/" || path === "") return "home";
+    if (path.startsWith("/about")) return "about";
+    if (path.startsWith("/skills")) return "skills";
+    if (path.startsWith("/projects")) return "projects";
+    if (path.startsWith("/contact")) return "contact";
+    if (path.startsWith("/blog")) return "blog";
+    return "home";
+  })();
+
+
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -92,25 +94,19 @@ export default function Navigation() {
                   isMenuOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -4 }
                 }
                 transition={{ duration: 0.3 }}
-                className={`absolute w-6 h-0.5 transition-colors duration-300 ${
-                  isMenuOpen ? "bg-black" : "bg-white"
-                }`}
+                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
               />
               <motion.span
                 animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute w-6 h-0.5 transition-colors duration-300 ${
-                  isMenuOpen ? "bg-black" : "bg-white"
-                }`}
+                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
               />
               <motion.span
                 animate={
                   isMenuOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 4 }
                 }
                 transition={{ duration: 0.3 }}
-                className={`absolute w-6 h-0.5 transition-colors duration-300 ${
-                  isMenuOpen ? "bg-black" : "bg-white"
-                }`}
+                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
               />
             </div>
           </motion.button>

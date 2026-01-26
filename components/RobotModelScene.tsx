@@ -255,8 +255,8 @@ export default function RobotModelScene() {
   }, []);
 
   return (
-    <div className="w-full h-full">
-      <Canvas>
+    <div className="w-full h-full bg-transparent">
+      <Canvas gl={{ alpha: true }} style={{ background: 'transparent' }}>
         <PerspectiveCamera
           makeDefault
           position={isMobile ? [0, 0.5, 10] : [-0.5, 0.5, 10]}
