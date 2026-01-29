@@ -24,7 +24,6 @@ import {
   SiNginx,
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
-import GsapScrollAnimation from "./GsapScrollAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
 
