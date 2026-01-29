@@ -27,10 +27,6 @@ export function ProjectsMarquee() {
     useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, -100]),
     springConfig
   );
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.6, 1, 1, 0.6]),
-    springConfig
-  );
   const scale = useSpring(
     useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]),
     springConfig
@@ -40,7 +36,7 @@ export function ProjectsMarquee() {
   const projectImages = [
     // Your projects
     "/projects/weather-app.png",
-    "/MobileAppGrennFetch.png",
+    "/projects/MobileAppGrennFetch.png",
     // Aceternity showcase images
     "https://assets.aceternity.com/cloudinary_bkp/3d-card.png",
     "https://assets.aceternity.com/animated-modal.png",
@@ -75,13 +71,13 @@ export function ProjectsMarquee() {
     "https://assets.aceternity.com/world-map.webp",
     // Repeat some for filling grid
     "/projects/weather-app.png",
-    "/MobileAppGrennFetch.png",
+    "/projects/MobileAppGrennFetch.png",
   ];
 
   return (
     <div
       ref={ref}
-      className="relative py-20 overflow-hidden [perspective:1000px]"
+      className="relative py-12 overflow-hidden [perspective:1000px] w-full"
     >
       {/* Subtle Background Glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent" />
@@ -90,9 +86,9 @@ export function ProjectsMarquee() {
       <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
-      {/* 3D Marquee with Enhanced Styling */}
+      {/* 3D Marquee with Full Width Styling */}
       <motion.div
-        className="mx-auto max-w-7xl rounded-3xl bg-gradient-to-br from-gray-900/20 via-gray-800/10 to-gray-900/20 p-2 ring-1 ring-white/10 backdrop-blur-sm"
+        className="w-full bg-gradient-to-b from-transparent via-purple-900/5 to-transparent backdrop-blur-sm"
         style={{
           rotateX,
           rotateZ,
@@ -101,7 +97,7 @@ export function ProjectsMarquee() {
           transformStyle: "preserve-3d",
         }}
       >
-        <ThreeDMarquee images={projectImages} />
+        <ThreeDMarquee images={projectImages} className="max-w-none w-full" />
       </motion.div>
     </div>
   );

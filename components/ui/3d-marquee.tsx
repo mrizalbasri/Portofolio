@@ -1,6 +1,6 @@
-"use client";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import Image from "next/image";
 
 interface ThreeDMarqueeProps {
   images: string[];
@@ -27,7 +27,7 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
     <div
       ref={containerRef}
       className={cn(
-        "relative mx-auto flex h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-3xl",
+        "relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden bg-transparent",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -37,8 +37,8 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
       <div
         className="flex flex-col gap-4 transition-transform duration-500"
         style={{
-          transform: `perspective(1000px) rotateX(25deg) rotateY(-15deg) rotateZ(10deg) scale(${
-            isHovered ? 1.1 : 1.05
+          transform: `perspective(1000px) rotateX(${isHovered ? 5 : 25}deg) rotateY(${isHovered ? 0 : -15}deg) rotateZ(${isHovered ? 0 : 10}deg) scale(${
+            isHovered ? 1.02 : 1.05
           }) translateZ(0)`,
           transformStyle: "preserve-3d",
         }}
@@ -60,11 +60,13 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
                 key={`${rowIndex}-${index}`}
                 className="relative h-20 w-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-110 hover:z-10 md:h-24 md:w-44"
               >
-                <img
+                <Image
                   src={image}
                   alt={`Project ${index}`}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 128px, 176px"
+                  unoptimized
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity hover:opacity-100" />
@@ -74,10 +76,10 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
         ))}
       </div>
 
-      {/* Gradient overlays for fade effect - reduced opacity */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/60 via-transparent to-black/60" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+      {/* Gradient overlays for fade effect - reduced opacity for better visibility */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/20" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
 
       {/* CSS Keyframes */}
       <style jsx>{`

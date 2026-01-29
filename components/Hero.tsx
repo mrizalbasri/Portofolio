@@ -2,8 +2,9 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { FaDownload, FaShieldAlt } from "react-icons/fa";
-import { SiNextdotjs, SiReact, SiKalilinux } from "react-icons/si";
+import { FaDownload } from "react-icons/fa";
+import { SiReact, SiDocker, SiKalilinux } from "react-icons/si";
+import { VscVscode } from "react-icons/vsc";
 import { GridBeam } from "./ui/grid-beam";
 import { Spotlight } from "./ui/spotlight";
 import MagneticButton from "./MagneticButton";
@@ -41,12 +42,12 @@ export default function Hero() {
              <SiKalilinux className="text-4xl md:text-6xl text-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
           </motion.div>
           <motion.div variants={floatingVariants} custom={2} initial="initial" animate="animate" className="absolute bottom-1/4 left-[15%] md:left-[25%] opacity-50">
-             <SiNextdotjs className="text-3xl md:text-5xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+             <SiDocker className="text-3xl md:text-5xl text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
           </motion.div>
           
           {/* Right Side Icons */}
           <motion.div variants={floatingVariants} custom={3} initial="initial" animate="animate" className="absolute top-1/4 right-[10%] md:right-[20%] opacity-60">
-             <FaShieldAlt className="text-4xl md:text-6xl text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+             <VscVscode className="text-4xl md:text-6xl text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
           </motion.div>
           <motion.div variants={floatingVariants} custom={4} initial="initial" animate="animate" className="absolute bottom-1/3 right-[15%] md:right-[25%] opacity-50">
              <SiReact className="text-3xl md:text-5xl text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />

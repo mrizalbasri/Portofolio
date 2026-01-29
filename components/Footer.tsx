@@ -284,9 +284,6 @@ export default function Footer() {
                 <span className="text-cyan-500 font-medium">M. Rizal Basri</span> — All
                 rights reserved.
               </p>
-              <p className="text-zinc-700 text-xs mt-2 font-mono">
-                Built with Next.js, Three.js & Framer Motion
-              </p>
             </motion.div>
           </div>
         </div>

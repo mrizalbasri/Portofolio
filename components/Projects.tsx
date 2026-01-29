@@ -17,6 +17,9 @@ import { FollowerPointerCard } from "./ui/following-pointer";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { StarsBackground } from "@/components/ui/stars-background";
+import { ShootingStars } from "@/components/ui/shooting-stars";
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const { isLoading, executeAsync } = useLoading({ initialLoading: true, delay: 800 });
@@ -121,10 +124,16 @@ export default function Projects() {
     <ProjectErrorBoundary>
       <section
         id="projects"
-        className="relative bg-black py-20"
+        className="relative py-32 overflow-hidden bg-black/40 backdrop-blur-sm"
         ref={sectionRef}
         style={{ perspective: 1200 }}
       >
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0 opacity-40">
+           <StarsBackground starDensity={0.0002} allStarsTwinkle={true} />
+           <ShootingStars minDelay={3000} maxDelay={5000} starColor="#ec4899" trailColor="#8b5cf6" />
+        </div>
+
         <motion.div
           style={{
             y,
@@ -133,6 +142,7 @@ export default function Projects() {
             rotateX,
           }}
           ref={containerRef}
+          className="relative z-10"
         >
           {/* Clean Modern Header - Minimal */}
           <div className="relative z-20 px-4 mb-16">
