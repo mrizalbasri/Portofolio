@@ -11,12 +11,12 @@ export const blogPosts: BlogPost[] = [
     tags: ['IT', 'Infrastructure', 'Enterprise Architecture', 'Risk Management', 'Security'],
     icon: FaServer,
     date: '2026-01-25',
-    image: '/blog/blog1/landing.png',
+    image: '/blog/blog1/landing.webp',
     images: [
-      '/blog/blog1/landing.png',
-      '/blog/blog1/erterpise.png',
-      '/blog/blog1/infrastukture.png',
-      '/blog/blog1/risk.png',
+      '/blog/blog1/landing.webp',
+      '/blog/blog1/erterpise.webp',
+      '/blog/blog1/infrastukture.webp',
+      '/blog/blog1/risk.webp',
     ],
     longDescription: `
 # IT Enterprise & Infrastructure: A Comprehensive Analysis
@@ -43,7 +43,7 @@ Effective implementation of IT Enterprise enables organizations to improve opera
 
 ## The Relationship Between IT Enterprise and IT Infrastructure
 
-![Enterprise Architecture Layers](/blog/blog1/erterpise.png)
+![Enterprise Architecture Layers](/blog/blog1/erterpise.webp)
 *Enterprise Architecture layers encompassing Business Architecture, Data Architecture, Application Architecture, and Technology Architecture*
 
 IT Enterprise and IT infrastructure have a very close and interdependent relationship. A good IT Enterprise strategy must be supported by reliable, secure, and flexible IT infrastructure. Conversely, sophisticated IT infrastructure without clear direction and strategy will only become a cost burden for the organization.
@@ -56,7 +56,7 @@ Through the Enterprise Architecture approach, organizations can ensure that ever
 
 ## IT Infrastructure in IT Enterprise
 
-![IT Infrastructure Components](/blog/blog1/infrastukture.png)
+![IT Infrastructure Components](/blog/blog1/infrastukture.webp)
 *IT Infrastructure components in IT Enterprise consisting of people, software, hardware, networks, servers, data centers, and facilities*
 
 IT Infrastructure is a collection of technology resources that support information system operations within an organization. This infrastructure includes both physical and non-physical components that are interconnected and work in an integrated manner to ensure IT systems can run optimally.
@@ -69,7 +69,7 @@ In the modern enterprise context, IT infrastructure also extensively utilizes cl
 
 ## Risks in IT Enterprise and IT Infrastructure
 
-![IT Risk Classification](/blog/blog1/risk.png)
+![IT Risk Classification](/blog/blog1/risk.webp)
 *IT Risk classification covering security, availability, performance, and compliance*
 
 The implementation of IT Enterprise and IT infrastructure is inseparable from various risks that can affect organizational operational sustainability. In general, IT risks can be grouped into four main dimensions: security, availability, performance, and compliance.

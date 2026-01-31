@@ -70,7 +70,7 @@ export default function Navigation() {
             aria-label="Home"
           >
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Logo"
               width={50}
               height={50}

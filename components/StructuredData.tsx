@@ -9,7 +9,7 @@ export default function StructuredData() {
     "jobTitle": "Full Stack Developer",
     "description": "Experienced Full Stack Developer specializing in React, Next.js, Node.js, and modern web technologies",
     "url": baseUrl,
-    "image": `${baseUrl}/logo.png`,
+    "image": `${baseUrl}/logo.webp`,
     "sameAs": [
       "https://github.com/mrizalbasri",
       "https://www.linkedin.com/in/m-rizal-basri/",
