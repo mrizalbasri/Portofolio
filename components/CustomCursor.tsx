@@ -1,21 +1,33 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { cn } from "@/lib/utils";
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+}
 
 export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const particleId = useRef(0);
   
   // Dynamic text state based on hover target
   const [cursorText, setCursorText] = useState<string>("");
 
-  // Instant mouse positions without spring lag
+  // Instant mouse positions for pointer
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
+  
+  // Smooth delayed positions for ring (follows with lag)
+  const ringX = useSpring(cursorX, { stiffness: 80, damping: 18 });
+  const ringY = useSpring(cursorY, { stiffness: 80, damping: 18 });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.matchMedia("(pointer: coarse)").matches);
@@ -26,6 +38,15 @@ export default function CustomCursor() {
       // Direct 1:1 movement for snappy feel
       cursorX.set(e.clientX - 6); 
       cursorY.set(e.clientY - 6);
+      
+      // Add particle
+      particleId.current += 1;
+      const newParticle = {
+        id: particleId.current,
+        x: e.clientX,
+        y: e.clientY,
+      };
+      setParticles(prev => [...prev.slice(-8), newParticle]);
       
       if (!isVisible) setIsVisible(true);
       
@@ -79,6 +100,60 @@ export default function CustomCursor() {
       <style jsx global>{`
         body, a, button, [role="button"] { cursor: none !important; }
       `}</style>
+      
+      {/* Particles Trail */}
+      <AnimatePresence>
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="pointer-events-none fixed z-[9999] w-2 h-2 rounded-full bg-cyan-400/60"
+            initial={{ 
+              x: particle.x - 4, 
+              y: particle.y - 4, 
+              scale: 1, 
+              opacity: 0.6 
+            }}
+            animate={{ 
+              scale: 0, 
+              opacity: 0 
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            onAnimationComplete={() => {
+              setParticles(prev => prev.filter(p => p.id !== particle.id));
+            }}
+          />
+        ))}
+      </AnimatePresence>
+
+      {/* Floating Ring - Follows with delay */}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            className="pointer-events-none fixed top-0 left-0 z-[9998]"
+            style={{
+              x: ringX,
+              y: ringY,
+            }}
+          >
+            <motion.div
+              className="absolute rounded-full border border-cyan-400/40"
+              style={{
+                width: 30,
+                height: 30,
+                x: -15,
+                y: -15,
+              }}
+              animate={{
+                scale: isHovering ? 1.5 : 1,
+                opacity: isHovering ? 0.8 : 0.4,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isVisible && (
           <motion.div
@@ -89,21 +164,25 @@ export default function CustomCursor() {
             }}
           >
             {/* Aceternity SVG Pointer */}
-            <svg
+            <motion.svg
               stroke="currentColor"
               fill="currentColor"
               strokeWidth="1"
               viewBox="0 0 16 16"
               className={cn(
-                "h-6 w-6 transform -rotate-[70deg] -translate-x-[12px] -translate-y-[10px] transition-colors duration-200",
-                isClicking ? "text-pink-500 stroke-pink-600 scale-90" : "text-sky-500 stroke-sky-600"
+                "h-5 w-5 transform -rotate-[70deg] -translate-x-[10px] -translate-y-[8px] transition-colors duration-200",
+                isClicking ? "text-pink-500 stroke-pink-600" : "text-sky-500 stroke-sky-600"
               )}
+              animate={{
+                scale: isHovering ? 1.1 : 1,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
               height="1em"
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"></path>
-            </svg>
+            </motion.svg>
 
             {/* Dynamic Badge (Name Tag) */}
             <motion.div

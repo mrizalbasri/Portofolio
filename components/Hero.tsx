@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaDownload } from "react-icons/fa";
-import { SiReact, SiDocker, SiKalilinux } from "react-icons/si";
+import Image from "next/image";
+import { SiReact, SiDocker, SiKalilinux } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 import { GridBeam } from "./ui/grid-beam";
 import { Spotlight } from "./ui/spotlight";
@@ -12,6 +12,17 @@ import MagneticButton from "./MagneticButton";
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      setMousePosition({ x, y });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   // Floating animation for icons
   const floatingVariants = {
@@ -38,19 +49,47 @@ export default function Hero() {
        {/* Floating Tech Icons - Cyber/Tech Theme */}
        <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
           {/* Left Side Icons */}
-          <motion.div variants={floatingVariants} custom={1} initial="initial" animate="animate" className="absolute top-1/3 left-[10%] md:left-[20%] opacity-60">
-             <SiKalilinux className="text-4xl md:text-6xl text-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+          <motion.div 
+            variants={floatingVariants} 
+            custom={1} 
+            initial="initial" 
+            animate="animate" 
+            whileHover={{ scale: 1.3 }}
+            className="absolute top-1/3 left-[10%] md:left-[20%] pointer-events-auto cursor-pointer"
+          >
+             <SiKalilinux className="text-4xl md:text-6xl text-cyan-400 transition-all duration-300 hover:text-cyan-300" />
           </motion.div>
-          <motion.div variants={floatingVariants} custom={2} initial="initial" animate="animate" className="absolute bottom-1/4 left-[15%] md:left-[25%] opacity-50">
-             <SiDocker className="text-3xl md:text-5xl text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
+          <motion.div 
+            variants={floatingVariants} 
+            custom={2} 
+            initial="initial" 
+            animate="animate" 
+            whileHover={{ scale: 1.3 }}
+            className="absolute bottom-1/4 left-[15%] md:left-[25%] pointer-events-auto cursor-pointer"
+          >
+             <SiDocker className="text-3xl md:text-5xl text-blue-400 transition-all duration-300 hover:text-blue-300" />
           </motion.div>
           
           {/* Right Side Icons */}
-          <motion.div variants={floatingVariants} custom={3} initial="initial" animate="animate" className="absolute top-1/4 right-[10%] md:right-[20%] opacity-60">
-             <VscVscode className="text-4xl md:text-6xl text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
+          <motion.div 
+            variants={floatingVariants} 
+            custom={3} 
+            initial="initial" 
+            animate="animate" 
+            whileHover={{ scale: 1.3 }}
+            className="absolute top-1/4 right-[10%] md:right-[20%] pointer-events-auto cursor-pointer"
+          >
+             <VscVscode className="text-4xl md:text-6xl text-blue-400 transition-all duration-300 hover:text-blue-300" />
           </motion.div>
-          <motion.div variants={floatingVariants} custom={4} initial="initial" animate="animate" className="absolute bottom-1/3 right-[15%] md:right-[25%] opacity-50">
-             <SiReact className="text-3xl md:text-5xl text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+          <motion.div 
+            variants={floatingVariants} 
+            custom={4} 
+            initial="initial" 
+            animate="animate" 
+            whileHover={{ scale: 1.3 }}
+            className="absolute bottom-1/3 right-[15%] md:right-[25%] pointer-events-auto cursor-pointer"
+          >
+             <SiReact className="text-3xl md:text-5xl text-cyan-400 transition-all duration-300 hover:text-cyan-300" />
           </motion.div>
        </div>
 
@@ -80,8 +119,25 @@ export default function Hero() {
               </div>
           </motion.div>
  
-          {/* Spacer for Robot - The Robot is Fixed in Layout but we give visual space */}
-          <div className="h-[40vh] w-full" />
+          {/* Character Image - 3D Parallax */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="relative w-64 h-64 md:w-80 md:h-80 my-8"
+            style={{
+              transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${-mousePosition.y}deg)`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            <Image
+              src="/carakter.png"
+              alt="Character"
+              fill
+              className="object-contain"
+              priority
+            />
+          </motion.div>
 
           {/* Bottom Section: Bio & Buttons */}
           <motion.div 
@@ -95,14 +151,7 @@ export default function Hero() {
                  Focusing on <span className="text-cyan-400">Security</span>, <span className="text-cyan-400">Performance</span>, and <span className="text-cyan-400">Experience</span>.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                  <MagneticButton>
-                    <a href="/CV_M.RizalBasri_IT.pdf" download="M_Rizal_Basri_CV.pdf" className="w-full sm:w-auto px-8 py-4 border border-white/10 bg-white/5 text-white rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2 group backdrop-blur-sm hover:border-cyan-500/50">
-                        <span>Download CV</span>
-                        <FaDownload className="text-sm group-hover:translate-y-0.5 transition-transform" />
-                    </a>
-                  </MagneticButton>
-              </div>
+
           </motion.div>
        </div>
     </section>

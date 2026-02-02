@@ -7,7 +7,7 @@ export default function AboutPage() {
     <>
       <Navigation />
       <main className="relative min-h-screen pt-20">
-        <About />
+        <About isFullPage={true} />
       </main>
       <Footer />
     </>
