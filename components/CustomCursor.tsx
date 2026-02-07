@@ -18,16 +18,13 @@ export default function CustomCursor() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const particleId = useRef(0);
   
-  // Dynamic text state based on hover target
-  const [cursorText, setCursorText] = useState<string>("");
-
   // Instant mouse positions for pointer
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
   // Smooth delayed positions for ring (follows with lag)
-  const ringX = useSpring(cursorX, { stiffness: 80, damping: 18 });
-  const ringY = useSpring(cursorY, { stiffness: 80, damping: 18 });
+  const ringX = useSpring(cursorX, { stiffness: 150, damping: 15 });
+  const ringY = useSpring(cursorY, { stiffness: 150, damping: 15 });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.matchMedia("(pointer: coarse)").matches);
@@ -36,40 +33,34 @@ export default function CustomCursor() {
 
     const moveCursor = (e: MouseEvent) => {
       // Direct 1:1 movement for snappy feel
-      cursorX.set(e.clientX - 6); 
-      cursorY.set(e.clientY - 6);
+      cursorX.set(e.clientX); 
+      cursorY.set(e.clientY);
       
-      // Add particle
+      // Add particle - Square Pixels for Cyber feel
       particleId.current += 1;
       const newParticle = {
         id: particleId.current,
         x: e.clientX,
         y: e.clientY,
       };
-      setParticles(prev => [...prev.slice(-8), newParticle]);
+      if (particleId.current % 2 === 0) { // Optimize: add particle every 2nd frame
+           setParticles(prev => [...prev.slice(-12), newParticle]);
+      }
       
       if (!isVisible) setIsVisible(true);
       
-      // Throttle interactive checks if needed, but for now simple check is okay
       const target = e.target as HTMLElement;
-      // Simple tag check first for performance
-      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
-         setIsHovering(true);
-         setCursorText(target.tagName === 'A' && target.getAttribute('href')?.startsWith('mailto') ? "Email" : "Click");
-         return;
-      }
       
-      // Deeper check only if necessary
-      const closestLink = target.closest('a');
-      const closestBtn = target.closest('button');
-      
-      if (closestLink || closestBtn || target.closest('[role="button"]') || target.style.cursor === 'pointer') {
-        setIsHovering(true);
-        setCursorText(closestLink?.getAttribute('href')?.startsWith('mailto') ? "Email" : "Click");
-      } else {
-        setIsHovering(false);
-        setCursorText("");
-      }
+      // Check for clickable elements
+      const isClickable = 
+        target.tagName === 'A' || 
+        target.tagName === 'BUTTON' ||
+        target.closest('a') || 
+        target.closest('button') ||
+        target.closest('[role="button"]') ||
+        target.style.cursor === 'pointer';
+
+      setIsHovering(!!isClickable);
     };
 
     const handleMouseDown = () => setIsClicking(true);
@@ -91,7 +82,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeaveWindow);
       document.removeEventListener('mouseenter', handleMouseEnterWindow);
     };
-  }, [cursorX, cursorY, isVisible]); // Added isVisible dependency
+  }, [cursorX, cursorY, isVisible]);
 
   if (isMobile) return null;
 
@@ -101,24 +92,24 @@ export default function CustomCursor() {
         body, a, button, [role="button"] { cursor: none !important; }
       `}</style>
       
-      {/* Particles Trail */}
+      {/* Digital Trail - Square Pixels */}
       <AnimatePresence>
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
-            className="pointer-events-none fixed z-[9999] w-2 h-2 rounded-full bg-cyan-400/60"
+            className="pointer-events-none fixed z-[9999] w-1.5 h-1.5 bg-cyan-500/50"
             initial={{ 
-              x: particle.x - 4, 
-              y: particle.y - 4, 
+              x: particle.x, 
+              y: particle.y, 
               scale: 1, 
-              opacity: 0.6 
+              opacity: 0.8 
             }}
             animate={{ 
               scale: 0, 
               opacity: 0 
             }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "linear" }}
             onAnimationComplete={() => {
               setParticles(prev => prev.filter(p => p.id !== particle.id));
             }}
@@ -126,79 +117,66 @@ export default function CustomCursor() {
         ))}
       </AnimatePresence>
 
-      {/* Floating Ring - Follows with delay */}
+      {/* Outer Ring - Cyber Target */}
       <AnimatePresence>
         {isVisible && (
           <motion.div
             className="pointer-events-none fixed top-0 left-0 z-[9998]"
-            style={{
-              x: ringX,
-              y: ringY,
-            }}
+            style={{ x: ringX, y: ringY }}
           >
             <motion.div
-              className="absolute rounded-full border border-cyan-400/40"
+              className={cn(
+                  "absolute border border-cyan-400/30 rounded-full", // Circle container
+                  isHovering ? "border-dashed animate-spin-slow" : "border-solid"
+              )}
               style={{
-                width: 30,
-                height: 30,
-                x: -15,
-                y: -15,
+                width: 48, 
+                height: 48, 
+                x: -24, 
+                y: -24, 
               }}
               animate={{
-                scale: isHovering ? 1.5 : 1,
-                opacity: isHovering ? 0.8 : 0.4,
+                scale: isHovering ? 1.2 : 1,
+                opacity: isHovering ? 1 : 0.3,
+                borderColor: isClicking ? "rgb(236 72 153)" : "rgba(34, 211, 238, 0.4)" // Pink on click
               }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             />
+             {/* Crosshair Lines */}
+             <motion.div 
+                className="absolute bg-cyan-400/50"
+                style={{ width: 1, height: 12, x: 0, y: -6 }} 
+                animate={{ height: isHovering ? 16 : 12 }}
+             />
+             <motion.div 
+                className="absolute bg-cyan-400/50"
+                style={{ width: 12, height: 1, x: -6, y: 0 }}
+                animate={{ width: isHovering ? 16 : 12 }}
+             />
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Central Dot - The Precision Point */}
       <AnimatePresence>
         {isVisible && (
           <motion.div
             className="pointer-events-none fixed top-0 left-0 z-[10000]"
-            style={{
-              x: cursorX,
-              y: cursorY,
-            }}
+            style={{ x: cursorX, y: cursorY }}
           >
-            {/* Aceternity SVG Pointer */}
-            <motion.svg
-              stroke="currentColor"
-              fill="currentColor"
-              strokeWidth="1"
-              viewBox="0 0 16 16"
-              className={cn(
-                "h-5 w-5 transform -rotate-[70deg] -translate-x-[10px] -translate-y-[8px] transition-colors duration-200",
-                isClicking ? "text-pink-500 stroke-pink-600" : "text-sky-500 stroke-sky-600"
-              )}
-              animate={{
-                scale: isHovering ? 1.1 : 1,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              height="1em"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"></path>
-            </motion.svg>
-
-            {/* Dynamic Badge (Name Tag) */}
             <motion.div
               className={cn(
-                "px-2 py-1 bg-neutral-200 text-black whitespace-nowrap min-w-max text-xs rounded-full font-bold ml-3 mt-4 absolute top-0 left-0 shadow-sm border border-white",
-                "bg-gradient-to-br from-sky-300 to-blue-400"
+                  "w-2 h-2 bg-cyan-400 rounded-none shadow-[0_0_10px_rgba(34,211,238,0.8)]", // Square dot
+                  isClicking && "bg-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.8)]"
               )}
-              initial={{ scale: 0.5, opacity: 0 }}
               animate={{
-                scale: isHovering && cursorText ? 1 : 0,
-                opacity: isHovering && cursorText ? 1 : 0,
+                scale: isClicking ? 0.8 : 1,
               }}
-              transition={{ duration: 0.2 }}
-            >
-              {cursorText}
-            </motion.div>
+              style={{
+                x: -4, // Center it (w/2)
+                y: -4,
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import StructuredData from "@/components/StructuredData";
@@ -111,7 +112,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white dark`}
+        className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased bg-[#0a0a0a] text-white dark`}
         suppressHydrationWarning
       >
         <CustomCursor />

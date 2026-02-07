@@ -130,8 +130,8 @@ export default function Skills() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative py-16 px-4 overflow-hidden"
-      style={{ perspective: 1200 }}
+      className="relative py-24 px-4 overflow-hidden"
+      style={{ perspective: 1000 }}
     >
       <motion.div
         style={{
@@ -158,32 +158,28 @@ export default function Skills() {
         </div>
 
         {/* Skills Container */}
-        <div ref={containerRef}>
+        <div ref={containerRef} className="space-y-12">
+          
+          {/* Row 1: Left to Right */}
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 0.8,
-              delay: 0.2,
-              ease: [0.25, 0.4, 0.25, 1],
-            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
             className="relative"
           >
-            {/* Gradient Overlays */}
-            <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            {/* Gradient Fade Edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
-            {/* Scrolling Skills */}
-            <div className="overflow-hidden">
+            <div className="flex overflow-hidden group">
               <motion.div
-                className="flex gap-8"
+                className="flex gap-6 md:gap-8 px-4"
                 animate={{
-                  x: [0, -1920], // Adjust based on content width
+                  x: [0, -1920], // Adjust based on content width approximation
                 }}
                 transition={{
                   x: {
-                    duration: 30,
+                    duration: 40,
                     repeat: Infinity,
                     ease: "linear",
                   },
@@ -193,18 +189,17 @@ export default function Skills() {
                   const Icon = skill.icon;
                   return (
                     <motion.div
-                      key={`${skill.name}-${index}`}
-                      role="button"
-                      data-skill-item
-                      whileHover={{ y: -5 }}
-                      className="flex-shrink-0 group relative z-20"
+                      key={`row1-${skill.name}-${index}`}
+                      className="relative group/card"
                     >
                       <div 
-                        className="flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[var(--skill-color)] transition-all duration-500 backdrop-blur-sm hover:backdrop-blur-md shadow-lg hover:shadow-[0_0_30px_-10px_var(--skill-color)]"
+                        className="flex flex-col items-center justify-center gap-3 w-32 h-36 md:w-40 md:h-44 rounded-3xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all duration-500 group-hover/card:bg-zinc-800/50 group-hover/card:border-[var(--skill-color)] group-hover/card:shadow-[0_0_50px_-15px_var(--skill-color)]"
                         style={{ "--skill-color": skill.color } as React.CSSProperties}
                       >
-                        <Icon className="text-4xl sm:text-5xl text-gray-400 group-hover:text-[var(--skill-color)] transition-colors duration-500 drop-shadow-lg" />
-                        <span className="text-xs sm:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 whitespace-nowrap group-hover:opacity-100">
+                        <div className="p-3 rounded-full bg-white/5 group-hover/card:bg-[var(--skill-color)]/10 transition-colors duration-500">
+                           <Icon className="text-4xl md:text-5xl text-zinc-400 group-hover/card:text-[var(--skill-color)] transition-colors duration-300 transform group-hover/card:scale-110" />
+                        </div>
+                        <span className="text-sm font-semibold text-zinc-500 group-hover/card:text-white transition-colors duration-300">
                           {skill.name}
                         </span>
                       </div>
@@ -215,30 +210,26 @@ export default function Skills() {
             </div>
           </motion.div>
 
-          {/* Second Row - Slide from right */}
+          {/* Row 2: Right to Left */}
           <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 0.8,
-              delay: 0.4,
-              ease: [0.25, 0.4, 0.25, 1],
-            }}
-            className="relative mt-8 sm:mt-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="relative"
           >
-            <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+             {/* Gradient Fade Edges */}
+             <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+             <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
-            <div className="overflow-hidden">
+            <div className="flex overflow-hidden">
               <motion.div
-                className="flex gap-8"
+                className="flex gap-6 md:gap-8 px-4"
                 animate={{
-                  x: [-1920, 0], // Reverse direction
+                  x: [-1920, 0], 
                 }}
                 transition={{
                   x: {
-                    duration: 30,
+                    duration: 45, // Slightly slower for variation
                     repeat: Infinity,
                     ease: "linear",
                   },
@@ -248,17 +239,17 @@ export default function Skills() {
                   const Icon = skill.icon;
                   return (
                     <motion.div
-                      key={`reverse-${skill.name}-${index}`}
-                      role="button"
-                      whileHover={{ y: -5 }}
-                      className="flex-shrink-0 group relative z-20"
+                      key={`row2-${skill.name}-${index}`}
+                      className="relative group/card"
                     >
                       <div 
-                        className="flex flex-col items-center justify-center gap-2 w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[var(--skill-color)] transition-all duration-500 backdrop-blur-sm hover:backdrop-blur-md shadow-lg hover:shadow-[0_0_30px_-10px_var(--skill-color)]"
+                        className="flex flex-col items-center justify-center gap-3 w-32 h-36 md:w-40 md:h-44 rounded-3xl border border-white/5 bg-zinc-900/30 backdrop-blur-sm transition-all duration-500 group-hover/card:bg-zinc-800/50 group-hover/card:border-[var(--skill-color)] group-hover/card:shadow-[0_0_50px_-15px_var(--skill-color)]"
                         style={{ "--skill-color": skill.color } as React.CSSProperties}
                       >
-                        <Icon className="text-4xl sm:text-5xl text-gray-400 group-hover:text-[var(--skill-color)] transition-colors duration-500 drop-shadow-lg" />
-                        <span className="text-xs sm:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 whitespace-nowrap group-hover:opacity-100">
+                         <div className="p-3 rounded-full bg-white/5 group-hover/card:bg-[var(--skill-color)]/10 transition-colors duration-500">
+                           <Icon className="text-4xl md:text-5xl text-zinc-400 group-hover/card:text-[var(--skill-color)] transition-colors duration-300 transform group-hover/card:scale-110" />
+                        </div>
+                        <span className="text-sm font-semibold text-zinc-500 group-hover/card:text-white transition-colors duration-300">
                           {skill.name}
                         </span>
                       </div>
@@ -268,6 +259,7 @@ export default function Skills() {
               </motion.div>
             </div>
           </motion.div>
+
         </div>
       </motion.div>
     </section>
