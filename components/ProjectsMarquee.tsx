@@ -80,15 +80,15 @@ export function ProjectsMarquee() {
       className="relative py-12 overflow-hidden [perspective:1000px] w-full"
     >
       {/* Subtle Background Glow */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-900/5 to-transparent" />
       
       {/* Ambient Light Effects */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
       {/* 3D Marquee with Full Width Styling */}
       <motion.div
-        className="w-full bg-gradient-to-b from-transparent via-purple-900/5 to-transparent backdrop-blur-sm"
+        className="w-full bg-gradient-to-b from-transparent via-cyan-900/5 to-transparent backdrop-blur-sm"
         style={{
           rotateX,
           rotateZ,

@@ -7,7 +7,6 @@ import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import ProjectsMarquee from "@/components/ProjectsMarquee";
-import Contact from "@/components/Contact";
 import SocialSidebar from "@/components/SocialSidebar";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -41,7 +40,6 @@ export default function Home() {
           <Skills />
           <Projects />
           <ProjectsMarquee />
-          <Contact />
         </main>
 
         {/* Footer */}

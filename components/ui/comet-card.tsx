@@ -13,10 +13,10 @@ export const CometCard = ({
   return (
     <div className={cn("relative group", className)}>
       {/* Comet trail effect */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-75 blur-xl transition-all duration-500 group-hover:duration-200 animate-gradient-xy" />
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-600 via-blue-500 to-cyan-600 rounded-2xl opacity-0 group-hover:opacity-75 blur-xl transition-all duration-500 group-hover:duration-200 animate-gradient-xy" />
 
       {/* Glow effect */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-600 via-blue-500 to-cyan-600 rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
 
       {/* Main card */}
       <div className="relative">{children}</div>

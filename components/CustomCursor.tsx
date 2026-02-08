@@ -22,9 +22,9 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  // Smooth delayed positions for ring (follows with lag)
-  const ringX = useSpring(cursorX, { stiffness: 150, damping: 15 });
-  const ringY = useSpring(cursorY, { stiffness: 150, damping: 15 });
+  // Smooth delayed positions for ring (follows with less lag)
+  const ringX = useSpring(cursorX, { stiffness: 300, damping: 25 });
+  const ringY = useSpring(cursorY, { stiffness: 300, damping: 25 });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.matchMedia("(pointer: coarse)").matches);

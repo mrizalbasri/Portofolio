@@ -3,8 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
 import { useRouter, usePathname } from "next/navigation";
+import NavItem from "./NavItem";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,11 +38,9 @@ export default function Navigation() {
 
   const navItems = [
     { name: "HOME", href: "/", id: "home" },
-    { name: "ABOUT ME", href: "/about", id: "about" },
-    { name: "SKILLS", href: "/skills", id: "skills" },
     { name: "PROJECTS", href: "/projects", id: "projects" },
     { name: "BLOG", href: "/blog", id: "blog" },
-    //{ name: "CONTACT", href: "/contact", id: "contact" }, // Contact is usually a section or page, let's make it a page
+    { name: "CONTACT", href: "/contact", id: "contact" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -64,7 +62,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <motion.a
-            href="#"
+            href="/"
             whileHover={{ scale: 1.05 }}
             className="relative z-[5200]"
             aria-label="Home"
@@ -79,37 +77,39 @@ export default function Navigation() {
             />
           </motion.a>
 
-          {/* Menu Button */}
-          <motion.button
+          {/* Menu Button - 2 Lines Only */}
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="relative z-[5200] flex items-center gap-3 group p-2 rounded-lg hover:bg-white/10 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="relative z-[5200] p-2"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
           >
-            {/* Hamburger Icon */}
-            <div className="relative w-8 h-6 flex flex-col justify-center items-center">
+            {/* Hamburger Icon - 2 Lines */}
+            <div className="relative w-8 h-3 flex flex-col justify-between">
+              {/* Top line */}
               <motion.span
                 animate={
-                  isMenuOpen ? { rotate: 45, y: 0 } : { rotate: 0, y: -4 }
+                  isMenuOpen 
+                    ? { rotate: 45, y: 6 } 
+                    : { rotate: 0, y: 0 }
                 }
-                transition={{ duration: 0.3 }}
-                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
-              />
-              <motion.span
-                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
                 transition={{ duration: 0.2 }}
-                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
+                className="w-full h-[3px] bg-white"
+                style={{ transformOrigin: "center" }}
               />
+              
+              {/* Bottom line */}
               <motion.span
                 animate={
-                  isMenuOpen ? { rotate: -45, y: 0 } : { rotate: 0, y: 4 }
+                  isMenuOpen 
+                    ? { rotate: -45, y: -6 } 
+                    : { rotate: 0, y: 0 }
                 }
-                transition={{ duration: 0.3 }}
-                className="absolute w-6 h-0.5 transition-colors duration-300 bg-white"
+                transition={{ duration: 0.2 }}
+                className="w-full h-[3px] bg-white"
+                style={{ transformOrigin: "center" }}
               />
             </div>
-          </motion.button>
+          </button>
         </div>
       </motion.nav>
 
@@ -141,38 +141,13 @@ export default function Navigation() {
               <div className="flex-1 flex flex-col justify-center px-10 md:px-20 py-20">
                 <nav className="space-y-2 md:space-y-4">
                   {navItems.map((item, index) => (
-                    <motion.div
+                    <NavItem
                       key={item.id}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
-                    >
-                      <button
-                        onClick={() => handleNavClick(item.href)}
-                        className="group relative block w-full text-left"
-                      >
-                        <span
-                          className={`text-4xl md:text-6xl lg:text-7xl font-bold transition-colors duration-300 ${
-                            activeSection === item.id
-                              ? "text-cyan-500"
-                              : "text-white hover:text-cyan-500"
-                          }`}
-                        >
-                          {item.name}
-                        </span>
-
-                        {/* Underline Animation */}
-                        <motion.div
-                          className="h-1 bg-cyan-500 origin-left mt-2"
-                          initial={{
-                            scaleX: activeSection === item.id ? 1 : 0,
-                          }}
-                          whileHover={{ scaleX: 1 }}
-                          transition={{ duration: 0.3 }}
-                          style={{ scaleX: activeSection === item.id ? 1 : 0 }}
-                        />
-                      </button>
-                    </motion.div>
+                      item={item}
+                      index={index}
+                      isActive={activeSection === item.id}
+                      onClick={() => handleNavClick(item.href)}
+                    />
                   ))}
                 </nav>
 
@@ -196,17 +171,31 @@ export default function Navigation() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8, duration: 0.4 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     window.dispatchEvent(new Event("toggle-chat-widget"));
                     setIsMenuOpen(false);
                   }}
-                  className="mt-8 px-6 py-3 bg-white text-black rounded-full inline-flex items-center gap-2 hover:bg-cyan-500 hover:text-white transition-colors w-fit"
+                  className="relative mt-8 px-6 py-3 bg-white text-black rounded-full inline-flex items-center gap-2 w-fit overflow-hidden group"
                 >
-                  <svg
-                    className="w-5 h-5"
+                  {/* Gradient overlay on hover */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  />
+                  
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  />
+                  
+                  <motion.svg
+                    className="w-5 h-5 relative z-10 group-hover:text-white transition-colors"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   >
                     <path
                       strokeLinecap="round"
@@ -214,8 +203,11 @@ export default function Navigation() {
                       strokeWidth={2}
                       d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
-                  </svg>
-                  <span className="font-medium">Ask AI Assistant</span>
+                  </motion.svg>
+                  <span className="font-medium relative z-10 group-hover:text-white transition-colors">Ask AI Assistant</span>
+                  
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg bg-cyan-500/50 -z-10" />
                 </motion.button>
               </div>
 

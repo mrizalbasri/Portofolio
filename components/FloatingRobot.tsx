@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 function RobotLoader() {
   return (
     <div className="w-full h-full flex items-center justify-center">
-       <div className="w-4 h-4 bg-purple-500 rounded-full animate-ping" />
+       <div className="w-4 h-4 bg-cyan-500 rounded-full animate-ping" />
     </div>
   );
 }
@@ -62,10 +62,10 @@ export default function FloatingRobot() {
   // Combine opacity with route visibility
   // If not home page, opacity is 0. But we keep it mounted.
   const opacity = isHomePage ? opacityScroll : 0;
-  const pointerEvents = isHomePage ? "auto" : "none";
+  const pointerEvents = "none"; // Always none to not block clicks
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden" style={{ pointerEvents }}>
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
         <motion.div 
             style={{ x, scale, opacity }}
             className={`w-full h-full flex items-center justify-center transition-opacity duration-500`}

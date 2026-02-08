@@ -183,7 +183,7 @@ export default function Projects() {
             ) : (
               // Loaded Content
               <>
-                {/* Featured Project - Hero Card */}
+                {/* Featured Project - Hero Card - Responsive */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -191,43 +191,65 @@ export default function Projects() {
                   className="mb-8"
                 >
                     <div className="relative group">
-                    <div className="grid lg:grid-cols-2 gap-8 items-center bg-zinc-900/40 rounded-3xl p-8 border border-white/10 backdrop-blur-xl hover:border-cyan-500/30 transition-colors duration-500">
+                    <div className="grid lg:grid-cols-2 gap-6 md:gap-8 items-center bg-zinc-900/40 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 border border-white/10 backdrop-blur-xl hover:border-cyan-500/30 transition-colors duration-500">
                       {/* Left: Project Info */}
-                      <div className="space-y-6">
+                      <div className="space-y-4 md:space-y-6">
                         <div className="flex items-center gap-3">
-                          <div className={`p-3 rounded-xl bg-gradient-to-r ${displayProjects[0]?.gradient}`}>
-                            {displayProjects[0] && React.createElement(displayProjects[0].icon, { className: "text-white text-2xl" })}
+                          <div className={`p-2 md:p-3 rounded-xl bg-gradient-to-r ${displayProjects[0]?.gradient}`}>
+                            {displayProjects[0] && React.createElement(displayProjects[0].icon, { className: "text-white text-xl md:text-2xl" })}
                           </div>
                           <div>
-                            <h3 className="text-2xl font-bold text-white">{displayProjects[0]?.title}</h3>
-                            <p className="text-gray-400">Latest Project</p>
+                            <h3 className="text-xl md:text-2xl font-bold text-white">{displayProjects[0]?.title}</h3>
+                            <p className="text-gray-400 text-sm md:text-base">Latest Project</p>
                           </div>
                         </div>
                         
-                        <p className="text-gray-300 text-lg leading-relaxed">
+                        <p className="text-gray-300 text-base md:text-lg leading-relaxed">
                           {displayProjects[0]?.longDescription || displayProjects[0]?.description}
                         </p>
                         
                         <div className="flex flex-wrap gap-2">
                           {displayProjects[0]?.tags.slice(0, 5).map((tag, i) => (
-                            <span key={i} className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm text-gray-300">
+                            <span key={i} className="px-2.5 md:px-3 py-1 bg-white/10 border border-white/20 rounded-full text-xs md:text-sm text-gray-300">
                               {tag}
                             </span>
                           ))}
                         </div>
                         
                         <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.02, y: -2 }}
+                          whileTap={{ scale: 0.98 }}
                           onClick={() => setSelectedProject(displayProjects[0])}
-                          className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+                          className="group relative px-5 md:px-6 py-2.5 md:py-3 text-sm md:text-base bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-semibold overflow-hidden w-full sm:w-auto"
                         >
-                          View Details →
+                          {/* Animated gradient overlay */}
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                          
+                          {/* Shine effect */}
+                          <motion.div
+                            className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          />
+                          
+                          <span className="relative z-10 flex items-center justify-center gap-2">
+                            View Details
+                            <motion.span
+                              className="inline-block"
+                              animate={{ x: [0, 3, 0] }}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                            >
+                              →
+                            </motion.span>
+                          </span>
+                          
+                          {/* Glow effect */}
+                          <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-cyan-500/50 to-blue-500/50 -z-10" />
                         </motion.button>
                       </div>
                       
                       {/* Right: Project Visual */}
-                      <div className="relative">
+                      <div className="relative order-first lg:order-last">
                         <ProjectErrorBoundary>
                           <ThreeDProjectCard
                             project={displayProjects[0]}
@@ -239,8 +261,8 @@ export default function Projects() {
                   </div>
                 </motion.div>
 
-                {/* Other Projects - Clean 2-Column Grid */}
-                <div className="grid md:grid-cols-2 gap-6">
+                {/* Other Projects - Clean Responsive Grid */}
+                <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
                   {displayProjects.slice(1).map((project, index) => (
                     <motion.div
                       key={project.id}
@@ -276,26 +298,41 @@ export default function Projects() {
                   className="group relative"
                 >
                   <motion.button
-                    whileHover={{ y: -2 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="relative px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 rounded-2xl text-white font-medium text-lg transition-all duration-300 flex items-center gap-3 backdrop-blur-sm group overflow-hidden"
+                    className="relative px-8 py-4 bg-white/5 border border-white/20 rounded-2xl text-white font-medium text-lg flex items-center gap-3 backdrop-blur-sm group overflow-hidden"
                   >
-                    {/* Simple hover background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Animated gradient background */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      animate={{
+                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      style={{ backgroundSize: "200% 100%" }}
+                    />
+                    
+                    {/* Shine effect */}
+                    <motion.div
+                      className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                    />
+                    
+                    {/* Border glow */}
+                    <div className="absolute inset-0 rounded-2xl border border-cyan-500/0 group-hover:border-cyan-500/50 transition-all duration-500" />
                     
                     <span className="relative z-10">View All Projects</span>
                     
                     <motion.div
-                      className="relative z-10 text-gray-400 group-hover:text-white transition-colors"
-                      whileHover={{ x: 3 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      className="relative z-10 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300"
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       →
                     </motion.div>
                   </motion.button>
                   
-                  {/* Subtle glow on hover */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600/20 to-blue-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                  {/* Enhanced glow on hover */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-blue-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
                 </motion.div>
               </Link>
             </div>

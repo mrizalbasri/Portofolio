@@ -77,7 +77,7 @@ export function ErrorFallback({
         {onRetry && (
           <button
             onClick={onRetry}
-            className="ml-2 text-purple-400 hover:text-purple-300 underline"
+            className="ml-2 text-cyan-400 hover:text-cyan-300 underline"
           >
             Try again
           </button>
@@ -101,7 +101,7 @@ export function ErrorFallback({
         {onRetry && (
           <button
             onClick={onRetry}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white text-sm transition-colors"
+            className="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white text-sm transition-colors"
           >
             <FaRedo className="inline mr-2" />
             Try Again
@@ -171,7 +171,7 @@ export function ErrorFallback({
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
             >
               <FaRedo />
               Try Again

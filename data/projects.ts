@@ -39,7 +39,7 @@ export const projects: Project[] = [
     longDescription: 'Aplikasi ramalan cuaca modern yang dibangun dengan React, Vite, dan Tailwind CSS. Menggunakan OpenWeatherMap API untuk mendapatkan data cuaca real-time dan prakiraan cuaca 5 hari. Dilengkapi dengan fitur pencarian kota dan UI yang responsif dengan gradient menarik.',
     tags: ['React', 'Vite', 'Tailwind CSS', 'JavaScript', 'API'],
     color: 'cyan',
-    gradient: 'from-cyan-600 via-blue-600 to-purple-600',
+    gradient: 'from-cyan-600 via-blue-600 to-cyan-500',
     icon: FaChartLine,
     demoUrl: '#',
     githubUrl: 'https://github.com/mrizalbasri/WeatherApp',

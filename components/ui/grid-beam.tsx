@@ -56,7 +56,7 @@ export const GridBeam = ({
       {[1, 3, 5, 8, 12].map((row, i) => (
         <div
           key={`h-${i}`}
-          className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 animate-grid-beam-h"
+          className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 animate-grid-beam-h"
           style={{
             top: `${row * 8}rem`, // Aligns with grid lines (8rem spacing)
             animationDelay: `${i * 2.3}s`,
@@ -80,7 +80,7 @@ export const GridBeam = ({
 
       {/* Central Beam / Spotlight with Animation */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] max-w-5xl pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent blur-3xl animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-900/10 to-transparent blur-3xl animate-pulse" />
       </div>
 
       {/* Content Container */}

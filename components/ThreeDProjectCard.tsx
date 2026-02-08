@@ -20,7 +20,7 @@ export function ThreeDProjectCard({
   return (
     <CardContainer className="inter-var py-0">
       <CardBody
-        className="bg-gray-900/80 relative group/card hover:shadow-2xl hover:shadow-purple-500/[0.15] border-white/[0.1] w-full h-auto rounded-2xl p-6 border cursor-pointer"
+        className="bg-gray-900/80 relative group/card hover:shadow-2xl hover:shadow-cyan-500/[0.15] border-white/[0.1] w-full h-auto rounded-2xl p-6 border cursor-pointer"
         onClick={onClick}
       >
         {/* Project Icon/Badge */}
@@ -108,7 +108,7 @@ export function ThreeDProjectCard({
           <CardItem
             translateZ={20}
             as="button"
-            className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:text-purple-400 transition-colors flex items-center gap-2"
+            className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:text-cyan-400 transition-colors flex items-center gap-2"
             onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               onClick?.();

@@ -163,9 +163,9 @@ export default function Contact() {
           scale,
           rotateX,
         }}
-        className="max-w-6xl mx-auto"
+        className="max-w-6xl mx-auto px-4"
       >
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-start">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-start">
            
            {/* Left Column: Info & Text */}
            <motion.div
@@ -174,7 +174,7 @@ export default function Contact() {
              viewport={{ once: true }}
            >
               {/* Header */}
-              <div className="mb-12">
+              <div className="mb-8 md:mb-12">
                  <div className="flex items-center gap-3 mb-6">
                     <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
                     <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium font-mono">
@@ -182,11 +182,11 @@ export default function Contact() {
                     </span>
                  </div>
                  
-                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight">
                     Let&apos;s build something <span className="text-cyan-500">extraordinary</span> together.
                  </h2>
                  
-                 <p className="text-zinc-400 text-lg leading-relaxed">
+                 <p className="text-zinc-400 text-base md:text-lg leading-relaxed">
                     Whether you have a specific project in mind or just want to explore possibilities, I&apos;m here to help translate your vision into digital reality.
                  </p>
               </div>
@@ -237,7 +237,7 @@ export default function Contact() {
            >
               <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-blue-600/20 blur-[100px] -z-10 rounded-full opacity-50 pointer-events-none" />
 
-              <form onSubmit={handleSubmit} className="bg-zinc-900/80 backdrop-blur-xl p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+              <form onSubmit={handleSubmit} className="bg-zinc-900/80 backdrop-blur-xl p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 shadow-2xl space-y-4 md:space-y-6">
                   {/* Honeypot field */}
                   <div className="hidden" aria-hidden="true">
                     <input
@@ -289,22 +289,44 @@ export default function Contact() {
                      />
                   </div>
 
-                  <button
+                  <motion.button
                     type="submit"
                     disabled={isSending}
-                    className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-bold text-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed overflow-hidden"
                   >
-                    {isSending ? (
-                        <span>Sending...</span>
-                    ) : isSubmitted ? (
-                        <span className="flex items-center gap-2"><FaCheckCircle /> Sent!</span>
-                    ) : (
-                        <>
-                            <span>Send Message</span>
-                            <FaPaperPlane className="text-sm group-hover:translate-x-1 transition-transform" />
-                        </>
-                    )}
-                  </button>
+                    {/* Animated gradient overlay */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                    
+                    {/* Shine effect */}
+                    <motion.div
+                      className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    />
+                    
+                    <span className="relative z-10 flex items-center gap-2">
+                      {isSending ? (
+                          <span>Sending...</span>
+                      ) : isSubmitted ? (
+                          <span className="flex items-center gap-2"><FaCheckCircle /> Sent!</span>
+                      ) : (
+                          <>
+                              <span>Send Message</span>
+                              <motion.span
+                                animate={{ x: [0, 3, 0], rotate: [0, 15, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
+                              >
+                                <FaPaperPlane className="text-sm" />
+                              </motion.span>
+                          </>
+                      )}
+                    </span>
+                    
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-cyan-500/50 to-blue-500/50 -z-10" />
+                  </motion.button>
                   
                   {error && (
                     <p className="text-red-400 text-sm text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20">{error}</p>

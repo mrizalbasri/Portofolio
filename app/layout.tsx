@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import StructuredData from "@/components/StructuredData";
@@ -18,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 // Metadata Base URL & Verification (update saat deploy)
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.vercel.app';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.me';
 const gscVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google-site-verification-placeholder';
 
 // Comprehensive SEO Metadata
@@ -112,7 +111,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} antialiased bg-[#0a0a0a] text-white dark`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white dark`}
         suppressHydrationWarning
       >
         <CustomCursor />
