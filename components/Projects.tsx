@@ -8,12 +8,14 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Link from "next/link";
 import ProjectModal from "./ProjectModal";
 import ThreeDProjectCard from "./ThreeDProjectCard";
+import MagneticButton from "./MagneticButton";
 import { Project } from "@/types/project";
 import { projects } from "@/data/projects";
 import { useLoading } from "@/hooks/useLoading";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { HeroProjectSkeleton, ProjectCardSkeleton } from "@/components/ui/skeleton";
 import { ProjectErrorBoundary } from "@/components/ui/error-boundary";
-import { FollowerPointerCard } from "./ui/following-pointer";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,8 +24,9 @@ import { ShootingStars } from "@/components/ui/shooting-stars";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const { isLoading, executeAsync } = useLoading({ initialLoading: true, delay: 800 });
-  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  // Disable initial loading/skeleton since we have local data and want instant render
+  const { isLoading } = useLoading({ initialLoading: false }); 
+  const [featuredProjects] = useState<Project[]>(projects.slice(0, 3));
   
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,35 +38,15 @@ export default function Projects() {
     offset: ["start end", "end start"],
   });
 
-  const springConfig = { stiffness: 50, damping: 20 };
+  const springConfig = { stiffness: 100, damping: 30 };
 
-  // Smooth 3D Parallax transforms
-  const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [6, 0, -6]),
-    springConfig
-  );
-  const y = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [70, 0, -70]),
-    springConfig
-  );
+  // Simple fade effect only
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5]),
-    springConfig
-  );
-  const scale = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]),
+    useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.8, 1, 1, 0.8]),
     springConfig
   );
 
-  useEffect(() => {
-    // Simulate loading projects (in real app, this would be an API call)
-    executeAsync(async () => {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setFeaturedProjects(projects.slice(0, 3));
-      return projects;
-    });
-  }, [executeAsync]);
+
 
   useEffect(() => {
     if (isLoading || featuredProjects.length === 0) return;
@@ -113,7 +96,7 @@ export default function Projects() {
 
     // Cleanup function - very important!
     return () => {
-      ctx.revert(); // This will kill all GSAP animations and ScrollTriggers created in this context
+      ctx.revert();
     };
   }, [isLoading, featuredProjects]);
 
@@ -126,7 +109,6 @@ export default function Projects() {
         id="projects"
         className="relative py-32 overflow-hidden bg-black/40 backdrop-blur-sm"
         ref={sectionRef}
-        style={{ perspective: 1200 }}
       >
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 opacity-40">
@@ -135,12 +117,7 @@ export default function Projects() {
         </div>
 
         <motion.div
-          style={{
-            y,
-            opacity,
-            scale,
-            rotateX,
-          }}
+          style={{ opacity }}
           ref={containerRef}
           className="relative z-10"
         >
@@ -216,36 +193,18 @@ export default function Projects() {
                           ))}
                         </div>
                         
-                        <motion.button
-                          whileHover={{ scale: 1.02, y: -2 }}
-                          whileTap={{ scale: 0.98 }}
+                        <MagneticButton
+                          strength={0.2}
+                          as="div"
+                          className="w-fit cursor-pointer"
                           onClick={() => setSelectedProject(displayProjects[0])}
-                          className="group relative px-5 md:px-6 py-2.5 md:py-3 text-sm md:text-base bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-semibold overflow-hidden w-full sm:w-auto"
                         >
-                          {/* Animated gradient overlay */}
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          />
-                          
-                          {/* Shine effect */}
-                          <motion.div
-                            className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                          />
-                          
-                          <span className="relative z-10 flex items-center justify-center gap-2">
+                          <InteractiveHoverButton 
+                            className="bg-transparent border-white/20 text-white hover:bg-white/10"
+                          >
                             View Details
-                            <motion.span
-                              className="inline-block"
-                              animate={{ x: [0, 3, 0] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                              →
-                            </motion.span>
-                          </span>
-                          
-                          {/* Glow effect */}
-                          <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-cyan-500/50 to-blue-500/50 -z-10" />
-                        </motion.button>
+                          </InteractiveHoverButton>
+                        </MagneticButton>
                       </div>
                       
                       {/* Right: Project Visual */}
@@ -254,6 +213,7 @@ export default function Projects() {
                           <ThreeDProjectCard
                             project={displayProjects[0]}
                             onClick={() => setSelectedProject(displayProjects[0])}
+                            hideShowDetailsButton={true}
                           />
                         </ProjectErrorBoundary>
                       </div>
@@ -289,51 +249,31 @@ export default function Projects() {
           {/* Clean View All Button */}
           {!isLoading && (
             <div className="flex justify-center pb-20">
-              <Link href="/projects">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
-                  className="group relative"
-                >
-                  <motion.button
-                    whileHover={{ y: -4, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="relative px-8 py-4 bg-white/5 border border-white/20 rounded-2xl text-white font-medium text-lg flex items-center gap-3 backdrop-blur-sm group overflow-hidden"
-                  >
+              <Link href="/projects" className="relative group">
+                <MagneticButton strength={0.4} className="group relative">
+                  <div className="relative px-8 py-4 bg-white/5 border border-white/20 rounded-2xl text-white font-medium text-lg flex items-center gap-3 backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/30 group-hover:scale-105">
+                    
                     {/* Animated gradient background */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      animate={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      style={{ backgroundSize: "200% 100%" }}
-                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 via-blue-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:200%_100%] animate-gradient-x" />
                     
                     {/* Shine effect */}
-                    <motion.div
-                      className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                    />
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     
-                    {/* Border glow */}
-                    <div className="absolute inset-0 rounded-2xl border border-cyan-500/0 group-hover:border-cyan-500/50 transition-all duration-500" />
+                    <span className="relative z-10 group-hover:text-cyan-400 transition-colors">View All Projects</span>
                     
-                    <span className="relative z-10">View All Projects</span>
-                    
-                    <motion.div
+                    {/* Arrow Icon */}
+                    <motion.span 
                       className="relative z-10 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300"
                       animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                     >
                       →
-                    </motion.div>
-                  </motion.button>
+                    </motion.span>
+                  </div>
                   
                   {/* Enhanced glow on hover */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-blue-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-                </motion.div>
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-blue-500/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 scale-90 group-hover:scale-110" />
+                </MagneticButton>
               </Link>
             </div>
           )}

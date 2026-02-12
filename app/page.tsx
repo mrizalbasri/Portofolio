@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
-import ProjectsMarquee from "@/components/ProjectsMarquee";
+import Certificates from "@/components/Certificates";
 import SocialSidebar from "@/components/SocialSidebar";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -39,7 +39,7 @@ export default function Home() {
           <About />
           <Skills />
           <Projects />
-          <ProjectsMarquee />
+          <Certificates />
         </main>
 
         {/* Footer */}

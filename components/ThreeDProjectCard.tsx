@@ -9,11 +9,13 @@ import Image from "next/image";
 interface ThreeDProjectCardProps {
   project: Project;
   onClick?: () => void;
+  hideShowDetailsButton?: boolean;
 }
 
 export function ThreeDProjectCard({
   project,
   onClick,
+  hideShowDetailsButton = false,
 }: ThreeDProjectCardProps) {
   const IconComponent = project.icon;
 
@@ -105,17 +107,22 @@ export function ThreeDProjectCard({
 
         {/* Actions */}
         <div className="flex justify-between items-center mt-6">
-          <CardItem
-            translateZ={20}
-            as="button"
-            className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:text-cyan-400 transition-colors flex items-center gap-2"
-            onClick={(e: React.MouseEvent) => {
-              e.stopPropagation();
-              onClick?.();
-            }}
-          >
-            View Details →
-          </CardItem>
+          {!hideShowDetailsButton ? (
+            <CardItem
+              translateZ={20}
+              as="button"
+              className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:text-cyan-400 transition-colors flex items-center gap-2"
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                onClick?.();
+              }}
+            >
+              View Details →
+            </CardItem>
+          ) : (
+            <div /> /* Spacer if button is hidden */
+          )}
+          
           <div className="flex gap-2">
             {project.githubUrl && (
               <CardItem

@@ -7,7 +7,6 @@ import {
   FaLinkedin,
   FaEnvelope,
   FaInstagram,
-  FaWhatsapp,
   FaArrowUp,
 } from "react-icons/fa";
 import dynamic from "next/dynamic";
@@ -31,15 +30,11 @@ export default function Footer() {
     offset: ["start end", "end start"],
   });
 
-  const springConfig = { stiffness: 50, damping: 20 };
+  const springConfig = { stiffness: 100, damping: 30 };
 
-  // Smooth Parallax transforms
-  const y = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [80, 0, 0]),
-    springConfig
-  );
+  // Simple fade effect only
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.3, 1], [0.5, 1, 1]),
+    useTransform(scrollYProgress, [0, 0.2, 1], [0.9, 1, 1]),
     springConfig
   );
 
@@ -71,7 +66,6 @@ export default function Footer() {
       icon: FaLinkedin,
       url: "https://www.linkedin.com/in/m-rizal-basri/",
     },
-    { name: "WhatsApp", icon: FaWhatsapp, url: "https://wa.me/6284668265398" },
     {
       name: "Instagram",
       icon: FaInstagram,
@@ -83,7 +77,7 @@ export default function Footer() {
     <footer
       ref={footerRef}
       className="relative h-screen bg-black overflow-hidden flex flex-col pointer-events-auto"
-      style={{ perspective: 1200, pointerEvents: 'auto' }}
+      style={{ pointerEvents: 'auto' }}
     >
       {/* Stars Background - Outside motion.div */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
@@ -128,7 +122,6 @@ export default function Footer() {
 
       <motion.div
         style={{
-          y,
           opacity,
           pointerEvents: 'auto',
         }}

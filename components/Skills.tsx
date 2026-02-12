@@ -59,23 +59,11 @@ export default function Skills() {
     offset: ["start end", "end start"],
   });
 
-  const springConfig = { stiffness: 50, damping: 20 };
+  const springConfig = { stiffness: 100, damping: 30 };
 
-  // Smooth 3D Parallax transforms
-  const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [5, 0, -5]),
-    springConfig
-  );
-  const y = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [50, 0, -50]),
-    springConfig
-  );
+  // Simple fade effect only
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.6, 1, 1, 0.6]),
-    springConfig
-  );
-  const scale = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [0.97, 1, 0.97]),
+    useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.8, 1, 1, 0.8]),
     springConfig
   );
 
@@ -131,15 +119,9 @@ export default function Skills() {
       id="skills"
       ref={sectionRef}
       className="relative py-16 md:py-24 px-4 overflow-hidden"
-      style={{ perspective: 1000 }}
     >
       <motion.div
-        style={{
-          y,
-          opacity,
-          scale,
-          rotateX,
-        }}
+        style={{ opacity }}
         className="max-w-7xl mx-auto"
       >
         {/* Clean Modern Header - Minimal */}

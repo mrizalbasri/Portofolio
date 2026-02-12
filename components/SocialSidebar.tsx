@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp, FaRobot } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaRobot } from 'react-icons/fa';
 
 const socialLinks = [
   {
@@ -10,12 +10,7 @@ const socialLinks = [
     url: 'https://www.linkedin.com/in/m-rizal-basri/',
     color: '#0077B5',
   },
-  {
-    name: 'WhatsApp',
-    icon: FaWhatsapp,
-    url: 'https://wa.me/6284668265398', // Ganti dengan nomor WhatsApp Anda (format: 62xxx tanpa +)
-    color: '#25D366',
-  },
+
   {
     name: 'Instagram',
     icon: FaInstagram,

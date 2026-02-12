@@ -27,10 +27,9 @@ export default function About({ isFullPage = false }: AboutProps) {
     offset: ["start end", "end start"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [100, 0, 0, 100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.9, 1, 1, 0.9]);
 
-  const contentStyle = isFullPage ? {} : { opacity, y };
+  const contentStyle = isFullPage ? {} : { opacity };
 
   return (
     <section id="about" ref={sectionRef} className={`py-32 relative overflow-hidden bg-black`}>

@@ -1,5 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 interface ThreeDMarqueeProps {
@@ -9,7 +11,26 @@ interface ThreeDMarqueeProps {
 
 export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+      const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+      setMousePosition({ x, y });
+    };
+
+    if (isHovered) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [isHovered]);
 
   // Ensure we have enough images for 8 rows x 8 columns
   const filledImages = [...images];
@@ -27,7 +48,7 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
     <div
       ref={containerRef}
       className={cn(
-        "relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden bg-transparent",
+        "relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -35,11 +56,13 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
     >
       {/* 3D Transformed Container */}
       <div
-        className="flex flex-col gap-4 transition-transform duration-500"
+        className="flex flex-col gap-4 transition-transform duration-300 ease-out"
         style={{
-          transform: `perspective(1000px) rotateX(${isHovered ? 5 : 25}deg) rotateY(${isHovered ? 0 : -15}deg) rotateZ(${isHovered ? 0 : 10}deg) scale(${
-            isHovered ? 1.02 : 1.05
-          }) translateZ(0)`,
+          transform: `perspective(1000px) rotateX(${
+            isHovered ? mousePosition.y * 10 : 25
+          }deg) rotateY(${isHovered ? mousePosition.x * 10 : -15}deg) rotateZ(${
+            isHovered ? 0 : 10
+          }deg) scale(${isHovered ? 1.02 : 1.05}) translateZ(0)`,
           transformStyle: "preserve-3d",
         }}
       >
@@ -62,7 +85,7 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
               >
                 <Image
                   src={image}
-                  alt={`Project ${index}`}
+                  alt={`Image ${index}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 128px, 176px"
@@ -76,7 +99,7 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
         ))}
       </div>
 
-      {/* Gradient overlays for fade effect - reduced opacity for better visibility */}
+      {/* Gradient overlays for fade effect */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/20" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
