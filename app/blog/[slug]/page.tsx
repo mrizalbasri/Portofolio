@@ -74,25 +74,25 @@ export default function BlogPostBySlug() {
 
           {/* Featured Images Gallery */}
           {post.images && post.images.length > 0 ? (
-            <div className="mb-12 space-y-4">
+            <div className="mb-12 space-y-6">
               {/* Main Featured Image */}
-              <div className="w-full h-[400px] rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
+              <div className="w-full rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
                 <img 
                   src={post.images[0]} 
                   alt={`${post.title} - Main`} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-cover"
                 />
               </div>
               
               {/* Additional Images Grid */}
               {post.images.length > 1 && (
-                <div className={`grid gap-4 ${post.images.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}>
+                <div className={`grid gap-6 ${post.images.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
                   {post.images.slice(1).map((img, idx) => (
-                    <div key={idx} className="h-[250px] rounded-xl overflow-hidden bg-zinc-900 border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer group">
+                    <div key={idx} className="rounded-xl overflow-hidden bg-zinc-900 border border-white/10 hover:border-cyan-500/50 transition-all cursor-pointer group">
                       <img 
                         src={img} 
                         alt={`${post.title} - Image ${idx + 2}`} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   ))}
@@ -100,11 +100,11 @@ export default function BlogPostBySlug() {
               )}
             </div>
           ) : post.image ? (
-            <div className="w-full h-[400px] mb-12 rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
+            <div className="w-full mb-12 rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
               <img 
                 src={post.image} 
                 alt={post.title} 
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-cover"
               />
             </div>
           ) : (
@@ -141,9 +141,18 @@ export default function BlogPostBySlug() {
                      components={{
                        h2: ({...props}) => <h2 className="text-4xl font-bold text-white mb-8 mt-16 pb-4 border-b border-white/10" {...props} />,
                        h3: ({...props}) => <h3 className="text-2xl font-bold text-white mb-6 mt-10" {...props} />,
-                       p: ({...props}) => <p className="text-gray-300 leading-relaxed mb-6" {...props} />,
+                       p: ({node, children, ...props}) => {
+                         // Check if paragraph contains an image
+                         const hasImage = node?.children?.some((child: any) => child.tagName === 'img');
+                         if (hasImage) {
+                           return <div className="my-12">{children}</div>;
+                         }
+                         return <p className="text-gray-300 leading-relaxed mb-6" {...props}>{children}</p>;
+                       },
                        strong: ({...props}) => <strong className="text-white font-semibold" {...props} />,
-                       img: ({...props}) => <img className="rounded-xl my-12 border border-white/10 w-full" alt="" {...props} />,
+                       img: ({...props}) => (
+                         <img className="rounded-xl border border-white/10 w-full h-auto object-cover" alt="" {...props} />
+                       ),
                        hr: ({...props}) => <hr className="border-white/10 my-12" {...props} />,
                        ul: ({...props}) => <ul className="text-gray-300 space-y-2 my-6 list-disc pl-6" {...props} />,
                        li: ({...props}) => <li className="text-gray-300" {...props} />,
