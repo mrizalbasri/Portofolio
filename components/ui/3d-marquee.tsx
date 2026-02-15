@@ -99,10 +99,11 @@ export function ThreeDMarquee({ images, className }: ThreeDMarqueeProps) {
         ))}
       </div>
 
-      {/* Gradient overlays for fade effect */}
+      {/* Gradient overlays for fade effect - Responsive */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-black/20" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20" />
+      {/* Narrower gradient on mobile, wider on desktop */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-32 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-32 bg-gradient-to-l from-black/60 via-black/30 to-transparent" />
 
       {/* CSS Keyframes */}
       <style jsx>{`

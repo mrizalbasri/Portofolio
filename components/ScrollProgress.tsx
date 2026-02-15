@@ -27,16 +27,16 @@ export default function ScrollProgress() {
 
   return (
     <>
-      {/* Circular Progress Indicator - Bottom Right */}
+      {/* Circular Progress Indicator - Bottom Right - Show on mobile too but smaller */}
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1 }}
-        className="fixed bottom-8 right-8 z-[9998] hidden md:flex"
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9998] flex"
       >
-        <div className="relative w-12 h-12">
+        <div className="relative w-10 h-10 md:w-12 md:h-12">
           {/* Background Circle */}
-          <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+          <svg className="w-10 h-10 md:w-12 md:h-12 -rotate-90" viewBox="0 0 48 48">
             <circle
               cx="24"
               cy="24"
@@ -68,7 +68,7 @@ export default function ScrollProgress() {
           </svg>
 
           {/* Percentage Text */}
-          <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white">
+          <div className="absolute inset-0 flex items-center justify-center text-[9px] md:text-[10px] font-bold text-white">
             <span>{displayPercentage}%</span>
           </div>
         </div>

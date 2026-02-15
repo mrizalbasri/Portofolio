@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { FaTimes, FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaExclamationCircle } from 'react-icons/fa';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Project } from '@/types/project';
 
@@ -15,6 +15,11 @@ interface ProjectModalProps {
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  
+  // Motion values for swipe gesture
+  const y = useMotionValue(0);
+  const opacity = useTransform(y, [0, 300], [1, 0]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -73,6 +78,19 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  // Handle swipe to close
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false);
+    
+    // If swiped down more than 150px or velocity is high, close modal
+    if (info.offset.y > 150 || info.velocity.y > 500) {
+      onClose();
+    } else {
+      // Reset position
+      y.set(0);
+    }
+  };
+
   if (!project) return null;
 
   return (
@@ -92,6 +110,12 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
               <motion.div
                 ref={modalRef}
+                drag="y"
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={{ top: 0, bottom: 0.5 }}
+                onDragStart={() => setIsDragging(true)}
+                onDragEnd={handleDragEnd}
+                style={{ y, opacity }}
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -103,6 +127,11 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
               >
+              {/* Swipe Indicator - Mobile Only */}
+              <div className="md:hidden sticky top-0 z-50 flex justify-center pt-3 pb-2 bg-gradient-to-b from-gray-900 to-transparent">
+                <div className="w-12 h-1 bg-white/20 rounded-full" />
+              </div>
+
               {/* Header with Gradient */}
               <div className={`relative h-48 sm:h-56 md:h-64 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
                 {/* Close Button */}
