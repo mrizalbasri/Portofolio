@@ -69,7 +69,7 @@ export default function About({ isFullPage = false }: AboutProps) {
                   Halo! Saya seorang <span className="text-white font-semibold">Full Stack Developer</span> yang berbasis di Pekanbaru, Indonesia. 
                   Saya mendedikasikan waktu saya untuk mempelajari arsitektur sistem dan bagaimana cara membuat aplikasi yang aman serta skalabel.
                 </p>
-                <p className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-4 md:mb-6">
+                <p className="text-base sm:text-lg text-zinc-300 leading-relaxed mb-4 md:mb-6">
                   Perjalanan saya di dunia teknologi didorong oleh rasa ingin tahu yang besar tentang bagaimana sebuah sistem bekerja di balik layar. 
                   Saya percaya bahwa kode bukan hanya sekadar instruksi bagi mesin, tetapi merupakan solusi kreatif untuk masalah dunia nyata.
                 </p>
@@ -111,21 +111,21 @@ export default function About({ isFullPage = false }: AboutProps) {
                   <div className="mt-1 w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)] shrink-0" />
                   <div>
                     <h4 className="text-white font-bold text-sm md:text-base">System Security</h4>
-                    <p className="text-zinc-400 text-xs md:text-sm">Mengimplementasikan proteksi level tinggi pada aplikasi desktop dan web.</p>
+                    <p className="text-zinc-300 text-xs md:text-sm">Mengimplementasikan proteksi level tinggi pada aplikasi desktop dan web.</p>
                   </div>
                 </li>
                 <li className="flex gap-3 md:gap-4">
                   <div className="mt-1 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)] shrink-0" />
                   <div>
                     <h4 className="text-white font-bold text-sm md:text-base">Eco-Tech Solutions</h4>
-                    <p className="text-zinc-400 text-xs md:text-sm">Membangun aplikasi yang memberikan dampak positif bagi lingkungan.</p>
+                    <p className="text-zinc-300 text-xs md:text-sm">Membangun aplikasi yang memberikan dampak positif bagi lingkungan.</p>
                   </div>
                 </li>
                 <li className="flex gap-3 md:gap-4">
                   <div className="mt-1 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0" />
                   <div>
                     <h4 className="text-white font-bold text-sm md:text-base">Full Stack Logic</h4>
-                    <p className="text-zinc-400 text-xs md:text-sm">Menghubungkan frontend yang responsif dengan backend yang efisien.</p>
+                    <p className="text-zinc-300 text-xs md:text-sm">Menghubungkan frontend yang responsif dengan backend yang efisien.</p>
                   </div>
                 </li>
               </ul>

@@ -80,8 +80,9 @@ export default function Navigation() {
           {/* Menu Button - 2 Lines Only */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="relative z-[5200] p-2"
+            className="relative z-[5200] p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black rounded-lg"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={isMenuOpen}
           >
             {/* Hamburger Icon - 2 Lines */}
             <div className="relative w-8 h-3 flex flex-col justify-between">
@@ -158,10 +159,10 @@ export default function Navigation() {
                   transition={{ delay: 0.7, duration: 0.4 }}
                   className="mt-16 space-y-2"
                 >
-                  <p className="text-gray-400 text-sm md:text-base">
+                  <p className="text-gray-300 text-sm md:text-base">
                     mrizalbasri@email.com
                   </p>
-                  <p className="text-gray-400 text-sm md:text-base">
+                  <p className="text-gray-300 text-sm md:text-base">
                     Full Stack Developer
                   </p>
                 </motion.div>

@@ -114,9 +114,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white dark`}
         suppressHydrationWarning
       >
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-6 focus:py-3 focus:bg-cyan-600 focus:text-white focus:rounded-lg focus:font-semibold focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        >
+          Skip to main content
+        </a>
         <CustomCursor />
 
-        {children}
+        <main id="main-content">
+          {children}
+        </main>
         <Analytics />
       </body>
     </html>

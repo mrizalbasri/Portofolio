@@ -159,7 +159,7 @@ export default function Footer() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="mt-4 md:mt-6 text-zinc-400 text-sm sm:text-base md:text-lg max-w-md mx-auto lg:mx-0"
+                  className="mt-4 md:mt-6 text-zinc-300 text-sm sm:text-base md:text-lg max-w-md mx-auto lg:mx-0"
                 >
                   Have a project in mind? Let&apos;s create something amazing
                   together. I&apos;m always open to discussing new opportunities.
@@ -203,7 +203,7 @@ export default function Footer() {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2.5 md:p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:scale-110"
+                        className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-zinc-300 hover:text-white hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:scale-110"
                         aria-label={social.name}
                       >
                         <IconComponent className="text-base md:text-lg" />
@@ -255,7 +255,7 @@ export default function Footer() {
                 onClick={scrollToTop}
                 whileHover={{ scale: 1.1, y: -3 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 bg-white/5 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-cyan-500/50 transition-all cursor-pointer relative z-10"
+                className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center bg-white/5 border border-white/10 rounded-full text-zinc-300 hover:text-white hover:border-cyan-500/50 transition-all cursor-pointer relative z-10"
                 aria-label="Back to top"
               >
                 <FaArrowUp className="text-xs" />

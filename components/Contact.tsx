@@ -186,7 +186,7 @@ export default function Contact() {
                     Let&apos;s build something <span className="text-cyan-500">extraordinary</span> together.
                  </h2>
                  
-                 <p className="text-zinc-400 text-base md:text-lg leading-relaxed">
+                 <p className="text-zinc-300 text-base md:text-lg leading-relaxed">
                     Whether you have a specific project in mind or just want to explore possibilities, I&apos;m here to help translate your vision into digital reality.
                  </p>
               </div>

@@ -51,7 +51,7 @@ export function ThreeDProjectCard({
         <CardItem
           as="p"
           translateZ="70"
-          className="text-neutral-400 text-sm mt-2 line-clamp-2"
+          className="text-neutral-300 text-sm mt-2 line-clamp-2"
         >
           {project.description}
         </CardItem>
@@ -131,8 +131,9 @@ export function ThreeDProjectCard({
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors"
+                className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                aria-label={`View ${project.title} on GitHub`}
               >
                 <FaGithub className="text-lg" />
               </CardItem>
@@ -144,8 +145,9 @@ export function ThreeDProjectCard({
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors"
+                className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-400"
                 onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                aria-label={`View ${project.title} live demo`}
               >
                 <FaExternalLinkAlt className="text-sm" />
               </CardItem>

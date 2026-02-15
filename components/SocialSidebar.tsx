@@ -58,7 +58,7 @@ export default function SocialSidebar() {
                 y: -5,
                 color: social.color,
               }}
-              className="text-gray-400 hover:text-white transition-all duration-300 text-2xl"
+              className="text-gray-300 hover:text-white transition-all duration-300 text-2xl p-2 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg"
               aria-label={`Follow me on ${social.name}`}
             >
               <Icon />

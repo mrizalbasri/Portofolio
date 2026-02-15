@@ -145,7 +145,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col items-center max-w-2xl relative z-30 px-4 -mt-8.5 md:-mt-16.5 lg:-mt-24.5 xl:-mt-28.5"
           >
-              <p className="text-base sm:text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
+              <p className="text-base sm:text-lg md:text-xl text-zinc-300 leading-relaxed font-light">
                  I build <span className="text-white font-semibold">Resilient</span> and <span className="text-white font-semibold">Scalable</span> digital infrastructures.
                  Focusing on <span className="text-cyan-400">Security</span>, <span className="text-cyan-400">Performance</span>, and <span className="text-cyan-400">Experience</span>.
               </p>

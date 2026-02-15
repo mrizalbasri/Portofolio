@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaExclamationCircle } from 'react-icons/fa';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Project } from '@/types/project';
 
@@ -13,6 +13,9 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -25,14 +28,50 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     };
   }, [isOpen]);
 
-  // Close on ESC key
+  // Focus trap and keyboard navigation
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+    if (!isOpen || !modalRef.current) return;
+
+    // Focus close button when modal opens
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Close on ESC
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Focus trap with Tab
+      if (e.key === 'Tab') {
+        const focusableElements = modalRef.current?.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (!focusableElements || focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          // Shift + Tab
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          // Tab
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!project) return null;
 
@@ -52,22 +91,25 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
               <motion.div
+                ref={modalRef}
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl pointer-events-auto"
+                className="relative w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl pointer-events-auto focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
-                aria-label={project.title}
+                aria-labelledby="modal-title"
+                aria-describedby="modal-description"
               >
               {/* Header with Gradient */}
               <div className={`relative h-48 sm:h-56 md:h-64 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
                 {/* Close Button */}
                 <button
+                  ref={closeButtonRef}
                   onClick={onClose}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white transition-all duration-300 group"
+                  className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black"
                   aria-label="Close modal"
                 >
                   <FaTimes className="text-lg sm:text-xl group-hover:rotate-90 transition-transform duration-300" />
@@ -108,6 +150,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 {/* Title & Description */}
                 <div className="space-y-3 md:space-y-4">
                   <motion.h2
+                    id="modal-title"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white"
@@ -116,10 +159,11 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </motion.h2>
                   
                   <motion.p
+                    id="modal-description"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-base sm:text-lg md:text-xl text-gray-400"
+                    className="text-base sm:text-lg md:text-xl text-gray-300"
                   >
                     {project.description}
                 </motion.p>
