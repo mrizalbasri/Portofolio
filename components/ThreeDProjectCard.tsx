@@ -64,6 +64,9 @@ export function ThreeDProjectCard({
                 src={project.image}
                 alt={project.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                quality={90}
+                priority={false}
                 className="object-cover group-hover/card:shadow-xl transition-transform duration-300 group-hover/card:scale-105"
               />
               <div
@@ -122,7 +125,7 @@ export function ThreeDProjectCard({
           ) : (
             <div /> /* Spacer if button is hidden */
           )}
-          
+
           <div className="flex gap-2">
             {project.githubUrl && (
               <CardItem

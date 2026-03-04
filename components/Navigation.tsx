@@ -22,8 +22,6 @@ export default function Navigation() {
     return "home";
   })();
 
-
-
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
@@ -46,8 +44,8 @@ export default function Navigation() {
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false);
     setTimeout(() => {
-        router.push(href);
-    }, 300); // Wait for transition
+      router.push(href);
+    }, 220); // Wait for transition
   };
 
   return (
@@ -57,14 +55,14 @@ export default function Navigation() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-[5000] px-6 py-6 md:px-10 md:py-8"
+        className="fixed top-0 left-0 right-0 z-[5000] px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-7 lg:px-10 lg:py-8"
       >
         <div className="flex items-center justify-between">
           {/* Logo */}
           <motion.a
             href="/"
             whileHover={{ scale: 1.05 }}
-            className="relative z-[5200]"
+            className="relative z-[5200] min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Home"
           >
             <Image
@@ -80,7 +78,7 @@ export default function Navigation() {
           {/* Menu Button - 2 Lines Only */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="relative z-[5200] p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black rounded-lg"
+            className="relative z-[5200] p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black rounded-lg transition-transform duration-200 active:scale-95"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMenuOpen}
           >
@@ -89,21 +87,17 @@ export default function Navigation() {
               {/* Top line */}
               <motion.span
                 animate={
-                  isMenuOpen 
-                    ? { rotate: 45, y: 6 } 
-                    : { rotate: 0, y: 0 }
+                  isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }
                 }
                 transition={{ duration: 0.2 }}
                 className="w-full h-[3px] bg-white"
                 style={{ transformOrigin: "center" }}
               />
-              
+
               {/* Bottom line */}
               <motion.span
                 animate={
-                  isMenuOpen 
-                    ? { rotate: -45, y: -6 } 
-                    : { rotate: 0, y: 0 }
+                  isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }
                 }
                 transition={{ duration: 0.2 }}
                 className="w-full h-[3px] bg-white"
@@ -118,11 +112,20 @@ export default function Navigation() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ clipPath: "circle(0% at calc(100% - 60px) 60px)" }}
-            animate={{ clipPath: "circle(150% at calc(100% - 60px) 60px)" }}
-            exit={{ clipPath: "circle(0% at calc(100% - 60px) 60px)" }}
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed inset-0 z-[150] bg-[#0a0a0a]"
+            initial={{
+              clipPath: "circle(0% at calc(100% - 44px) 44px)",
+              opacity: 0,
+            }}
+            animate={{
+              clipPath: "circle(160% at calc(100% - 44px) 44px)",
+              opacity: 1,
+            }}
+            exit={{
+              clipPath: "circle(0% at calc(100% - 44px) 44px)",
+              opacity: 0,
+            }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[150] bg-[#0a0a0a]/95 backdrop-blur-sm"
           >
             {/* Menu Content */}
             <div className="h-full flex flex-col md:flex-row">
@@ -139,8 +142,8 @@ export default function Navigation() {
               </div>
 
               {/* Right Side - Navigation Links */}
-              <div className="flex-1 flex flex-col justify-center px-10 md:px-20 py-20">
-                <nav className="space-y-2 md:space-y-4">
+              <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 md:px-14 lg:px-20 py-20 md:py-16">
+                <nav className="space-y-3 md:space-y-4">
                   {navItems.map((item, index) => (
                     <NavItem
                       key={item.id}
@@ -178,18 +181,14 @@ export default function Navigation() {
                     window.dispatchEvent(new Event("toggle-chat-widget"));
                     setIsMenuOpen(false);
                   }}
-                  className="relative mt-8 px-6 py-3 bg-white text-black rounded-full inline-flex items-center gap-2 w-fit overflow-hidden group"
+                  className="relative mt-8 px-6 py-3 min-h-[44px] bg-white text-black rounded-full inline-flex items-center gap-2 w-fit overflow-hidden group"
                 >
                   {/* Gradient overlay on hover */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  />
-                  
+                  <motion.div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                   {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                  />
-                  
+                  <motion.div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
                   <motion.svg
                     className="w-5 h-5 relative z-10 group-hover:text-white transition-colors"
                     fill="none"
@@ -205,14 +204,14 @@ export default function Navigation() {
                       d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </motion.svg>
-                  <span className="font-medium relative z-10 group-hover:text-white transition-colors">Ask AI Assistant</span>
-                  
+                  <span className="font-medium relative z-10 group-hover:text-white transition-colors">
+                    Ask AI Assistant
+                  </span>
+
                   {/* Glow effect */}
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg bg-cyan-500/50 -z-10" />
                 </motion.button>
               </div>
-
-
             </div>
           </motion.div>
         )}

@@ -35,14 +35,18 @@ export default function ScrollProgress() {
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9998] flex"
       >
         <div className="relative w-10 h-10 md:w-12 md:h-12">
+          <div className="absolute inset-0 rounded-full bg-cyan-500/10 blur-[6px]" />
           {/* Background Circle */}
-          <svg className="w-10 h-10 md:w-12 md:h-12 -rotate-90" viewBox="0 0 48 48">
+          <svg
+            className="w-10 h-10 md:w-12 md:h-12 -rotate-90"
+            viewBox="0 0 48 48"
+          >
             <circle
               cx="24"
               cy="24"
               r="20"
               fill="none"
-              stroke="rgba(255,255,255,0.1)"
+              stroke="rgba(6,182,212,0.22)"
               strokeWidth="2"
             />
             <motion.circle
@@ -50,7 +54,7 @@ export default function ScrollProgress() {
               cy="24"
               r="20"
               fill="none"
-              stroke="url(#gradient)"
+              stroke="url(#scroll-progress-gradient)"
               strokeWidth="2"
               strokeLinecap="round"
               strokeDasharray="125.6"
@@ -59,16 +63,22 @@ export default function ScrollProgress() {
               }}
             />
             <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#a855f7" />
-                <stop offset="50%" stopColor="#ec4899" />
-                <stop offset="100%" stopColor="#06b6d4" />
+              <linearGradient
+                id="scroll-progress-gradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="#06b6d4" />
+                <stop offset="55%" stopColor="#3b82f6" />
+                <stop offset="100%" stopColor="#60a5fa" />
               </linearGradient>
             </defs>
           </svg>
 
           {/* Percentage Text */}
-          <div className="absolute inset-0 flex items-center justify-center text-[9px] md:text-[10px] font-bold text-white">
+          <div className="absolute inset-0 flex items-center justify-center text-[9px] md:text-[10px] font-bold text-cyan-100">
             <span>{displayPercentage}%</span>
           </div>
         </div>

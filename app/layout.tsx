@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import StructuredData from "@/components/StructuredData";
 import { Analytics } from "@vercel/analytics/react";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,19 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 // Metadata Base URL & Verification (update saat deploy)
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mrizalbasri.me';
-const gscVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'google-site-verification-placeholder';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mrizalbasri.me";
+const gscVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  "google-site-verification-placeholder";
 
 // Comprehensive SEO Metadata
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  
+
   // Basic Metadata
   title: {
     default: "M. Rizal Basri | Full Stack Developer",
-    template: "%s | M. Rizal Basri"
+    template: "%s | M. Rizal Basri",
   },
-  description: "Portfolio of M. Rizal Basri - Full Stack Developer from Pekanbaru, Indonesia. Expert in React, Next.js, Laravel, and modern web solutions. Explore my projects and skills.",
+  description:
+    "Portfolio of M. Rizal Basri - Full Stack Developer from Pekanbaru, Indonesia. Expert in React, Next.js, Laravel, and modern web solutions. Explore my projects and skills.",
   keywords: [
     "Full Stack Developer",
     "Web Developer",
@@ -46,12 +48,12 @@ export const metadata: Metadata = {
     "Rizal Basri",
     "JavaScript Developer",
     "Mobile Developer",
-    "UI/UX Developer"
+    "UI/UX Developer",
   ],
   authors: [{ name: "M. Rizal Basri", url: "https://github.com/mrizalbasri" }],
   creator: "M. Rizal Basri",
   publisher: "M. Rizal Basri",
-  
+
   // Open Graph (Facebook, LinkedIn, WhatsApp, Telegram, Discord)
   openGraph: {
     type: "website",
@@ -59,14 +61,15 @@ export const metadata: Metadata = {
     url: baseUrl,
     siteName: "M. Rizal Basri Portfolio",
     title: "M. Rizal Basri - Full Stack Developer",
-    description: "Experienced Full Stack Developer specializing in React, Next.js, and modern web technologies. Based in Pekanbaru, Indonesia.",
+    description:
+      "Experienced Full Stack Developer specializing in React, Next.js, and modern web technologies. Based in Pekanbaru, Indonesia.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "M. Rizal Basri - Full Stack Developer Portfolio",
-      }
+      },
     ],
   },
 
@@ -77,12 +80,12 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
-  
+
   // Verification (untuk Google Search Console)
   verification: {
     google: gscVerification,
@@ -94,10 +97,17 @@ export const metadata: Metadata = {
 
   // Setup Favicon using available Logo
   icons: {
-    icon: '/logo.webp',
-    shortcut: '/logo.webp',
-    apple: '/logo.webp',
+    icon: "/logo.webp",
+    shortcut: "/logo.webp",
+    apple: "/logo.webp",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
@@ -114,17 +124,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white dark`}
         suppressHydrationWarning
       >
-        <a 
-          href="#main-content" 
+        <a
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-6 focus:py-3 focus:bg-cyan-600 focus:text-white focus:rounded-lg focus:font-semibold focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
         >
           Skip to main content
         </a>
         <CustomCursor />
 
-        <main id="main-content">
-          {children}
-        </main>
+        <main id="main-content">{children}</main>
         <Analytics />
       </body>
     </html>

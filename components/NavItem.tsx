@@ -13,7 +13,12 @@ interface NavItemProps {
   onClick: () => void;
 }
 
-export default function NavItem({ item, index, isActive, onClick }: NavItemProps) {
+export default function NavItem({
+  item,
+  index,
+  isActive,
+  onClick,
+}: NavItemProps) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -22,19 +27,19 @@ export default function NavItem({ item, index, isActive, onClick }: NavItemProps
     >
       <button
         onClick={onClick}
-        className="group relative block w-full text-left"
+        className="group relative block w-full text-left min-h-[44px] py-2"
       >
         {/* Main Text */}
         <div className="relative overflow-hidden">
           <motion.span
-            className={`block text-4xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
+            className={`block text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
               isActive
                 ? "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400"
                 : "text-white"
             }`}
             whileHover={{
               scale: 1.05,
-              x: 10,
+              x: 6,
             }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
@@ -43,7 +48,7 @@ export default function NavItem({ item, index, isActive, onClick }: NavItemProps
 
           {/* Glitch effect on hover */}
           <motion.span
-            className="absolute inset-0 text-4xl md:text-6xl lg:text-7xl font-bold text-cyan-400 opacity-0 group-hover:opacity-30 pointer-events-none"
+            className="absolute inset-0 text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-cyan-400 opacity-0 group-hover:opacity-30 pointer-events-none"
             animate={{
               x: [-2, 2, -2],
               y: [1, -1, 1],
@@ -126,7 +131,8 @@ export default function NavItem({ item, index, isActive, onClick }: NavItemProps
               ease: "easeInOut",
             }}
             style={{
-              background: "radial-gradient(circle, rgba(6,182,212,0.5) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(6,182,212,0.5) 0%, transparent 70%)",
             }}
           />
         )}

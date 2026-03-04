@@ -6,7 +6,6 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
-import Certificates from "@/components/Certificates";
 import SocialSidebar from "@/components/SocialSidebar";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -23,7 +22,6 @@ export default function Home() {
 
       {/* Main Content with Page Transition */}
       <div className="relative min-h-screen bg-black text-white">
-        
         {/* Magic UI Particles Background - Overlay Mode */}
         <GlobalParticles />
 
@@ -39,7 +37,6 @@ export default function Home() {
           <About />
           <Skills />
           <Projects />
-          <Certificates />
         </main>
 
         {/* Footer */}
@@ -48,4 +45,3 @@ export default function Home() {
     </>
   );
 }
-
