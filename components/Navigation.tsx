@@ -5,6 +5,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import NavItem from "./NavItem";
+import {
+  NAV_ITEMS,
+  MOBILE_MENU_TRANSITION_DELAY,
+} from "@/constants/navigation";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +21,6 @@ export default function Navigation() {
     if (path.startsWith("/about")) return "about";
     if (path.startsWith("/skills")) return "skills";
     if (path.startsWith("/projects")) return "projects";
-    if (path.startsWith("/contact")) return "contact";
     if (path.startsWith("/blog")) return "blog";
     return "home";
   })();
@@ -34,18 +37,13 @@ export default function Navigation() {
     };
   }, [isMenuOpen]);
 
-  const navItems = [
-    { name: "HOME", href: "/", id: "home" },
-    { name: "PROJECTS", href: "/projects", id: "projects" },
-    { name: "BLOG", href: "/blog", id: "blog" },
-    { name: "CONTACT", href: "/contact", id: "contact" },
-  ];
+  const navItems = NAV_ITEMS;
 
   const handleNavClick = (href: string) => {
     setIsMenuOpen(false);
     setTimeout(() => {
       router.push(href);
-    }, 220); // Wait for transition
+    }, MOBILE_MENU_TRANSITION_DELAY);
   };
 
   return (
