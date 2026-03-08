@@ -12,6 +12,12 @@ import {
 import dynamic from "next/dynamic";
 import { ShootingStars } from "./ui/shooting-stars";
 import { StarsBackground } from "./ui/stars-background";
+import {
+  FADE_IN_UP,
+  STAGGER_ITEM,
+  SCALE_IN,
+  FADE_IN,
+} from "@/constants/animations";
 
 // Dynamically import Three.js component
 const RobotModelScene = dynamic(() => import("./RobotModelScene"), {
@@ -35,7 +41,7 @@ export default function Footer() {
   // Simple fade effect only
   const opacity = useSpring(
     useTransform(scrollYProgress, [0, 0.2, 1], [0.9, 1, 1]),
-    springConfig
+    springConfig,
   );
 
   const scrollToTop = () => {
@@ -77,7 +83,7 @@ export default function Footer() {
     <footer
       ref={footerRef}
       className="relative h-screen bg-black overflow-hidden flex flex-col pointer-events-auto"
-      style={{ pointerEvents: 'auto' }}
+      style={{ pointerEvents: "auto" }}
     >
       {/* Stars Background - Outside motion.div */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
@@ -123,25 +129,21 @@ export default function Footer() {
       <motion.div
         style={{
           opacity,
-          pointerEvents: 'auto',
+          pointerEvents: "auto",
         }}
         className="flex-1 flex flex-col relative z-50 pointer-events-auto h-full"
       >
-
         {/* Main Content - Takes most of the space */}
         <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-16 py-6 z-50">
           <div className="w-full max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-              
               {/* Left Side - Text Content */}
-              <div className="relative text-center lg:text-left pointer-events-auto" style={{ zIndex: 100 }}>
+              <div
+                className="relative text-center lg:text-left pointer-events-auto"
+                style={{ zIndex: 100 }}
+              >
                 {/* Big Heading */}
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                >
+                <motion.div {...FADE_IN_UP} transition={{ duration: 0.8 }}>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight">
                     LET&apos;S
                     <br />
@@ -155,21 +157,18 @@ export default function Footer() {
 
                 {/* Description */}
                 <motion.p
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  {...STAGGER_ITEM}
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="mt-4 md:mt-6 text-zinc-300 text-sm sm:text-base md:text-lg max-w-md mx-auto lg:mx-0"
                 >
                   Have a project in mind? Let&apos;s create something amazing
-                  together. I&apos;m always open to discussing new opportunities.
+                  together. I&apos;m always open to discussing new
+                  opportunities.
                 </motion.p>
 
                 {/* CTA Button */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  {...STAGGER_ITEM}
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="mt-6 md:mt-8 flex justify-center lg:justify-start"
                 >
@@ -189,9 +188,7 @@ export default function Footer() {
 
                 {/* Social Links */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  {...STAGGER_ITEM}
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="mt-6 md:mt-8 flex gap-3 justify-center lg:justify-start"
                 >
@@ -215,9 +212,7 @@ export default function Footer() {
 
               {/* Right Side - 3D Robot */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                {...SCALE_IN}
                 transition={{ duration: 1, delay: 0.3 }}
                 className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[450px] pointer-events-none hidden sm:block"
                 aria-hidden="true"
@@ -234,9 +229,7 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
               {/* Navigation Links */}
               <motion.nav
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
+                {...FADE_IN}
                 className="flex flex-wrap justify-center gap-3 md:gap-5 relative z-10"
               >
                 {navLinks.map((link) => (
@@ -264,15 +257,15 @@ export default function Footer() {
 
             {/* Copyright */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              {...FADE_IN}
               className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/5 text-center relative z-10"
             >
               <p className="text-zinc-600 text-xs">
                 © {currentYear}{" "}
-                <span className="text-cyan-500 font-medium">M. Rizal Basri</span> — All
-                rights reserved.
+                <span className="text-cyan-500 font-medium">
+                  M. Rizal Basri
+                </span>{" "}
+                — All rights reserved.
               </p>
             </motion.div>
           </div>

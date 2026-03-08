@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 // Ensure ThreeDMarquee is generic enough or update it if it's strictly for projects.
 // Assuming ThreeDMarquee accepts a list of image URLs.
 import { ThreeDMarquee } from "@/components/ui/3d-marquee";
+import { FADE_IN_LEFT } from "@/constants/animations";
 
 export function Certificates() {
   const ref = useRef<HTMLDivElement>(null);
@@ -19,7 +20,7 @@ export function Certificates() {
   // Simple opacity fade only
   const opacity = useSpring(
     useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]),
-    springConfig
+    springConfig,
   );
 
   // Certificate images - Using placeholder images for demo
@@ -45,22 +46,20 @@ export function Certificates() {
     >
       {/* Subtle Background Glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-900/5 to-transparent" />
-      
+
       {/* Ambient Light Effects */}
       <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      <div
+        className="absolute top-1/2 right-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"
+        style={{ animationDelay: "1s" }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 mb-8">
-        <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
-            <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">
-              Certificates
-            </span>
+        <motion.div {...FADE_IN_LEFT} className="flex items-center gap-3">
+          <div className="w-1 h-6 bg-cyan-500 rounded-full"></div>
+          <span className="text-sm uppercase tracking-wider text-zinc-500 font-medium">
+            Certificates
+          </span>
         </motion.div>
       </div>
 
@@ -70,7 +69,10 @@ export function Certificates() {
         style={{ opacity }}
       >
         {/* Pass certificate images to the marquee */}
-        <ThreeDMarquee images={certificateImages} className="max-w-none w-full" />
+        <ThreeDMarquee
+          images={certificateImages}
+          className="max-w-none w-full"
+        />
       </motion.div>
     </div>
   );

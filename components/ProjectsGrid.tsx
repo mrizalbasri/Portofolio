@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
 import { Project } from "@/types/project";
 import ProjectModal from "./ProjectModal";
-import { FaGithub, FaExternalLinkAlt, FaCode, FaRocket } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaCode } from "react-icons/fa";
 import Image from "next/image";
+import { FADE_IN_UP, SCALE_IN, STAGGER_ITEM } from "@/constants/animations";
 
 export default function ProjectsGrid() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -14,13 +15,16 @@ export default function ProjectsGrid() {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
 
   // Get unique categories
-  const categories = ["all", ...Array.from(new Set(projects.flatMap(p => p.tags.slice(0, 2))))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(projects.flatMap((p) => p.tags.slice(0, 2)))),
+  ];
 
   useEffect(() => {
     if (filter === "all") {
       setFilteredProjects(projects);
     } else {
-      setFilteredProjects(projects.filter(p => p.tags.includes(filter)));
+      setFilteredProjects(projects.filter((p) => p.tags.includes(filter)));
     }
   }, [filter]);
 
@@ -28,37 +32,33 @@ export default function ProjectsGrid() {
     <section className="relative min-h-screen py-20 px-4 bg-black">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 via-black to-black pointer-events-none" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          {...FADE_IN_UP}
           animate={{ opacity: 1, y: 0 }}
           className="mb-16 text-center"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full mb-6"
-          >
-            <FaRocket className="text-cyan-400" />
-            <span className="text-cyan-400 text-sm font-mono">ALL PROJECTS</span>
-          </motion.div>
-
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6">
-            My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400">Creative</span> Work
+            My{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400">
+              Creative
+            </span>{" "}
+            Work
           </h1>
-          
+
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
-            A collection of projects showcasing my expertise in full-stack development, security, and modern web technologies.
+            A collection of projects showcasing my expertise in full-stack
+            development, security, and modern web technologies.
           </p>
         </motion.div>
 
         {/* Filter Tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          {...STAGGER_ITEM}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
           {categories.slice(0, 8).map((category) => (
@@ -81,7 +81,7 @@ export default function ProjectsGrid() {
                 />
               )}
               <span className="relative z-10 capitalize">{category}</span>
-              
+
               {/* Glow effect for active */}
               {filter === category && (
                 <div className="absolute inset-0 rounded-full blur-xl bg-gradient-to-r from-cyan-500/50 to-blue-500/50 -z-10" />
@@ -99,16 +99,22 @@ export default function ProjectsGrid() {
             <motion.div
               key={project.id}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
+              {...SCALE_IN}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{
+                delay: index * 0.1,
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               whileHover={{ y: -8 }}
               className="group relative"
             >
               <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-500/50 transition-all duration-500">
                 {/* Project Image/Icon */}
-                <div className={`relative h-48 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
+                <div
+                  className={`relative h-48 bg-gradient-to-br ${project.gradient} overflow-hidden`}
+                >
                   {/* Animated background pattern */}
                   <motion.div
                     className="absolute inset-0 opacity-20"
@@ -121,12 +127,13 @@ export default function ProjectsGrid() {
                       ease: "linear",
                     }}
                     style={{
-                      backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1)), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1))",
+                      backgroundImage:
+                        "linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1)), linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,0.1))",
                       backgroundSize: "20px 20px",
                       backgroundPosition: "0 0, 10px 10px",
                     }}
                   />
-                  
+
                   {/* Icon */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
@@ -138,9 +145,7 @@ export default function ProjectsGrid() {
                   </div>
 
                   {/* Hover overlay */}
-                  <motion.div
-                    className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4"
-                  >
+                  <motion.div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                     {project.githubUrl && (
                       <motion.a
                         href={project.githubUrl}
@@ -205,9 +210,7 @@ export default function ProjectsGrid() {
                     whileTap={{ scale: 0.98 }}
                     className="relative w-full py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-xl text-white text-sm font-medium transition-all duration-300 overflow-hidden group/btn"
                   >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 opacity-0 group-hover/btn:opacity-100 transition-opacity"
-                    />
+                    <motion.div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       <FaCode className="text-cyan-400" />
                       View Details
@@ -229,7 +232,9 @@ export default function ProjectsGrid() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <p className="text-gray-400 text-lg">No projects found in this category.</p>
+            <p className="text-gray-400 text-lg">
+              No projects found in this category.
+            </p>
           </motion.div>
         )}
       </div>

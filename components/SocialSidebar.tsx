@@ -1,33 +1,34 @@
-'use client';
+"use client";
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaRobot } from 'react-icons/fa';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { FaGithub, FaLinkedin, FaInstagram, FaRobot } from "react-icons/fa";
+import { FADE_IN_LEFT, STAGGER_ITEM } from "@/constants/animations";
 
 const socialLinks = [
   {
-    name: 'LinkedIn',
+    name: "LinkedIn",
     icon: FaLinkedin,
-    url: 'https://www.linkedin.com/in/m-rizal-basri/',
-    color: '#0077B5',
+    url: "https://www.linkedin.com/in/m-rizal-basri/",
+    color: "#0077B5",
   },
 
   {
-    name: 'Instagram',
+    name: "Instagram",
     icon: FaInstagram,
-    url: 'https://instagram.com/rizlbsri_', // Ganti dengan username Instagram Anda
-    color: '#E4405F',
+    url: "https://instagram.com/rizlbsri_", // Ganti dengan username Instagram Anda
+    color: "#E4405F",
   },
   {
-    name: 'GitHub',
+    name: "GitHub",
     icon: FaGithub,
-    url: 'https://github.com/mrizalbasri',
-    color: '#333',
+    url: "https://github.com/mrizalbasri",
+    color: "#333",
   },
 ];
 
 export default function SocialSidebar() {
   const { scrollY } = useScroll();
-  
+
   // Fade out when scrolling past hero section (approximately 100vh)
   const opacity = useTransform(scrollY, [0, 800], [1, 0]);
   const x = useTransform(scrollY, [0, 800], [0, -50]);
@@ -35,7 +36,7 @@ export default function SocialSidebar() {
   return (
     <motion.div
       style={{ opacity, x }}
-      initial={{ opacity: 0, x: -50 }}
+      {...FADE_IN_LEFT}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 1 }}
       className="fixed left-8 bottom-0 z-50 hidden md:flex flex-col items-center gap-6"
@@ -50,11 +51,15 @@ export default function SocialSidebar() {
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
+              {...STAGGER_ITEM}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 + index * 0.1 }}
-              whileHover={{ 
-                scale: 1.2, 
+              transition={{
+                delay: 1.2 + index * 0.1,
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              whileHover={{
+                scale: 1.2,
                 y: -5,
                 color: social.color,
               }}

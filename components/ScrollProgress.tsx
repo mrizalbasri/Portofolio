@@ -8,6 +8,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useState } from "react";
+import { SCALE_IN } from "@/constants/animations";
 
 export default function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -29,9 +30,9 @@ export default function ScrollProgress() {
     <>
       {/* Circular Progress Indicator - Bottom Right - Show on mobile too but smaller */}
       <motion.div
-        initial={{ opacity: 0, scale: 0 }}
+        {...SCALE_IN}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9998] flex"
       >
         <div className="relative w-10 h-10 md:w-12 md:h-12">

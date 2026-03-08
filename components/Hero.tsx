@@ -9,6 +9,11 @@ import { VscVscode } from "react-icons/vsc";
 import { GridBeam } from "./ui/grid-beam";
 import { Spotlight } from "./ui/spotlight";
 import MagneticButton from "./MagneticButton";
+import {
+  FLOATING_VARIANTS,
+  SCALE_IN,
+  FADE_IN_UP,
+} from "@/constants/animations";
 
 /**
  * Hero Section Component.
@@ -28,19 +33,6 @@ export default function Hero() {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
-
-  // Floating animation for icons
-  const floatingVariants = {
-    initial: { y: 0 },
-    animate: (custom: number) => ({
-      y: [0, -20, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        delay: custom * 0.5,
-      },
-    }),
-  };
 
   return (
     <section
@@ -62,7 +54,7 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden hidden md:block">
         {/* Left Side Icons */}
         <motion.div
-          variants={floatingVariants}
+          variants={FLOATING_VARIANTS}
           custom={1}
           initial="initial"
           animate="animate"
@@ -72,7 +64,7 @@ export default function Hero() {
           <SiKalilinux className="text-4xl md:text-6xl text-cyan-400 transition-all duration-300 hover:text-cyan-300" />
         </motion.div>
         <motion.div
-          variants={floatingVariants}
+          variants={FLOATING_VARIANTS}
           custom={2}
           initial="initial"
           animate="animate"
@@ -84,7 +76,7 @@ export default function Hero() {
 
         {/* Right Side Icons */}
         <motion.div
-          variants={floatingVariants}
+          variants={FLOATING_VARIANTS}
           custom={3}
           initial="initial"
           animate="animate"
@@ -94,7 +86,7 @@ export default function Hero() {
           <VscVscode className="text-4xl md:text-6xl text-blue-400 transition-all duration-300 hover:text-blue-300" />
         </motion.div>
         <motion.div
-          variants={floatingVariants}
+          variants={FLOATING_VARIANTS}
           custom={4}
           initial="initial"
           animate="animate"
@@ -109,9 +101,9 @@ export default function Hero() {
       <div className="container mx-auto relative z-0 w-full flex flex-col items-center justify-center text-center h-full max-w-6xl px-4">
         {/* Text Section - Positioned Higher */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          {...SCALE_IN}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-center justify-center relative w-full mb-4 md:mb-6 lg:mb-8"
         >
           {/* Massive Background Text - Responsive */}
@@ -132,9 +124,9 @@ export default function Hero() {
 
         {/* Character Image - 3D Parallax - Safe Positioning */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          {...SCALE_IN}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="relative w-64 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[450px] lg:w-[420px] lg:h-[500px] xl:w-[480px] xl:h-[560px] -mt-4 md:-mt-6 lg:-mt-8"
           style={{
             transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${-mousePosition.y}deg)`,
@@ -152,9 +144,9 @@ export default function Hero() {
 
         {/* Bottom Section: Bio Text Only - Final Perfect */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          {...FADE_IN_UP}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-center max-w-2xl relative z-30 px-4 -mt-8.5 md:-mt-16.5 lg:-mt-24.5 xl:-mt-28.5"
         >
           <p className="text-base sm:text-lg md:text-xl text-zinc-300 leading-relaxed font-light">

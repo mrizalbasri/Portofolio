@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FADE_IN_RIGHT } from "@/constants/animations";
 
 interface NavItemProps {
   item: {
@@ -21,7 +22,7 @@ export default function NavItem({
 }: NavItemProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
+      {...FADE_IN_RIGHT}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
     >

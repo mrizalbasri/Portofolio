@@ -1,10 +1,30 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from 'framer-motion';
-import { FaTimes, FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaExclamationCircle } from 'react-icons/fa';
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { Project } from '@/types/project';
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+  PanInfo,
+} from "framer-motion";
+import {
+  FaTimes,
+  FaGithub,
+  FaExternalLinkAlt,
+  FaStar,
+  FaCodeBranch,
+  FaExclamationCircle,
+} from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { Project } from "@/types/project";
+import {
+  FADE_IN,
+  SCALE_IN,
+  FADE_IN_UP,
+  FADE_IN_LEFT,
+  STAGGER_ITEM,
+} from "@/constants/animations";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -12,11 +32,15 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+export default function ProjectModal({
+  project,
+  isOpen,
+  onClose,
+}: ProjectModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   // Motion values for swipe gesture
   const y = useMotionValue(0);
   const opacity = useTransform(y, [0, 300], [1, 0]);
@@ -24,12 +48,12 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
@@ -42,21 +66,23 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Close on ESC
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
         return;
       }
 
       // Focus trap with Tab
-      if (e.key === 'Tab') {
+      if (e.key === "Tab") {
         const focusableElements = modalRef.current?.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
-        
+
         if (!focusableElements || focusableElements.length === 0) return;
 
         const firstElement = focusableElements[0] as HTMLElement;
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
 
         if (e.shiftKey) {
           // Shift + Tab
@@ -74,14 +100,17 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   // Handle swipe to close
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+  ) => {
     setIsDragging(false);
-    
+
     // If swiped down more than 150px or velocity is high, close modal
     if (info.offset.y > 150 || info.velocity.y > 500) {
       onClose();
@@ -99,7 +128,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
         <>
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
+            {...FADE_IN}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
@@ -108,32 +137,34 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
-              <motion.div
-                ref={modalRef}
-                drag="y"
-                dragConstraints={{ top: 0, bottom: 0 }}
-                dragElastic={{ top: 0, bottom: 0.5 }}
-                onDragStart={() => setIsDragging(true)}
-                onDragEnd={handleDragEnd}
-                style={{ y, opacity }}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl pointer-events-auto focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                onClick={(e) => e.stopPropagation()}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-              >
+            <motion.div
+              ref={modalRef}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.5 }}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              style={{ y, opacity }}
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl pointer-events-auto focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
+              aria-describedby="modal-description"
+            >
               {/* Swipe Indicator - Mobile Only */}
               <div className="md:hidden sticky top-0 z-50 flex justify-center pt-3 pb-2 bg-gradient-to-b from-gray-900 to-transparent">
                 <div className="w-12 h-1 bg-white/20 rounded-full" />
               </div>
 
               {/* Header with Gradient */}
-              <div className={`relative h-48 sm:h-56 md:h-64 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
+              <div
+                className={`relative h-48 sm:h-56 md:h-64 bg-gradient-to-br ${project.gradient} overflow-hidden`}
+              >
                 {/* Close Button */}
                 <button
                   ref={closeButtonRef}
@@ -145,10 +176,14 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </button>
                 {/* Animated Background Pattern */}
                 <div className="absolute inset-0 opacity-20">
-                  <div className="absolute inset-0" style={{
-                    backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                    backgroundSize: '40px 40px'
-                  }} />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+                      backgroundSize: "40px 40px",
+                    }}
+                  />
                 </div>
 
                 {/* Project Image/Icon */}
@@ -163,7 +198,11 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   ) : (
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                     >
                       <project.icon className="text-6xl sm:text-7xl md:text-9xl text-white/30" />
                     </motion.div>
@@ -180,42 +219,54 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 <div className="space-y-3 md:space-y-4">
                   <motion.h2
                     id="modal-title"
-                    initial={{ opacity: 0, y: 20 }}
+                    {...STAGGER_ITEM}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white"
                   >
                     {project.title}
                   </motion.h2>
-                  
+
                   <motion.p
                     id="modal-description"
-                    initial={{ opacity: 0, y: 20 }}
+                    {...STAGGER_ITEM}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
+                    transition={{
+                      delay: 0.1,
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                     className="text-base sm:text-lg md:text-xl text-gray-300"
                   >
                     {project.description}
-                </motion.p>
+                  </motion.p>
                 </div>
 
                 {/* GitHub Stats & Links */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  transition={{
+                    delay: 0.2,
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="flex flex-wrap items-center gap-3 md:gap-4"
                 >
                   {/* Stars - Only show if > 0 */}
                   {(project.githubStats?.stars ?? 0) > 0 && (
                     <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm rounded-full border border-yellow-500/30">
                       <FaStar className="text-yellow-400 text-sm md:text-base" />
-                      <span className="text-white font-semibold text-sm md:text-base">{project.githubStats?.stars}</span>
-                      <span className="text-gray-300 text-xs md:text-sm">stars</span>
+                      <span className="text-white font-semibold text-sm md:text-base">
+                        {project.githubStats?.stars}
+                      </span>
+                      <span className="text-gray-300 text-xs md:text-sm">
+                        stars
+                      </span>
                     </div>
                   )}
 
                   {/* Demo Link */}
-                  {project.demoUrl && project.demoUrl !== '#' && (
+                  {project.demoUrl && project.demoUrl !== "#" && (
                     <motion.a
                       href={project.demoUrl}
                       target="_blank"
@@ -225,19 +276,27 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-2.5 text-sm md:text-base bg-gradient-to-r ${project.gradient} rounded-full shadow-lg hover:shadow-xl transition-all duration-300`}
                     >
                       <FaExternalLinkAlt className="text-white text-sm md:text-base" />
-                      <span className="text-white font-semibold">Live Demo</span>
+                      <span className="text-white font-semibold">
+                        Live Demo
+                      </span>
                     </motion.a>
                   )}
                 </motion.div>
 
                 {/* Long Description */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{
+                    delay: 0.3,
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="space-y-3 md:space-y-4"
                 >
-                  <h3 className="text-xl sm:text-2xl font-bold text-white">About This Project</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
+                    About This Project
+                  </h3>
                   <p className="text-gray-300 leading-relaxed text-sm sm:text-base md:text-lg">
                     {project.longDescription}
                   </p>
@@ -246,44 +305,68 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 {/* Features */}
                 {project.features && (
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    {...STAGGER_ITEM}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
+                    transition={{
+                      delay: 0.4,
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                     className="space-y-3 md:space-y-4"
                   >
-                    <h3 className="text-xl sm:text-2xl font-bold text-white">Key Features</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white">
+                      Key Features
+                    </h3>
                     <ul className="grid sm:grid-cols-2 gap-2 md:gap-3">
-                      {project.features.map((feature: string, index: number) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 + index * 0.1 }}
-                          className="flex items-start gap-2 md:gap-3 text-gray-300 text-sm sm:text-base"
-                        >
-                          <span className={`mt-1 w-2 h-2 rounded-full bg-gradient-to-r ${project.gradient} flex-shrink-0`} />
-                          <span>{feature}</span>
-                        </motion.li>
-                      ))}
+                      {project.features.map(
+                        (feature: string, index: number) => (
+                          <motion.li
+                            key={index}
+                            {...FADE_IN_LEFT}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                              delay: 0.4 + index * 0.1,
+                              duration: 0.5,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
+                            className="flex items-start gap-2 md:gap-3 text-gray-300 text-sm sm:text-base"
+                          >
+                            <span
+                              className={`mt-1 w-2 h-2 rounded-full bg-gradient-to-r ${project.gradient} flex-shrink-0`}
+                            />
+                            <span>{feature}</span>
+                          </motion.li>
+                        ),
+                      )}
                     </ul>
                   </motion.div>
                 )}
 
                 {/* Tech Stack */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{
+                    delay: 0.5,
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="space-y-3 md:space-y-4"
                 >
-                  <h3 className="text-xl sm:text-2xl font-bold text-white">Tech Stack</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white">
+                    Tech Stack
+                  </h3>
                   <div className="flex flex-wrap gap-2 md:gap-3">
                     {project.tags.map((tag: string, index: number) => (
                       <motion.span
                         key={tag}
-                        initial={{ opacity: 0, scale: 0 }}
+                        {...SCALE_IN}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.5 + index * 0.05 }}
+                        transition={{
+                          delay: 0.5 + index * 0.05,
+                          duration: 0.3,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
                         whileHover={{ scale: 1.1, y: -2 }}
                         className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 bg-gradient-to-r ${project.gradient} bg-opacity-10 backdrop-blur-sm text-white text-xs sm:text-sm font-semibold rounded-full border border-white/20 hover:border-white/40 transition-all duration-300`}
                       >
@@ -295,9 +378,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
                 {/* Action Buttons */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{
+                    delay: 0.6,
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 pt-4"
                 >
                   {project.demoUrl && (
@@ -314,7 +401,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       View Live Demo
                     </motion.a>
                   )}
-                  
+
                   {project.githubUrl && (
                     <motion.a
                       href={project.githubUrl}

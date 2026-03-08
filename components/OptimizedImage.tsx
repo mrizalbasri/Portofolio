@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FADE_IN } from "@/constants/animations";
 
 interface OptimizedImageProps {
   src: string;
@@ -42,8 +43,7 @@ export default function OptimizedImage({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      {...FADE_IN}
       transition={{ duration: 0.5 }}
       className={`relative overflow-hidden rounded-xl bg-zinc-900 border border-white/10 ${containerClassName}`}
     >

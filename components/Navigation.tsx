@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import NavItem from "./NavItem";
+import { FADE_IN, FADE_IN_UP, STAGGER_ITEM } from "@/constants/animations";
 import {
   NAV_ITEMS,
   MOBILE_MENU_TRANSITION_DELAY,
@@ -50,10 +51,10 @@ export default function Navigation() {
     <>
       {/* Minimal Top Bar - Only Logo and Menu Button */}
       <motion.nav
-        initial={{ opacity: 0 }}
+        {...FADE_IN}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-[5000] px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-7 lg:px-10 lg:py-8"
+        className="fixed top-0 left-0 right-0 z-[9999] px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-7 lg:px-10 lg:py-8"
       >
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -73,36 +74,98 @@ export default function Navigation() {
             />
           </motion.a>
 
-          {/* Menu Button - 2 Lines Only */}
-          <button
+          {/* Menu Button - 2 Lines with Flying Arrow Animation */}
+          <motion.button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="relative z-[5200] p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-black rounded-lg transition-transform duration-200 active:scale-95"
+            className="relative z-[5200] p-3 min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none"
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMenuOpen}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {/* Hamburger Icon - 2 Lines */}
-            <div className="relative w-8 h-3 flex flex-col justify-between">
-              {/* Top line */}
-              <motion.span
-                animate={
-                  isMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }
-                }
-                transition={{ duration: 0.2 }}
-                className="w-full h-[3px] bg-white"
-                style={{ transformOrigin: "center" }}
+            {/* SVG Hamburger with Flying Arrow Animation */}
+            <svg
+              width="32"
+              height="24"
+              viewBox="0 0 32 24"
+              className="relative z-10"
+            >
+              {/* Top line - flies from top-right, forms X */}
+              <motion.line
+                x1="2"
+                x2="30"
+                y1="22"
+                y2="2"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{
+                  pathLength: isMenuOpen ? 1 : 0,
+                  opacity: isMenuOpen ? 1 : 0,
+                }}
+                transition={{
+                  duration: 0.6,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                }}
               />
 
-              {/* Bottom line */}
-              <motion.span
-                animate={
-                  isMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }
-                }
-                transition={{ duration: 0.2 }}
-                className="w-full h-[3px] bg-white"
-                style={{ transformOrigin: "center" }}
+              {/* Bottom line - flies from bottom-left, forms X */}
+              <motion.line
+                x1="30"
+                x2="2"
+                y1="22"
+                y2="2"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{
+                  pathLength: isMenuOpen ? 1 : 0,
+                  opacity: isMenuOpen ? 1 : 0,
+                }}
+                transition={{
+                  duration: 0.6,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                  delay: 0.05,
+                }}
               />
-            </div>
-          </button>
+
+              {/* Hamburger lines when closed */}
+              <motion.line
+                x1="4"
+                x2="28"
+                y1="4"
+                y2="4"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                animate={{
+                  opacity: isMenuOpen ? 0 : 1,
+                  pathLength: isMenuOpen ? 0 : 1,
+                }}
+                transition={{ duration: 0.4 }}
+              />
+              <motion.line
+                x1="4"
+                x2="28"
+                y1="20"
+                y2="20"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                animate={{
+                  opacity: isMenuOpen ? 0 : 1,
+                  pathLength: isMenuOpen ? 0 : 1,
+                }}
+                transition={{ duration: 0.4 }}
+              />
+            </svg>
+          </motion.button>
         </div>
       </motion.nav>
 
@@ -130,7 +193,7 @@ export default function Navigation() {
               {/* Left Side - Large Text */}
               <div className="hidden md:flex md:w-1/3 items-end p-10">
                 <motion.h1
-                  initial={{ opacity: 0, y: 50 }}
+                  {...FADE_IN_UP}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
                   className="text-[8rem] lg:text-[10rem] font-black text-white/5 leading-none"
@@ -155,7 +218,7 @@ export default function Navigation() {
 
                 {/* Contact Info */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7, duration: 0.4 }}
                   className="mt-16 space-y-2"
@@ -170,7 +233,7 @@ export default function Navigation() {
 
                 {/* Ask AI Button */}
                 <motion.button
-                  initial={{ opacity: 0, y: 30 }}
+                  {...STAGGER_ITEM}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8, duration: 0.4 }}
                   whileHover={{ scale: 1.05, y: -2 }}
