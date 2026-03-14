@@ -29,7 +29,7 @@ export default function ProjectsGrid() {
   }, [filter]);
 
   return (
-    <section className="relative min-h-screen py-20 px-4 bg-black">
+    <section className="relative min-h-screen bg-black px-4 py-16 sm:py-20">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-950/20 via-black to-black pointer-events-none" />
 
@@ -38,9 +38,9 @@ export default function ProjectsGrid() {
         <motion.div
           {...FADE_IN_UP}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 text-center"
+          className="mb-12 text-center sm:mb-16"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6">
+          <h1 className="mb-4 text-3xl font-black text-white sm:text-4xl md:mb-6 md:text-6xl lg:text-7xl">
             My{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400">
               Creative
@@ -48,7 +48,7 @@ export default function ProjectsGrid() {
             Work
           </h1>
 
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-sm text-gray-400 sm:text-lg md:text-xl">
             A collection of projects showcasing my expertise in full-stack
             development, security, and modern web technologies.
           </p>
@@ -59,7 +59,7 @@ export default function ProjectsGrid() {
           {...STAGGER_ITEM}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="mb-10 flex gap-3 overflow-x-auto pb-2 sm:mb-12 sm:flex-wrap sm:justify-center"
         >
           {categories.slice(0, 8).map((category) => (
             <motion.button
@@ -67,7 +67,7 @@ export default function ProjectsGrid() {
               onClick={() => setFilter(category)}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className={`relative px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 overflow-hidden group ${
+              className={`group relative shrink-0 overflow-hidden rounded-full px-4 py-2.5 text-sm font-medium transition-all duration-300 sm:px-6 ${
                 filter === category
                   ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white"
                   : "bg-white/5 text-gray-400 hover:text-white border border-white/10"
@@ -93,7 +93,7 @@ export default function ProjectsGrid() {
         {/* Projects Grid */}
         <motion.div
           layout
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className="grid gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8"
         >
           {filteredProjects.map((project, index) => (
             <motion.div
@@ -110,7 +110,7 @@ export default function ProjectsGrid() {
               whileHover={{ y: -8 }}
               className="group relative"
             >
-              <div className="relative bg-zinc-900/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-500/50 transition-all duration-500">
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/50 backdrop-blur-xl transition-all duration-500 hover:border-cyan-500/50">
                 {/* Project Image/Icon */}
                 <div
                   className={`relative h-48 bg-gradient-to-br ${project.gradient} overflow-hidden`}
@@ -145,7 +145,7 @@ export default function ProjectsGrid() {
                   </div>
 
                   {/* Hover overlay */}
-                  <motion.div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                  <motion.div className="absolute inset-0 hidden items-center justify-center gap-4 bg-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:flex">
                     {project.githubUrl && (
                       <motion.a
                         href={project.githubUrl}
@@ -176,9 +176,9 @@ export default function ProjectsGrid() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-4">
+                <div className="space-y-4 p-5 sm:p-6">
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                    <h3 className="mb-2 text-lg font-bold text-white transition-colors group-hover:text-cyan-400 sm:text-xl">
                       {project.title}
                     </h3>
                     <p className="text-gray-400 text-sm line-clamp-2">
@@ -200,6 +200,33 @@ export default function ProjectsGrid() {
                       <span className="px-2.5 py-1 text-xs text-cyan-400 font-mono">
                         +{project.tags.length - 3}
                       </span>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 md:hidden">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-white/10 bg-white/5 p-3 text-white transition-colors hover:bg-white/10"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`View ${project.title} on GitHub`}
+                      >
+                        <FaGithub className="text-base" />
+                      </a>
+                    )}
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-white/10 bg-white/5 p-3 text-white transition-colors hover:bg-white/10"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`View ${project.title} live demo`}
+                      >
+                        <FaExternalLinkAlt className="text-sm" />
+                      </a>
                     )}
                   </div>
 

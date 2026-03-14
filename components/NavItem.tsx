@@ -28,12 +28,12 @@ export default function NavItem({
     >
       <button
         onClick={onClick}
-        className="group relative block w-full text-left min-h-[44px] py-2"
+        className="group relative block min-h-[44px] w-full py-2 text-left"
       >
         {/* Main Text */}
         <div className="relative overflow-hidden">
           <motion.span
-            className={`block text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
+            className={`block text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold transition-all duration-500 ${
               isActive
                 ? "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400"
                 : "text-white"
@@ -90,7 +90,7 @@ export default function NavItem({
         </div>
 
         {/* Hover particles effect */}
-        <div className="absolute -right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute -right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
           {[...Array(3)].map((_, i) => (
             <motion.div
               key={i}
@@ -111,7 +111,7 @@ export default function NavItem({
 
         {/* Number indicator */}
         <motion.div
-          className="absolute -left-12 top-1/2 -translate-y-1/2 text-zinc-700 font-mono text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute -left-12 top-1/2 hidden -translate-y-1/2 text-sm font-mono text-zinc-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block"
           initial={{ x: -10 }}
           whileHover={{ x: 0 }}
         >

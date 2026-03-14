@@ -186,10 +186,10 @@ export default function Navigation() {
               opacity: 0,
             }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[150] bg-[#0a0a0a]/95 backdrop-blur-sm"
+            className="fixed inset-0 z-[150] overflow-y-auto overscroll-contain bg-[#0a0a0a]/95 backdrop-blur-sm"
           >
             {/* Menu Content */}
-            <div className="h-full flex flex-col md:flex-row">
+            <div className="flex min-h-full flex-col md:h-full md:flex-row">
               {/* Left Side - Large Text */}
               <div className="hidden md:flex md:w-1/3 items-end p-10">
                 <motion.h1
@@ -203,7 +203,7 @@ export default function Navigation() {
               </div>
 
               {/* Right Side - Navigation Links */}
-              <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 md:px-14 lg:px-20 py-20 md:py-16">
+              <div className="flex flex-1 flex-col justify-center px-6 py-24 sm:px-8 sm:py-28 md:px-14 md:py-16 lg:px-20">
                 <nav className="space-y-3 md:space-y-4">
                   {navItems.map((item, index) => (
                     <NavItem

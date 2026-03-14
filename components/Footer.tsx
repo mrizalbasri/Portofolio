@@ -82,7 +82,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative h-screen bg-black overflow-hidden flex flex-col pointer-events-auto"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden bg-black pointer-events-auto lg:h-screen"
       style={{ pointerEvents: "auto" }}
     >
       {/* Stars Background - Outside motion.div */}
@@ -134,7 +134,7 @@ export default function Footer() {
         className="flex-1 flex flex-col relative z-50 pointer-events-auto h-full"
       >
         {/* Main Content - Takes most of the space */}
-        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-16 py-6 z-50">
+        <div className="z-50 flex flex-1 items-center justify-center px-4 py-10 sm:px-6 sm:py-12 lg:px-16">
           <div className="w-full max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
               {/* Left Side - Text Content */}

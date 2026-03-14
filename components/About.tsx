@@ -56,7 +56,7 @@ export default function About({ isFullPage = false }: AboutProps) {
     <section
       id="about"
       ref={sectionRef}
-      className={`py-32 relative overflow-hidden bg-black`}
+      className={`relative overflow-hidden bg-black py-20 md:py-32`}
     >
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 opacity-20">
@@ -71,9 +71,9 @@ export default function About({ isFullPage = false }: AboutProps) {
 
       <motion.div
         style={contentStyle}
-        className="max-w-7xl mx-auto px-4 relative z-10"
+        className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 md:gap-12">
           {/* Left Column: Bio & Identity */}
           <div className="lg:col-span-7 space-y-8 md:space-y-12">
             <div>
@@ -87,7 +87,7 @@ export default function About({ isFullPage = false }: AboutProps) {
                 </span>
               </motion.div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6 md:mb-8">
+              <h2 className="mb-6 text-3xl leading-tight font-black text-white sm:text-4xl md:mb-8 md:text-5xl lg:text-6xl">
                 Beyond the{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
                   Code
@@ -96,7 +96,7 @@ export default function About({ isFullPage = false }: AboutProps) {
               </h2>
 
               <div className="prose prose-invert max-w-none">
-                <p className="text-lg sm:text-xl text-zinc-300 leading-relaxed mb-4 md:mb-6">
+                <p className="mb-4 text-base leading-relaxed text-zinc-300 sm:text-xl md:mb-6">
                   Halo! Saya seorang{" "}
                   <span className="text-white font-semibold">
                     Full Stack Developer
@@ -105,7 +105,7 @@ export default function About({ isFullPage = false }: AboutProps) {
                   waktu saya untuk mempelajari arsitektur sistem dan bagaimana
                   cara membuat aplikasi yang aman serta skalabel.
                 </p>
-                <p className="text-base sm:text-lg text-zinc-300 leading-relaxed mb-4 md:mb-6">
+                <p className="mb-4 text-sm leading-relaxed text-zinc-300 sm:text-lg md:mb-6">
                   Perjalanan saya di dunia teknologi didorong oleh rasa ingin
                   tahu yang besar tentang bagaimana sebuah sistem bekerja di
                   balik layar. Saya percaya bahwa kode bukan hanya sekadar
@@ -117,21 +117,21 @@ export default function About({ isFullPage = false }: AboutProps) {
 
             {/* Information Cards */}
             <div className="grid grid-cols-1 gap-6">
-              <div className="p-6 md:p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm group hover:border-cyan-500/50 transition-colors flex flex-col md:flex-row gap-4 md:gap-6 items-center md:items-start text-center md:text-left">
+              <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 text-center backdrop-blur-sm transition-colors group hover:border-cyan-500/50 md:flex-row md:items-start md:gap-6 md:p-8 md:text-left">
                 <div className="p-3 md:p-4 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-colors shrink-0">
                   <FaGraduationCap size={28} className="md:w-8 md:h-8" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-lg md:text-xl mb-1">
+                  <h3 className="mb-1 text-lg font-bold text-white md:text-xl">
                     Education
                   </h3>
-                  <p className="text-zinc-300 font-semibold text-base md:text-lg">
+                  <p className="text-sm font-semibold text-zinc-300 sm:text-base md:text-lg">
                     President University
                   </p>
-                  <p className="text-cyan-400 font-medium text-sm md:text-base">
+                  <p className="text-sm font-medium text-cyan-400 md:text-base">
                     Informatics Engineering
                   </p>
-                  <p className="text-zinc-500 text-xs md:text-sm mt-2 leading-relaxed">
+                  <p className="mt-2 text-xs leading-relaxed text-zinc-500 md:text-sm">
                     Focusing on Software Engineering, Data Structures, and
                     building scalable digital systems.
                   </p>
@@ -142,12 +142,12 @@ export default function About({ isFullPage = false }: AboutProps) {
 
           {/* Right Column: Experience Summary & Philosophy */}
           <div className="lg:col-span-5 space-y-6 md:space-y-8">
-            <div className="p-6 md:p-8 rounded-2xl md:rounded-3xl bg-gradient-to-b from-zinc-900 to-black border border-white/10 relative overflow-hidden group">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900 to-black p-5 group md:rounded-3xl md:p-8">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity hidden md:block">
                 <IconSignature size={120} />
               </div>
 
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 flex items-center gap-3">
+              <h3 className="mb-6 flex items-center gap-3 text-lg font-bold text-white md:mb-8 md:text-2xl">
                 <span className="w-6 md:w-8 h-px bg-cyan-500"></span>
                 Key Focus
               </h3>
@@ -192,7 +192,7 @@ export default function About({ isFullPage = false }: AboutProps) {
               </ul>
 
               <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/5">
-                <h3 className="text-base md:text-lg font-bold text-white mb-4">
+                <h3 className="mb-4 text-base font-bold text-white md:text-lg">
                   Philosophy
                 </h3>
                 <PhilosophyCard />
@@ -214,10 +214,10 @@ const PhilosophyCard = () => {
     { text: "Future();", className: "text-green-500" },
   ];
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <TypewriterEffectSmooth
         words={words}
-        className="scale-90 origin-left"
+        className="origin-left scale-75 sm:scale-90"
         cursorClassName="bg-blue-500"
       />
       <p className="text-zinc-500 text-sm italic font-mono mt-2">

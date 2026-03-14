@@ -38,7 +38,7 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="home"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-4 md:pt-8 pb-4 md:pb-8 px-4"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-transparent px-4 pt-24 pb-10 sm:pt-28 sm:pb-12 md:min-h-screen md:pt-8 md:pb-8"
     >
       {/* Backgrounds */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -107,13 +107,13 @@ export default function Hero() {
           className="flex flex-col items-center justify-center relative w-full mb-4 md:mb-6 lg:mb-8"
         >
           {/* Massive Background Text - Responsive */}
-          <h1 className="text-[18vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] font-black text-white/5 leading-none tracking-tighter absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap select-none pointer-events-none blur-sm">
+          <h1 className="text-[16vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] font-black text-white/5 leading-none tracking-tighter absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap select-none pointer-events-none blur-sm">
             CYBER DEV
           </h1>
 
           {/* Foreground Text - Sharp & Clean - Responsive */}
-          <div className="relative z-10 space-y-2 md:space-y-4 px-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight leading-tight">
+          <div className="relative z-10 space-y-2 md:space-y-4 px-2 sm:px-4">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight leading-tight">
               FULL STACK & <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
                 SECURE SYSTEMS
@@ -127,7 +127,7 @@ export default function Hero() {
           {...SCALE_IN}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-64 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[450px] lg:w-[420px] lg:h-[500px] xl:w-[480px] xl:h-[560px] -mt-4 md:-mt-6 lg:-mt-8"
+          className="relative mt-2 h-72 w-56 sm:h-96 sm:w-80 md:-mt-6 md:h-[450px] md:w-96 lg:-mt-8 lg:h-[500px] lg:w-[420px] xl:h-[560px] xl:w-[480px]"
           style={{
             transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${-mousePosition.y}deg)`,
             transition: "transform 0.1s ease-out",
@@ -147,9 +147,9 @@ export default function Hero() {
           {...FADE_IN_UP}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center max-w-2xl relative z-30 px-4 -mt-8.5 md:-mt-16.5 lg:-mt-24.5 xl:-mt-28.5"
+          className="relative z-30 mt-4 flex max-w-2xl flex-col items-center px-4 sm:mt-2 md:-mt-12 lg:-mt-20 xl:-mt-24"
         >
-          <p className="text-base sm:text-lg md:text-xl text-zinc-300 leading-relaxed font-light">
+          <p className="text-sm leading-relaxed font-light text-zinc-300 sm:text-lg md:text-xl">
             I build <span className="text-white font-semibold">Resilient</span>{" "}
             and <span className="text-white font-semibold">Scalable</span>{" "}
             digital infrastructures. Focusing on{" "}
