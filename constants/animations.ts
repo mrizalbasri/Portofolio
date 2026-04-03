@@ -1,3 +1,5 @@
+import type { Variants } from "framer-motion";
+
 /**
  * Animation Constants
  * Reusable animation configurations for consistent motion design
@@ -90,7 +92,7 @@ export const STAGGER_ITEM = {
  * Floating animation variants for icons and elements
  * Usage: variants={FLOATING_VARIANTS} custom={index}
  */
-export const FLOATING_VARIANTS = {
+export const FLOATING_VARIANTS: Variants = {
   initial: { y: 0 },
   animate: (custom: number) => ({
     y: [0, -20, 0],
@@ -98,10 +100,10 @@ export const FLOATING_VARIANTS = {
       duration: 3,
       repeat: Infinity,
       delay: custom * 0.5,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   }),
-} as const;
+};
 
 // ========================================
 // SCROLL ANIMATIONS
