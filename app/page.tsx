@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import GlobalParticles from "@/components/GlobalParticles";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import GitHubGame from "@/components/GitHubGame";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import SocialSidebar from "@/components/SocialSidebar";
@@ -35,6 +36,7 @@ export default function Home() {
         <main className="relative z-10">
           <Hero />
           <About />
+          <GitHubGame />
           <Skills />
           <Projects />
         </main>
