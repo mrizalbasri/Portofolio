@@ -2,8 +2,8 @@ name: Update Space Shooter Game
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily at midnight UTC
-  workflow_dispatch:  # Allow manual trigger
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,14 +13,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: main
 
-      - uses: czl9707/gh-space-shooter@v2
+      - uses: actions/setup-python@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          username: 'mrizalbasri'
-          output-path: 'public/gh-space-shooter.gif'
-          strategy: 'random'
-          no-amend: 'true'
+          python-version: '3.12'
+
+      - name: Install and run gh-space-shooter
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install gh-space-shooter
+          gh-space-shooter mrizalbasri --output public/gh-space-shooter.gif --strategy random
+
+      - name: Commit and push
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add public/gh-space-shooter.gif
+          git diff --staged --quiet || git commit -m "Update space shooter game GIF"
+          git push
