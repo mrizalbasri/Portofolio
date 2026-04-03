@@ -14,7 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          ref: main
 
       - uses: czl9707/gh-space-shooter@v2
         with:
@@ -22,3 +23,4 @@ jobs:
           username: 'mrizalbasri'
           output-path: 'public/gh-space-shooter.gif'
           strategy: 'random'
+          no-amend: 'true'
